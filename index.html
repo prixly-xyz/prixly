@@ -37,6 +37,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 .logo{display:flex;align-items:center;gap:10px;font-size:1.35rem;font-weight:800;color:var(--accent);text-decoration:none;letter-spacing:-.02em;cursor:pointer;}
 .logo svg{width:28px;height:28px;}
 .nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-selector-group{display:flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:.15rem .15rem .15rem .55rem;}
+.nav-selector-group .currency-select{border:none;background:none;padding:.13rem .35rem;}
+.nav-selector-icon{font-size:.78rem;line-height:1;opacity:.8;}
 .nav-links{display:flex;gap:1.4rem;list-style:none;}
 .nav-links a{text-decoration:none;color:var(--muted);font-size:.88rem;transition:color .2s;cursor:pointer;}
 .nav-links a:hover,.nav-links a.active{color:var(--accent);}
@@ -421,12 +424,25 @@ footer a{color:var(--accent);text-decoration:none;}
     <li><a onclick="showPage('about')" id="nav-about" data-i18n="nav_about">About</a></li>
   </ul>
   <div class="nav-right">
-    <select class="currency-select" id="regionSelect" onchange="setRegion(this.value)" style="font-size:.8rem;padding:.28rem .5rem;" title="Region"></select>
-    <select class="currency-select" id="langSelect" onchange="setLanguage(this.value)" style="font-size:.8rem;padding:.28rem .5rem;" title="Language"></select>
+    <div class="nav-selector-group" title="Region — changes nearby stores and currency">
+      <span class="nav-selector-icon">📍</span>
+      <select class="currency-select" id="regionSelect" onchange="setRegion(this.value)" style="font-size:.8rem;padding:.28rem .5rem;"></select>
+    </div>
+    <div class="nav-selector-group" title="Language — changes the site language">
+      <span class="nav-selector-icon">🌐</span>
+      <select class="currency-select" id="langSelect" onchange="setLanguage(this.value)" style="font-size:.8rem;padding:.28rem .5rem;"></select>
+    </div>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
     <a class="nav-cta" onclick="showPage('alerts')" id="nav-signup">Sign up free</a>
   </div>
 </nav>
+
+<div class="deal-banner">
+  <span class="deal-label">🔥 Deal of the day</span>
+  <span class="deal-text"><strong>Sony WH-1000XM5 Headphones</strong> — found 34% cheaper than RRP</span>
+  <span class="deal-cta" onclick="showPage('home');setTimeout(()=>quickSearch('Sony WH-1000XM5 Headphones'),100)">See the deal →</span>
+  <span class="deal-timer" id="dealTimer">Expires in 08:42:17</span>
+</div>
 
 <!-- ══════════════════════════════════════════ -->
 <!--  HOME PAGE                                 -->
@@ -434,8 +450,9 @@ footer a{color:var(--accent);text-decoration:none;}
 <div id="page-home" class="page active">
 <main>
   <section class="hero">
-    <h1 data-i18n="hero_h1">Stop overpaying.<br><span data-i18n="hero_h1_span">Find it cheaper.</span></h1>
-    <p data-i18n="hero_p">Search by name, photo, or link.</p>
+    <span class="hero-eyebrow" data-i18n="hero_eyebrow">Searches 50+ retailers instantly</span>
+    <h1 data-i18n="hero_h1">Stop overpaying.<br><span>Find it cheaper.</span></h1>
+    <p data-i18n="hero_p">Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.</p>
     <div class="currency-row">
       <span class="currency-label" data-i18n="currency_label">Currency:</span>
       <select class="currency-select" id="currencySelect" onchange="setCurrency(this.value)">
@@ -466,6 +483,7 @@ footer a{color:var(--accent);text-decoration:none;}
           <input class="search-input" type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="e.g. iPhone 15, Nike Air Max, LEGO Technic..." onkeydown="if(event.key==='Enter') doSearch()"/>
           <button class="search-btn" onclick="doSearch()" data-i18n="search_btn">Search</button>
         </div>
+        <p class="search-url-hint" data-i18n="url_hint">💡 Tip: you can also paste a product link instead of typing a name</p>
       </div>
       <div id="imageSearch" style="padding:.75rem;display:none;">
         <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
@@ -480,12 +498,13 @@ footer a{color:var(--accent);text-decoration:none;}
     <div class="cat-browse-wrap" id="catBrowseWrap">
       <p class="cat-browse-label">Browse by category</p>
       <div class="cat-browse-strip" id="catBrowseStrip"></div>
+      <div class="cat-updated" id="catUpdated"></div>
     </div>
     <div class="trust-strip">
-      <div class="trust-item">✅ <span data-i18n="trust_1">No sign-up</span></div>
-      <div class="trust-item">🔒 <span data-i18n="trust_2">Data stays private</span></div>
-      <div class="trust-item">⚡ <span data-i18n="trust_3">Instant results</span></div>
-      <div class="trust-item">🛒 <span data-i18n="trust_4">50+ retailers</span></div>
+      <div class="trust-item">✅ <span data-i18n="trust_1">No sign-up needed</span></div>
+      <div class="trust-item">🔒 <span data-i18n="trust_2">We never sell your data</span></div>
+      <div class="trust-item">⚡ <span data-i18n="trust_3">Results in under 3s</span></div>
+      <div class="trust-item">🛒 <span data-i18n="trust_4">50+ retailers searched</span></div>
     </div>
   </section>
   <div class="recently-viewed" id="recentlyViewed">
@@ -573,26 +592,26 @@ footer a{color:var(--accent);text-decoration:none;}
 <!-- ══════════════════════════════════════════ -->
 <div id="page-hiw" class="page">
   <div class="hiw-hero">
-    <span class="hero-eyebrow">Simple. Fast. Transparent.</span>
-    <h1>How Prixly works</h1>
-    <p>From search to saving — here's exactly what happens when you use Prixly to find a cheaper price.</p>
+    <span class="hero-eyebrow" data-i18n="hiw_eyebrow">Simple. Fast. Transparent.</span>
+    <h1 data-i18n="hiw_title">How Prixly works</h1>
+    <p data-i18n="hiw_intro">From search to saving — here's exactly what happens when you use Prixly to find a cheaper price.</p>
   </div>
   <div class="hiw-steps" id="hiwSteps">
 
     <div class="hiw-step">
       <div class="hiw-step-visual">
-        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.3rem;">🔍 Search bar</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.3rem;" data-i18n="mock_search_bar">🔍 Search bar</div>
         <div class="mock-search">
           <span class="mock-typing" id="hiw-typing">Sony WH-1000XM5<span class="mock-cursor"></span></span>
-          <button class="mock-search-btn">Search</button>
+          <button class="mock-search-btn" data-i18n="search_btn">Search</button>
         </div>
-        <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem;">Or drop an image...</div>
-        <div style="border:1.5px dashed var(--border2);border-radius:var(--radius-sm);padding:.75rem;text-align:center;font-size:.75rem;color:var(--muted);background:var(--bg2);">📁 Drag & drop any product photo</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem;" data-i18n="mock_or_drop">Or drop an image...</div>
+        <div style="border:1.5px dashed var(--border2);border-radius:var(--radius-sm);padding:.75rem;text-align:center;font-size:.75rem;color:var(--muted);background:var(--bg2);" data-i18n="mock_dragdrop">📁 Drag & drop any product photo</div>
       </div>
       <div class="hiw-step-info">
-        <div class="hiw-step-num">Step 01</div>
-        <h2>Tell us what you're looking for</h2>
-        <p>Type the name of any product — as specific or as vague as you like — or simply drop a photo of it. Prixly accepts both. No account needed, no sign-up required.</p>
+        <div class="hiw-step-num" data-i18n="step1_num">Step 01</div>
+        <h2 data-i18n="step1_title">Tell us what you're looking for</h2>
+        <p data-i18n="step1_desc">Type the name of any product — as specific or as vague as you like — or simply drop a photo of it. Prixly accepts both. No account needed, no sign-up required.</p>
       </div>
     </div>
 
@@ -600,8 +619,8 @@ footer a{color:var(--accent);text-decoration:none;}
 
     <div class="hiw-step">
       <div class="hiw-step-visual">
-        <div class="mock-detecting"><div class="mini-spin"></div>Category detected: 💻 Electronics (94% match)</div>
-        <div style="font-size:.72rem;color:var(--muted);margin:.4rem 0 .3rem;">Searching top retailers by priority:</div>
+        <div class="mock-detecting"><div class="mini-spin"></div><span data-i18n="mock_category_detected">Category detected: 💻 Electronics (94% match)</span></div>
+        <div style="font-size:.72rem;color:var(--muted);margin:.4rem 0 .3rem;" data-i18n="mock_searching_priority">Searching top retailers by priority:</div>
         <div class="mock-retailers">
           <span class="mock-retailer-tag top">★ Amazon</span>
           <span class="mock-retailer-tag top">★ Currys</span>
@@ -613,9 +632,9 @@ footer a{color:var(--accent);text-decoration:none;}
         </div>
       </div>
       <div class="hiw-step-info">
-        <div class="hiw-step-num">Step 02</div>
-        <h2>The algorithm detects your category</h2>
-        <p>Prixly's engine analyses your search and instantly identifies which category it belongs to — Electronics, Fashion, Gaming, and more. It then selects the most relevant retailers for that category and prioritises them, so you get results from the right places first.</p>
+        <div class="hiw-step-num" data-i18n="step2_num">Step 02</div>
+        <h2 data-i18n="step2_title">The algorithm detects your category</h2>
+        <p data-i18n="step2_desc">Prixly's engine analyses your search and instantly identifies which category it belongs to — Electronics, Fashion, Gaming, and more. It then selects the most relevant retailers for that category and prioritises them, so you get results from the right places first.</p>
       </div>
     </div>
 
@@ -627,18 +646,18 @@ footer a{color:var(--accent);text-decoration:none;}
           <div class="mock-retailer-dot" style="background:#FF9900;color:#131921;">AMZ</div>
           <div class="mock-result-info">
             <div class="mock-result-name">Sony WH-1000XM5 — Amazon</div>
-            <div class="mock-result-ship">⚡ Free next-day delivery</div>
+            <div class="mock-result-ship" data-i18n="mock_ship_nextday">⚡ Free next-day delivery</div>
           </div>
           <div>
             <div class="mock-result-price">£189.99</div>
-            <span class="mock-badge">Best price</span>
+            <span class="mock-badge" data-i18n="best_price">Best price</span>
           </div>
         </div>
         <div class="mock-result" style="margin-top:.4rem;">
           <div class="mock-retailer-dot" style="background:#7b2d8b;color:#fff;">CUR</div>
           <div class="mock-result-info">
             <div class="mock-result-name">Sony WH-1000XM5 — Currys</div>
-            <div class="mock-result-ship">Free delivery</div>
+            <div class="mock-result-ship" data-i18n="mock_ship_free">Free delivery</div>
           </div>
           <div class="mock-result-price">£209.00</div>
         </div>
@@ -646,15 +665,15 @@ footer a{color:var(--accent);text-decoration:none;}
           <div class="mock-retailer-dot" style="background:#E53238;color:#fff;">EBY</div>
           <div class="mock-result-info">
             <div class="mock-result-name">Sony WH-1000XM5 — eBay</div>
-            <div class="mock-result-ship">Free shipping</div>
+            <div class="mock-result-ship" data-i18n="mock_ship_shipping">Free shipping</div>
           </div>
           <div class="mock-result-price">£214.50</div>
         </div>
       </div>
       <div class="hiw-step-info">
-        <div class="hiw-step-num">Step 03</div>
-        <h2>Results ranked cheapest first</h2>
-        <p>Every retailer's price is pulled, compared, and ranked from lowest to highest. The best deal gets highlighted at the top. You can also sort by rating, shipping speed, or Prixly score — a combined rating we calculate for each listing.</p>
+        <div class="hiw-step-num" data-i18n="step3_num">Step 03</div>
+        <h2 data-i18n="step3_title">Results ranked cheapest first</h2>
+        <p data-i18n="step3_desc">Every retailer's price is pulled, compared, and ranked from lowest to highest. The best deal gets highlighted at the top. You can also sort by rating, shipping speed, or Prixly score — a combined rating we calculate for each listing.</p>
       </div>
     </div>
 
@@ -662,11 +681,11 @@ footer a{color:var(--accent);text-decoration:none;}
 
     <div class="hiw-step">
       <div class="hiw-step-visual">
-        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;">📈 Price over last 6 months</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;" data-i18n="mock_price_history_header">📈 Price over last 6 months</div>
         <div style="display:flex;justify-content:space-between;font-size:.7rem;margin-bottom:.3rem;">
-          <span style="color:var(--accent);">£189.99 now</span>
-          <span style="color:#e74c3c;">£259.99 peak</span>
-          <span style="color:var(--accent);">£179 lowest</span>
+          <span style="color:var(--accent);">£189.99 <span data-i18n="mock_now">now</span></span>
+          <span style="color:#e74c3c;">£259.99 <span data-i18n="mock_peak">peak</span></span>
+          <span style="color:var(--accent);">£179 <span data-i18n="mock_lowest">lowest</span></span>
         </div>
         <div style="height:50px;background:var(--bg2);border-radius:6px;display:flex;align-items:flex-end;gap:2px;padding:6px;">
           <div style="flex:1;background:#e74c3c;border-radius:2px;height:90%;opacity:.6;"></div>
@@ -676,12 +695,12 @@ footer a{color:var(--accent);text-decoration:none;}
           <div style="flex:1;background:#aca;border-radius:2px;height:50%;opacity:.8;"></div>
           <div style="flex:1;background:var(--accent);border-radius:2px;height:38%;"></div>
         </div>
-        <div style="font-size:.68rem;color:var(--muted);margin-top:.3rem;">💡 Price has dropped 27% since January</div>
+        <div style="font-size:.68rem;color:var(--muted);margin-top:.3rem;" data-i18n="mock_price_insight">💡 Price has dropped 27% since January</div>
       </div>
       <div class="hiw-step-info">
-        <div class="hiw-step-num">Step 04</div>
-        <h2>See the price history</h2>
-        <p>Every result comes with a 6-month price history chart so you can see if today's price is actually a good deal — or if you're better off waiting. Prixly also tells you the best time of year to buy that type of product.</p>
+        <div class="hiw-step-num" data-i18n="step4_num">Step 04</div>
+        <h2 data-i18n="step4_title">See the price history</h2>
+        <p data-i18n="step4_desc">Every result comes with a 6-month price history chart so you can see if today's price is actually a good deal — or if you're better off waiting. Prixly also tells you the best time of year to buy that type of product.</p>
       </div>
     </div>
 
@@ -690,21 +709,21 @@ footer a{color:var(--accent);text-decoration:none;}
     <div class="hiw-step">
       <div class="hiw-step-visual">
         <div class="mock-alert-box">
-          <div class="mock-alert-label">🔔 Set a price alert</div>
+          <div class="mock-alert-label" data-i18n="mock_set_alert">🔔 Set a price alert</div>
           <div class="mock-alert-row">
-            <input class="mock-alert-input" placeholder="your@email.com" readonly/>
-            <input class="mock-alert-input" placeholder="Target £" style="width:80px;flex:unset;" readonly/>
-            <button class="mock-alert-btn">Notify me</button>
+            <input class="mock-alert-input" data-i18n-placeholder="alert_email" placeholder="your@email.com" readonly/>
+            <input class="mock-alert-input" data-i18n-placeholder="mock_target_ph" placeholder="Target £" style="width:80px;flex:unset;" readonly/>
+            <button class="mock-alert-btn" data-i18n="alert_btn">Notify me</button>
           </div>
         </div>
         <div style="margin-top:.75rem;background:var(--accent-dim);border:1px solid rgba(46,204,113,0.2);border-radius:var(--radius-sm);padding:.5rem .75rem;font-size:.75rem;color:var(--accent);">
-          ✅ Alert set! We'll email you when Sony WH-1000XM5 drops below <strong>£180</strong>
+          <span data-i18n="mock_alert_confirm">✅ Alert set! We'll email you when Sony WH-1000XM5 drops below</span> <strong>£180</strong>
         </div>
       </div>
       <div class="hiw-step-info">
-        <div class="hiw-step-num">Step 05</div>
-        <h2>Set an alert and never miss a drop</h2>
-        <p>Not ready to buy yet? Set a target price and your email, and Prixly will notify you the moment the item drops below it. You can manage all your alerts in the Price Alerts section.</p>
+        <div class="hiw-step-num" data-i18n="step5_num">Step 05</div>
+        <h2 data-i18n="step5_title">Set an alert and never miss a drop</h2>
+        <p data-i18n="step5_desc">Not ready to buy yet? Set a target price and your email, and Prixly will notify you the moment the item drops below it. You can manage all your alerts in the Price Alerts section.</p>
       </div>
     </div>
 
@@ -716,8 +735,8 @@ footer a{color:var(--accent);text-decoration:none;}
 <!-- ══════════════════════════════════════════ -->
 <div id="page-alerts" class="page">
   <div class="pa-hero">
-    <h1>🔔 Price Alerts</h1>
-    <p>Items you're watching — we'll tell you the moment the price drops.</p>
+    <h1 data-i18n="pa_title">🔔 Price Alerts</h1>
+    <p data-i18n="pa_subtitle">Items you're watching — we'll tell you the moment the price drops.</p>
   </div>
   <div class="pa-content" id="paContent"></div>
 </div>
@@ -727,18 +746,18 @@ footer a{color:var(--accent);text-decoration:none;}
 <!-- ══════════════════════════════════════════ -->
 <div id="page-deals" class="page">
   <div class="deals-hero">
-    <h1>🔥 Today's Best Deals</h1>
-    <p>The biggest price drops right now across every category — updated daily.</p>
+    <h1 data-i18n="deals_title">🔥 Today's Best Deals</h1>
+    <p data-i18n="deals_p">The biggest price drops right now across every category — updated daily.</p>
   </div>
   <div class="deals-filters" id="dealsFilters">
-    <span class="filter-chip active" onclick="filterDeals('all',this)">All deals</span>
-    <span class="filter-chip" onclick="filterDeals('electronics',this)">Electronics</span>
-    <span class="filter-chip" onclick="filterDeals('gaming',this)">Gaming</span>
-    <span class="filter-chip" onclick="filterDeals('fashion',this)">Fashion</span>
-    <span class="filter-chip" onclick="filterDeals('home',this)">Home</span>
-    <span class="filter-chip" onclick="filterDeals('sports',this)">Sports</span>
-    <span class="filter-chip" onclick="filterDeals('toys',this)">Toys</span>
-    <span class="filter-chip" onclick="filterDeals('baby',this)">Baby</span>
+    <span class="filter-chip active" onclick="filterDeals('all',this)" data-i18n="deals_filter_all">All deals</span>
+    <span class="filter-chip" onclick="filterDeals('electronics',this)" data-i18n="deals_filter_electronics">Electronics</span>
+    <span class="filter-chip" onclick="filterDeals('gaming',this)" data-i18n="deals_filter_gaming">Gaming</span>
+    <span class="filter-chip" onclick="filterDeals('fashion',this)" data-i18n="deals_filter_fashion">Fashion</span>
+    <span class="filter-chip" onclick="filterDeals('home',this)" data-i18n="deals_filter_home">Home</span>
+    <span class="filter-chip" onclick="filterDeals('sports',this)" data-i18n="deals_filter_sports">Sports</span>
+    <span class="filter-chip" onclick="filterDeals('toys',this)" data-i18n="deals_filter_toys">Toys</span>
+    <span class="filter-chip" onclick="filterDeals('baby',this)" data-i18n="deals_filter_baby">Baby</span>
   </div>
   <div class="deals-content" id="dealsContent"></div>
 </div>
@@ -749,70 +768,70 @@ footer a{color:var(--accent);text-decoration:none;}
 <div id="page-about" class="page">
   <div class="about-hero">
     <span class="big-bird">🐦</span>
-    <h1>We exist so you can<br><span>spend less, live more.</span></h1>
-    <p class="tagline">"The smartest shopper isn't the one who buys the most — it's the one who pays the least."</p>
-    <p>Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don't have to, finding the best price on everything from headphones to nappies in seconds.</p>
+    <h1 data-i18n="about_h1">We exist so you can<br><span>spend less, live more.</span></h1>
+    <p class="tagline" data-i18n="about_tagline">"The smartest shopper isn't the one who buys the most — it's the one who pays the least."</p>
+    <p data-i18n="about_intro">Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don't have to, finding the best price on everything from headphones to nappies in seconds.</p>
   </div>
 
   <div class="about-stats">
-    <div class="about-stat"><div class="about-stat-val">50+</div><div class="about-stat-label">Retailers searched</div></div>
-    <div class="about-stat"><div class="about-stat-val">8</div><div class="about-stat-label">Product categories</div></div>
-    <div class="about-stat"><div class="about-stat-val">3s</div><div class="about-stat-label">Average search time</div></div>
-    <div class="about-stat"><div class="about-stat-val">£0</div><div class="about-stat-label">Cost to use</div></div>
+    <div class="about-stat"><div class="about-stat-val">50+</div><div class="about-stat-label" data-i18n="about_stat1">Retailers searched</div></div>
+    <div class="about-stat"><div class="about-stat-val">8</div><div class="about-stat-label" data-i18n="about_stat2">Product categories</div></div>
+    <div class="about-stat"><div class="about-stat-val">3s</div><div class="about-stat-label" data-i18n="about_stat3">Average search time</div></div>
+    <div class="about-stat"><div class="about-stat-val">£0</div><div class="about-stat-label" data-i18n="about_stat4">Cost to use</div></div>
   </div>
 
   <div class="about-slogans">
-    <h2>What we stand for</h2>
+    <h2 data-i18n="about_slogans_header">What we stand for</h2>
     <div class="slogan-list">
-      <div class="slogan">Your money. Your <span>choice.</span></div>
-      <div class="slogan">Same product. <span>Better price.</span></div>
-      <div class="slogan">Search once. <span>Save everywhere.</span></div>
-      <div class="slogan">No tricks. No markup. Just <span>the truth.</span></div>
-      <div class="slogan">Built for <span>real people,</span> not retailers.</div>
+      <div class="slogan" data-i18n="slogan1">Your money. Your <span>choice.</span></div>
+      <div class="slogan" data-i18n="slogan2">Same product. <span>Better price.</span></div>
+      <div class="slogan" data-i18n="slogan3">Search once. <span>Save everywhere.</span></div>
+      <div class="slogan" data-i18n="slogan4">No tricks. No markup. Just <span>the truth.</span></div>
+      <div class="slogan" data-i18n="slogan5">Built for <span>real people,</span> not retailers.</div>
     </div>
   </div>
 
   <div class="about-values">
-    <h2>What makes us different</h2>
+    <h2 data-i18n="about_values_header">What makes us different</h2>
     <div class="about-value">
       <div class="about-value-icon">🧠</div>
       <div class="about-value-text">
-        <h3>Smart category detection</h3>
-        <p>Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you're looking for.</p>
+        <h3 data-i18n="value1_title">Smart category detection</h3>
+        <p data-i18n="value1_desc">Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you're looking for.</p>
       </div>
     </div>
     <div class="about-value">
       <div class="about-value-icon">📈</div>
       <div class="about-value-text">
-        <h3>Price history you can trust</h3>
-        <p>We show you whether today's "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.</p>
+        <h3 data-i18n="value2_title">Price history you can trust</h3>
+        <p data-i18n="value2_desc">We show you whether today's "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.</p>
       </div>
     </div>
     <div class="about-value">
       <div class="about-value-icon">🔔</div>
       <div class="about-value-text">
-        <h3>Alerts that actually fire</h3>
-        <p>Set your target price and forget about it. We'll email you the moment something drops, so you never miss a deal you actually wanted.</p>
+        <h3 data-i18n="value3_title">Alerts that actually fire</h3>
+        <p data-i18n="value3_desc">Set your target price and forget about it. We'll email you the moment something drops, so you never miss a deal you actually wanted.</p>
       </div>
     </div>
     <div class="about-value">
       <div class="about-value-icon">🔒</div>
       <div class="about-value-text">
-        <h3>No data selling, ever</h3>
-        <p>We don't sell your data. We don't track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that's it.</p>
+        <h3 data-i18n="value4_title">No data selling, ever</h3>
+        <p data-i18n="value4_desc">We don't sell your data. We don't track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that's it.</p>
       </div>
     </div>
   </div>
 
   <div class="about-mission">
-    <h2>The goal</h2>
-    <p>To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it's sold online, Prixly should find it cheaper. That's the mission. Simple as that.</p>
+    <h2 data-i18n="about_mission_header">The goal</h2>
+    <p data-i18n="about_mission_text">To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it's sold online, Prixly should find it cheaper. That's the mission. Simple as that.</p>
   </div>
 </div>
 
 <footer>
-  <p>© 2025 Prixly · <a href="#" onclick="showPage('about')">About</a> · <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#" onclick="showPage('hiw')">How it works</a></p>
-  <p style="margin-top:.4rem;font-size:.73rem;color:var(--muted2);">Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases — at no extra cost to you.</p>
+  <p>© 2025 Prixly · <a href="#" onclick="showPage('about')" data-i18n="nav_about">About</a> · <a href="#" data-i18n="footer_privacy">Privacy</a> · <a href="#" data-i18n="footer_terms">Terms</a> · <a href="#" onclick="showPage('hiw')" data-i18n="footer_hiw">How it works</a></p>
+  <p style="margin-top:.4rem;font-size:.73rem;color:var(--muted2);" data-i18n="footer_disclaimer">Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases — at no extra cost to you.</p>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
@@ -828,12 +847,12 @@ const TRANSLATIONS = {
     _name:'🇬🇧 English', _dir:'ltr', _currency:'GBP',
     nav_hiw:'How it works', nav_alerts:'Price alerts', nav_deals:'Deals', nav_about:'About', nav_signup:'Sign up free',
     hero_eyebrow:'Searches 50+ retailers instantly',
-    hero_h1:'Stop overpaying.', hero_h1_span:'Find it cheaper.',
-    hero_p:"Search by name, photo, or link.",
+    hero_h1:'Stop overpaying.<br><span>Find it cheaper.</span>',
+    hero_p:"Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.",
     currency_label:'Currency:', tab_text:'🔤 Search by name', tab_image:'📷 Search by image',
     search_placeholder:'e.g. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Search', url_hint:'💡 Tip: you can also paste a product link instead of typing a name', url_error:'⚠️ Couldn\'t read that URL — try pasting the product name instead',
     drop_title:'Drop an image here', drop_sub:'or click to upload', drop_formats:'JPG, PNG, WEBP supported',
-    trust_1:'No sign-up', trust_2:'Data stays private', trust_3:'Instant results', trust_4:'50+ retailers',
+    trust_1:'No sign-up needed', trust_2:'We never sell your data', trust_3:'Results in under 3s', trust_4:'50+ retailers searched',
     cat_label:'Browse by category', recently_viewed:'Recently viewed',
     loading_text:'Analysing your search...', best_price:'Best price', view_deal:'View deal →',
     sort_best:'Sort: Best match', sort_price:'Sort: Lowest price', sort_rating:'Sort: Highest rated', sort_score:'Sort: Prixly score',
@@ -841,20 +860,21 @@ const TRANSLATIONS = {
     alert_p:"We'll email you the moment this item drops below your target price.",
     alert_email:'your@email.com', alert_target:'Target price', alert_btn:'Notify me',
     deals_title:"Today's Best Deals", deals_p:'The biggest price drops right now across every category — updated daily.',
-    about_h1:'We exist so you can', about_span:'spend less, live more.',
+    about_h1:'We exist so you can<br><span>spend less, live more.</span>',
     footer_privacy:'Privacy', footer_terms:'Terms', footer_hiw:'How it works',
     hiw_title:'How Prixly works',
+    hiw_eyebrow:'Simple. Fast. Transparent.', hiw_intro:'From search to saving — here\'s exactly what happens when you use Prixly to find a cheaper price.', step1_num:'Step 01', step1_title:'Tell us what you\'re looking for', step1_desc:'Type the name of any product — as specific or as vague as you like — or simply drop a photo of it. Prixly accepts both. No account needed, no sign-up required.', step2_num:'Step 02', step2_title:'The algorithm detects your category', step2_desc:'Prixly\'s engine analyses your search and instantly identifies which category it belongs to — Electronics, Fashion, Gaming, and more. It then selects the most relevant retailers for that category and prioritises them, so you get results from the right places first.', step3_num:'Step 03', step3_title:'Results ranked cheapest first', step3_desc:'Every retailer\'s price is pulled, compared, and ranked from lowest to highest. The best deal gets highlighted at the top. You can also sort by rating, shipping speed, or Prixly score — a combined rating we calculate for each listing.', step4_num:'Step 04', step4_title:'See the price history', step4_desc:'Every result comes with a 6-month price history chart so you can see if today\'s price is actually a good deal — or if you\'re better off waiting. Prixly also tells you the best time of year to buy that type of product.', step5_num:'Step 05', step5_title:'Set an alert and never miss a drop', step5_desc:'Not ready to buy yet? Set a target price and your email, and Prixly will notify you the moment the item drops below it. You can manage all your alerts in the Price Alerts section.', mock_search_bar:'🔍 Search bar', mock_or_drop:'Or drop an image...', mock_dragdrop:'📁 Drag & drop any product photo', mock_category_detected:'Category detected: 💻 Electronics (94% match)', mock_searching_priority:'Searching top retailers by priority:', mock_ship_nextday:'⚡ Free next-day delivery', mock_ship_free:'Free delivery', mock_ship_shipping:'Free shipping', mock_price_history_header:'📈 Price over last 6 months', mock_now:'now', mock_peak:'peak', mock_lowest:'lowest', mock_price_insight:'💡 Price has dropped 27% since January', mock_set_alert:'🔔 Set a price alert', mock_target_ph:'Target', mock_alert_confirm:'✅ Alert set! We\'ll email you when Sony WH-1000XM5 drops below', pa_title:'🔔 Price Alerts', pa_subtitle:'Items you\'re watching — we\'ll tell you the moment the price drops.', pa_dropped_header:'🔥 Price dropped — act now', pa_watching_header:'⏳ Still watching', pa_suggested_header:'✨ You might also like', pa_via:'via', pa_your_target:'Your target:', pa_was:'was', pa_below_target:'✅ Below your target', pa_target_label:'Target:', pa_away:'away', pa_view_deal:'View deal', pa_remove:'Remove', pa_search_now:'Search now', pa_save:'Save', deals_filter_all:'All deals', deals_filter_electronics:'Electronics', deals_filter_gaming:'Gaming', deals_filter_fashion:'Fashion', deals_filter_home:'Home', deals_filter_sports:'Sports', deals_filter_toys:'Toys', deals_filter_baby:'Baby', deal_view:'View →', about_tagline:'"The smartest shopper isn\'t the one who buys the most — it\'s the one who pays the least."', about_intro:'Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don\'t have to, finding the best price on everything from headphones to nappies in seconds.', about_stat1:'Retailers searched', about_stat2:'Product categories', about_stat3:'Average search time', about_stat4:'Cost to use', about_slogans_header:'What we stand for', slogan1:'Your money. Your <span>choice.</span>', slogan2:'Same product. <span>Better price.</span>', slogan3:'Search once. <span>Save everywhere.</span>', slogan4:'No tricks. No markup. Just <span>the truth.</span>', slogan5:'Built for <span>real people,</span> not retailers.', about_values_header:'What makes us different', value1_title:'Smart category detection', value1_desc:'Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you\'re looking for.', value2_title:'Price history you can trust', value2_desc:'We show you whether today\'s "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.', value3_title:'Alerts that actually fire', value3_desc:'Set your target price and forget about it. We\'ll email you the moment something drops, so you never miss a deal you actually wanted.', value4_title:'No data selling, ever', value4_desc:'We don\'t sell your data. We don\'t track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that\'s it.', about_mission_header:'The goal', about_mission_text:'To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it\'s sold online, Prixly should find it cheaper. That\'s the mission. Simple as that.', footer_disclaimer:'Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases — at no extra cost to you.',
   },
   'en-AU': {
     _name:'🇦🇺 English (AU)', _dir:'ltr', _currency:'AUD',
     nav_hiw:'How it works', nav_alerts:'Price alerts', nav_deals:'Deals', nav_about:'About', nav_signup:'Sign up free',
     hero_eyebrow:'Searches 50+ retailers instantly',
-    hero_h1:'Stop overpaying.', hero_h1_span:'Find it cheaper.',
-    hero_p:"Search by name, photo, or link.",
+    hero_h1:'Stop overpaying.<br><span>Find it cheaper.</span>',
+    hero_p:"Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.",
     currency_label:'Currency:', tab_text:'🔤 Search by name', tab_image:'📷 Search by image',
     search_placeholder:'e.g. iPhone 15, Nike Air Max, LEGO set...', search_btn:'Search', url_hint:'💡 Tip: you can also paste a product link instead of typing a name', url_error:'⚠️ Couldn\'t read that URL — try pasting the product name instead',
     drop_title:'Drop an image here', drop_sub:'or click to upload', drop_formats:'JPG, PNG, WEBP supported',
-    trust_1:'No sign-up', trust_2:'Data stays private', trust_3:'Instant results', trust_4:'50+ retailers',
+    trust_1:'No sign-up needed', trust_2:'We never sell your data', trust_3:'Results in under 3s', trust_4:'50+ retailers searched',
     cat_label:'Browse by category', recently_viewed:'Recently viewed',
     loading_text:'Analysing your search...', best_price:'Best price', view_deal:'View deal →',
     sort_best:'Sort: Best match', sort_price:'Sort: Lowest price', sort_rating:'Sort: Highest rated', sort_score:'Sort: Prixly score',
@@ -862,20 +882,21 @@ const TRANSLATIONS = {
     alert_p:"We'll email you the moment this item drops below your target price.",
     alert_email:'your@email.com', alert_target:'Target price', alert_btn:'Notify me',
     deals_title:"Today's Best Deals", deals_p:'The biggest price drops right now across every category — updated daily.',
-    about_h1:'We exist so you can', about_span:'spend less, live more.',
+    about_h1:'We exist so you can<br><span>spend less, live more.</span>',
     footer_privacy:'Privacy', footer_terms:'Terms', footer_hiw:'How it works',
     hiw_title:'How Prixly works',
+    hiw_eyebrow:'Simple. Fast. Transparent.', hiw_intro:'From search to saving — here\'s exactly what happens when you use Prixly to find a cheaper price.', step1_num:'Step 01', step1_title:'Tell us what you\'re looking for', step1_desc:'Type the name of any product — as specific or as vague as you like — or simply drop a photo of it. Prixly accepts both. No account needed, no sign-up required.', step2_num:'Step 02', step2_title:'The algorithm detects your category', step2_desc:'Prixly\'s engine analyses your search and instantly identifies which category it belongs to — Electronics, Fashion, Gaming, and more. It then selects the most relevant retailers for that category and prioritises them, so you get results from the right places first.', step3_num:'Step 03', step3_title:'Results ranked cheapest first', step3_desc:'Every retailer\'s price is pulled, compared, and ranked from lowest to highest. The best deal gets highlighted at the top. You can also sort by rating, shipping speed, or Prixly score — a combined rating we calculate for each listing.', step4_num:'Step 04', step4_title:'See the price history', step4_desc:'Every result comes with a 6-month price history chart so you can see if today\'s price is actually a good deal — or if you\'re better off waiting. Prixly also tells you the best time of year to buy that type of product.', step5_num:'Step 05', step5_title:'Set an alert and never miss a drop', step5_desc:'Not ready to buy yet? Set a target price and your email, and Prixly will notify you the moment the item drops below it. You can manage all your alerts in the Price Alerts section.', mock_search_bar:'🔍 Search bar', mock_or_drop:'Or drop an image...', mock_dragdrop:'📁 Drag & drop any product photo', mock_category_detected:'Category detected: 💻 Electronics (94% match)', mock_searching_priority:'Searching top retailers by priority:', mock_ship_nextday:'⚡ Free next-day delivery', mock_ship_free:'Free delivery', mock_ship_shipping:'Free shipping', mock_price_history_header:'📈 Price over last 6 months', mock_now:'now', mock_peak:'peak', mock_lowest:'lowest', mock_price_insight:'💡 Price has dropped 27% since January', mock_set_alert:'🔔 Set a price alert', mock_target_ph:'Target', mock_alert_confirm:'✅ Alert set! We\'ll email you when Sony WH-1000XM5 drops below', pa_title:'🔔 Price Alerts', pa_subtitle:'Items you\'re watching — we\'ll tell you the moment the price drops.', pa_dropped_header:'🔥 Price dropped — act now', pa_watching_header:'⏳ Still watching', pa_suggested_header:'✨ You might also like', pa_via:'via', pa_your_target:'Your target:', pa_was:'was', pa_below_target:'✅ Below your target', pa_target_label:'Target:', pa_away:'away', pa_view_deal:'View deal', pa_remove:'Remove', pa_search_now:'Search now', pa_save:'Save', deals_filter_all:'All deals', deals_filter_electronics:'Electronics', deals_filter_gaming:'Gaming', deals_filter_fashion:'Fashion', deals_filter_home:'Home', deals_filter_sports:'Sports', deals_filter_toys:'Toys', deals_filter_baby:'Baby', deal_view:'View →', about_tagline:'"The smartest shopper isn\'t the one who buys the most — it\'s the one who pays the least."', about_intro:'Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don\'t have to, finding the best price on everything from headphones to nappies in seconds.', about_stat1:'Retailers searched', about_stat2:'Product categories', about_stat3:'Average search time', about_stat4:'Cost to use', about_slogans_header:'What we stand for', slogan1:'Your money. Your <span>choice.</span>', slogan2:'Same product. <span>Better price.</span>', slogan3:'Search once. <span>Save everywhere.</span>', slogan4:'No tricks. No markup. Just <span>the truth.</span>', slogan5:'Built for <span>real people,</span> not retailers.', about_values_header:'What makes us different', value1_title:'Smart category detection', value1_desc:'Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you\'re looking for.', value2_title:'Price history you can trust', value2_desc:'We show you whether today\'s "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.', value3_title:'Alerts that actually fire', value3_desc:'Set your target price and forget about it. We\'ll email you the moment something drops, so you never miss a deal you actually wanted.', value4_title:'No data selling, ever', value4_desc:'We don\'t sell your data. We don\'t track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that\'s it.', about_mission_header:'The goal', about_mission_text:'To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it\'s sold online, Prixly should find it cheaper. That\'s the mission. Simple as that.', footer_disclaimer:'Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases — at no extra cost to you.',
   },
   fr: {
     _name:'🇫🇷 Français', _dir:'ltr', _currency:'EUR',
     nav_hiw:'Comment ça marche', nav_alerts:'Alertes prix', nav_deals:'Bons plans', nav_about:'À propos', nav_signup:'Inscription gratuite',
     hero_eyebrow:'Recherche sur 50+ détaillants instantanément',
-    hero_h1:'Arrêtez de payer trop cher.', hero_h1_span:'Trouvez moins cher.',
-    hero_p:"Cherchez par nom, photo ou lien.",
+    hero_h1:'Arrêtez de payer trop cher.<br><span>Trouvez moins cher.</span>',
+    hero_p:"Tapez ce que vous cherchez — ou déposez une photo — et l'algorithme de Prixly détecte votre besoin, choisit les bons détaillants et trouve le meilleur prix en secondes.",
     currency_label:'Devise :', tab_text:'🔤 Recherche par nom', tab_image:'📷 Recherche par image',
     search_placeholder:'ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Rechercher', url_hint:'💡 Astuce : vous pouvez aussi coller un lien produit au lieu de taper un nom', url_error:'⚠️ Impossible de lire ce lien — essayez de coller le nom du produit',
     drop_title:'Déposez une image ici', drop_sub:'ou cliquez pour télécharger', drop_formats:'JPG, PNG, WEBP acceptés',
-    trust_1:'Sans inscription', trust_2:'Données privées', trust_3:'Résultats instantanés', trust_4:'50+ enseignes',
+    trust_1:'Sans inscription', trust_2:'Nous ne vendons jamais vos données', trust_3:'Résultats en moins de 3s', trust_4:'50+ détaillants recherchés',
     cat_label:'Parcourir par catégorie', recently_viewed:'Récemment consultés',
     loading_text:'Analyse de votre recherche...', best_price:'Meilleur prix', view_deal:'Voir l\'offre →',
     sort_best:'Tri : Meilleure correspondance', sort_price:'Tri : Prix le plus bas', sort_rating:'Tri : Mieux noté', sort_score:'Tri : Score Prixly',
@@ -883,20 +904,21 @@ const TRANSLATIONS = {
     alert_p:"Nous vous enverrons un e-mail dès que cet article passera sous votre prix cible.",
     alert_email:'votre@email.com', alert_target:'Prix cible', alert_btn:'M\'alerter',
     deals_title:"Meilleures offres du jour", deals_p:'Les plus grandes baisses de prix en ce moment — mis à jour quotidiennement.',
-    about_h1:'Nous existons pour que vous puissiez', about_span:'dépenser moins, vivre plus.',
+    about_h1:'Nous existons pour que vous puissiez<br><span>dépenser moins, vivre plus.</span>',
     footer_privacy:'Confidentialité', footer_terms:'CGU', footer_hiw:'Comment ça marche',
     hiw_title:'Comment fonctionne Prixly',
+    hiw_eyebrow:'Simple. Rapide. Transparent.', hiw_intro:'De la recherche à l\'économie — voici exactement ce qui se passe quand vous utilisez Prixly pour trouver un prix plus bas.', step1_num:'Étape 01', step1_title:'Dites-nous ce que vous recherchez', step1_desc:'Tapez le nom de n\'importe quel produit — aussi précis ou vague que vous le souhaitez — ou déposez simplement une photo. Prixly accepte les deux. Aucun compte requis, aucune inscription nécessaire.', step2_num:'Étape 02', step2_title:'L\'algorithme détecte votre catégorie', step2_desc:'Le moteur de Prixly analyse votre recherche et identifie instantanément à quelle catégorie elle appartient — Électronique, Mode, Jeux, et plus. Il sélectionne ensuite les détaillants les plus pertinents pour cette catégorie et les classe par priorité, afin que vous obteniez des résultats des bons endroits en premier.', step3_num:'Étape 03', step3_title:'Résultats classés du moins cher au plus cher', step3_desc:'Le prix de chaque détaillant est récupéré, comparé et classé du plus bas au plus haut. La meilleure offre est mise en évidence en haut. Vous pouvez aussi trier par note, vitesse de livraison, ou score Prixly — une note combinée que nous calculons pour chaque annonce.', step4_num:'Étape 04', step4_title:'Consultez l\'historique des prix', step4_desc:'Chaque résultat est accompagné d\'un graphique d\'historique des prix sur 6 mois pour voir si le prix d\'aujourd\'hui est vraiment une bonne affaire — ou s\'il est préférable d\'attendre. Prixly vous indique aussi la meilleure période de l\'année pour acheter ce type de produit.', step5_num:'Étape 05', step5_title:'Créez une alerte et ne manquez jamais une baisse', step5_desc:'Pas encore prêt à acheter ? Définissez un prix cible et votre email, et Prixly vous préviendra dès que l\'article passe sous ce prix. Vous pouvez gérer toutes vos alertes dans la section Alertes prix.', mock_search_bar:'🔍 Barre de recherche', mock_or_drop:'Ou déposez une image...', mock_dragdrop:'📁 Glissez-déposez une photo de produit', mock_category_detected:'Catégorie détectée : 💻 Électronique (94% de correspondance)', mock_searching_priority:'Recherche des meilleurs détaillants par priorité :', mock_ship_nextday:'⚡ Livraison gratuite le lendemain', mock_ship_free:'Livraison gratuite', mock_ship_shipping:'Expédition gratuite', mock_price_history_header:'📈 Prix sur les 6 derniers mois', mock_now:'maintenant', mock_peak:'pic', mock_lowest:'le plus bas', mock_price_insight:'💡 Le prix a baissé de 27% depuis janvier', mock_set_alert:'🔔 Créer une alerte prix', mock_target_ph:'Cible', mock_alert_confirm:'✅ Alerte créée ! Nous vous enverrons un email quand le Sony WH-1000XM5 passera sous', pa_title:'🔔 Alertes prix', pa_subtitle:'Articles que vous surveillez — nous vous préviendrons dès que le prix baisse.', pa_dropped_header:'🔥 Prix en baisse — agissez maintenant', pa_watching_header:'⏳ Toujours en surveillance', pa_suggested_header:'✨ Vous pourriez aussi aimer', pa_via:'via', pa_your_target:'Votre cible :', pa_was:'était', pa_below_target:'✅ Sous votre prix cible', pa_target_label:'Cible :', pa_away:'restant', pa_view_deal:'Voir l\'offre', pa_remove:'Retirer', pa_search_now:'Rechercher', pa_save:'Économisez', deals_filter_all:'Toutes les offres', deals_filter_electronics:'Électronique', deals_filter_gaming:'Jeux', deals_filter_fashion:'Mode', deals_filter_home:'Maison', deals_filter_sports:'Sport', deals_filter_toys:'Jouets', deals_filter_baby:'Bébé', deal_view:'Voir →', about_tagline:'« Le plus intelligent des acheteurs n\'est pas celui qui achète le plus — c\'est celui qui paie le moins. »', about_intro:'Prixly a été créé sur une conviction simple : personne ne devrait payer plus que nécessaire. Nous parcourons le web pour vous, trouvant le meilleur prix sur tout, des écouteurs aux couches, en quelques secondes.', about_stat1:'Détaillants recherchés', about_stat2:'Catégories de produits', about_stat3:'Temps de recherche moyen', about_stat4:'Coût d\'utilisation', about_slogans_header:'Ce que nous défendons', slogan1:'Votre argent. Votre <span>choix.</span>', slogan2:'Même produit. <span>Meilleur prix.</span>', slogan3:'Cherchez une fois. <span>Économisez partout.</span>', slogan4:'Pas de tromperie. Pas de marge cachée. Juste <span>la vérité.</span>', slogan5:'Conçu pour <span>les gens,</span> pas pour les enseignes.', about_values_header:'Ce qui nous distingue', value1_title:'Détection intelligente des catégories', value1_desc:'Notre algorithme lit votre recherche et sait instantanément s\'il faut vous diriger vers Currys, Smyths ou Decathlon — vous obtenez ainsi toujours des résultats des détaillants qui vendent réellement ce que vous recherchez.', value2_title:'Un historique des prix fiable', value2_desc:'Nous vous montrons si la « promo » d\'aujourd\'hui en est vraiment une, ou si c\'est simplement le prix normal avec une fausse barre. Six mois d\'historique, visibles en un coup d\'œil.', value3_title:'Des alertes qui fonctionnent vraiment', value3_desc:'Définissez votre prix cible et oubliez-le. Nous vous envoyons un email dès que quelque chose baisse, pour que vous ne manquiez jamais une offre que vous vouliez vraiment.', value4_title:'Aucune vente de données, jamais', value4_desc:'Nous ne vendons pas vos données. Nous ne vous suivons pas sur le web. Nous gagnons de l\'argent grâce à de petites commissions d\'affiliation lorsque vous trouvez une offre et décidez d\'acheter — c\'est tout.', about_mission_header:'L\'objectif', about_mission_text:'Devenir le premier endroit où tout le monde se rend avant d\'acheter quoi que ce soit en ligne. Pas seulement pour l\'électronique ou la mode — pour tout. Pièces auto, produits pour bébé, jeux vidéo, vêtements, mobilier de jardin. Si c\'est vendu en ligne, Prixly devrait le trouver moins cher. C\'est la mission. Aussi simple que ça.', footer_disclaimer:'Les prix affichés sont à titre de démonstration. Prixly peut percevoir une petite commission d\'affiliation sur les achats — sans frais supplémentaires pour vous.',
   },
   de: {
     _name:'🇩🇪 Deutsch', _dir:'ltr', _currency:'EUR',
     nav_hiw:'So funktioniert es', nav_alerts:'Preisalarme', nav_deals:'Angebote', nav_about:'Über uns', nav_signup:'Kostenlos anmelden',
     hero_eyebrow:'Durchsucht 50+ Händler sofort',
-    hero_h1:'Hören Sie auf zu viel zu zahlen.', hero_h1_span:'Finden Sie es günstiger.',
-    hero_p:"Suchen Sie nach Name, Foto oder Link.",
+    hero_h1:'Hören Sie auf zu viel zu zahlen.<br><span>Finden Sie es günstiger.</span>',
+    hero_p:"Tippen Sie ein, was Sie suchen — oder laden Sie ein Foto hoch — und Prixlys Algorithmus erkennt Ihr Produkt und findet den günstigsten Preis in Sekunden.",
     currency_label:'Währung:', tab_text:'🔤 Nach Name suchen', tab_image:'📷 Per Bild suchen',
     search_placeholder:'z.B. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Suchen', url_hint:'💡 Tipp: Sie können auch einen Produktlink einfügen, statt einen Namen einzugeben', url_error:'⚠️ Link konnte nicht gelesen werden — versuchen Sie es mit dem Produktnamen',
     drop_title:'Bild hier ablegen', drop_sub:'oder zum Hochladen klicken', drop_formats:'JPG, PNG, WEBP unterstützt',
-    trust_1:'Keine Anmeldung', trust_2:'Daten bleiben privat', trust_3:'Sofortige Ergebnisse', trust_4:'50+ Händler',
+    trust_1:'Keine Registrierung nötig', trust_2:'Wir verkaufen keine Daten', trust_3:'Ergebnisse in unter 3s', trust_4:'50+ Händler durchsucht',
     cat_label:'Nach Kategorie stöbern', recently_viewed:'Zuletzt angesehen',
     loading_text:'Ihre Suche wird analysiert...', best_price:'Bester Preis', view_deal:'Zum Angebot →',
     sort_best:'Sortieren: Beste Übereinstimmung', sort_price:'Sortieren: Niedrigster Preis', sort_rating:'Sortieren: Beste Bewertung', sort_score:'Sortieren: Prixly-Score',
@@ -904,20 +926,21 @@ const TRANSLATIONS = {
     alert_p:"Wir benachrichtigen Sie per E-Mail, sobald der Preis unter Ihren Zielpreis fällt.",
     alert_email:'ihre@email.de', alert_target:'Zielpreis', alert_btn:'Benachrichtigen',
     deals_title:"Die besten Angebote heute", deals_p:'Die größten Preissenkungen — täglich aktualisiert.',
-    about_h1:'Wir sind da, damit Sie', about_span:'weniger ausgeben, mehr erleben.',
+    about_h1:'Wir sind da, damit Sie<br><span>weniger ausgeben, mehr erleben.</span>',
     footer_privacy:'Datenschutz', footer_terms:'AGB', footer_hiw:'So funktioniert es',
     hiw_title:'Wie Prixly funktioniert',
+    hiw_eyebrow:'Einfach. Schnell. Transparent.', hiw_intro:'Von der Suche bis zum Sparen — so funktioniert es genau, wenn Sie Prixly nutzen, um einen günstigeren Preis zu finden.', step1_num:'Schritt 01', step1_title:'Sagen Sie uns, wonach Sie suchen', step1_desc:'Geben Sie den Namen eines beliebigen Produkts ein — so genau oder vage wie Sie möchten — oder laden Sie einfach ein Foto hoch. Prixly akzeptiert beides. Kein Konto nötig, keine Anmeldung erforderlich.', step2_num:'Schritt 02', step2_title:'Der Algorithmus erkennt Ihre Kategorie', step2_desc:'Die Engine von Prixly analysiert Ihre Suche und erkennt sofort, zu welcher Kategorie sie gehört — Elektronik, Mode, Gaming und mehr. Anschließend wählt sie die relevantesten Händler für diese Kategorie aus und priorisiert sie, damit Sie zuerst Ergebnisse von den richtigen Orten erhalten.', step3_num:'Schritt 03', step3_title:'Ergebnisse nach günstigstem Preis sortiert', step3_desc:'Der Preis jedes Händlers wird abgerufen, verglichen und vom niedrigsten zum höchsten sortiert. Das beste Angebot wird oben hervorgehoben. Sie können auch nach Bewertung, Versandgeschwindigkeit oder Prixly-Score sortieren — einer kombinierten Bewertung, die wir für jedes Angebot berechnen.', step4_num:'Schritt 04', step4_title:'Sehen Sie sich die Preishistorie an', step4_desc:'Jedes Ergebnis enthält ein 6-Monats-Preisdiagramm, damit Sie sehen können, ob der heutige Preis wirklich ein gutes Angebot ist — oder ob es sich lohnt zu warten. Prixly verrät Ihnen auch die beste Jahreszeit, um diese Art von Produkt zu kaufen.', step5_num:'Schritt 05', step5_title:'Richten Sie einen Alarm ein und verpassen Sie nie einen Preisverfall', step5_desc:'Noch nicht bereit zu kaufen? Legen Sie einen Zielpreis und Ihre E-Mail fest, und Prixly benachrichtigt Sie, sobald der Artikel darunter fällt. Sie können alle Ihre Alarme im Bereich Preisalarme verwalten.', mock_search_bar:'🔍 Suchleiste', mock_or_drop:'Oder laden Sie ein Bild hoch...', mock_dragdrop:'📁 Produktfoto hierher ziehen', mock_category_detected:'Kategorie erkannt: 💻 Elektronik (94% Übereinstimmung)', mock_searching_priority:'Top-Händler werden nach Priorität durchsucht:', mock_ship_nextday:'⚡ Kostenlose Lieferung am nächsten Tag', mock_ship_free:'Kostenlose Lieferung', mock_ship_shipping:'Kostenloser Versand', mock_price_history_header:'📈 Preis der letzten 6 Monate', mock_now:'jetzt', mock_peak:'Höchststand', mock_lowest:'niedrigster', mock_price_insight:'💡 Der Preis ist seit Januar um 27% gefallen', mock_set_alert:'🔔 Preisalarm einrichten', mock_target_ph:'Ziel', mock_alert_confirm:'✅ Alarm eingerichtet! Wir senden Ihnen eine E-Mail, wenn der Sony WH-1000XM5 unter folgenden Wert fällt:', pa_title:'🔔 Preisalarme', pa_subtitle:'Artikel, die Sie beobachten — wir informieren Sie, sobald der Preis fällt.', pa_dropped_header:'🔥 Preis gefallen — jetzt handeln', pa_watching_header:'⏳ Wird noch beobachtet', pa_suggested_header:'✨ Das könnte Ihnen auch gefallen', pa_via:'über', pa_your_target:'Ihr Ziel:', pa_was:'vorher', pa_below_target:'✅ Unter Ihrem Zielpreis', pa_target_label:'Ziel:', pa_away:'entfernt', pa_view_deal:'Angebot ansehen', pa_remove:'Entfernen', pa_search_now:'Jetzt suchen', pa_save:'Sparen', deals_filter_all:'Alle Angebote', deals_filter_electronics:'Elektronik', deals_filter_gaming:'Gaming', deals_filter_fashion:'Mode', deals_filter_home:'Haus', deals_filter_sports:'Sport', deals_filter_toys:'Spielzeug', deals_filter_baby:'Baby', deal_view:'Ansehen →', about_tagline:'„Der klügste Käufer ist nicht der, der am meisten kauft — sondern der, der am wenigsten zahlt."', about_intro:'Prixly basiert auf einer einfachen Überzeugung: Niemand sollte mehr bezahlen müssen, als nötig ist. Wir durchsuchen das Web für Sie und finden den besten Preis für alles, von Kopfhörern bis Windeln, in Sekunden.', about_stat1:'Durchsuchte Händler', about_stat2:'Produktkategorien', about_stat3:'Durchschnittliche Suchzeit', about_stat4:'Nutzungskosten', about_slogans_header:'Wofür wir stehen', slogan1:'Ihr Geld. Ihre <span>Wahl.</span>', slogan2:'Gleiches Produkt. <span>Besserer Preis.</span>', slogan3:'Einmal suchen. <span>Überall sparen.</span>', slogan4:'Keine Tricks. Kein Aufschlag. Nur <span>die Wahrheit.</span>', slogan5:'Gemacht für <span>echte Menschen,</span> nicht für Händler.', about_values_header:'Was uns unterscheidet', value1_title:'Intelligente Kategorieerkennung', value1_desc:'Unser Algorithmus liest Ihre Suche und weiß sofort, ob Sie zu Currys, Smyths oder Decathlon geschickt werden sollten — so erhalten Sie immer Ergebnisse von Händlern, die tatsächlich das verkaufen, wonach Sie suchen.', value2_title:'Preishistorie, der Sie vertrauen können', value2_desc:'Wir zeigen Ihnen, ob der heutige „Sale" wirklich ein Sale ist, oder nur der normale Preis mit einer falschen durchgestrichenen Linie. Sechs Monate Historie, auf einen Blick sichtbar.', value3_title:'Alarme, die tatsächlich funktionieren', value3_desc:'Legen Sie Ihren Zielpreis fest und vergessen Sie ihn. Wir senden Ihnen eine E-Mail, sobald etwas fällt, damit Sie nie ein Angebot verpassen, das Sie wirklich wollten.', value4_title:'Niemals Datenverkauf', value4_desc:'Wir verkaufen Ihre Daten nicht. Wir verfolgen Sie nicht im Web. Wir verdienen Geld durch kleine Affiliate-Provisionen, wenn Sie ein Angebot finden und sich zum Kauf entscheiden — das ist alles.', about_mission_header:'Das Ziel', about_mission_text:'Der erste Ort zu werden, an den jeder geht, bevor er online etwas kauft. Nicht nur für Elektronik oder Mode — für alles. Autoteile, Babyprodukte, Videospiele, Kleidung, Gartenmöbel. Wenn es online verkauft wird, sollte Prixly es günstiger finden. Das ist die Mission. So einfach ist das.', footer_disclaimer:'Die angezeigten Preise dienen nur zur Demonstration. Prixly kann eine kleine Affiliate-Provision auf Käufe erhalten — ohne zusätzliche Kosten für Sie.',
   },
   es: {
     _name:'🇪🇸 Español', _dir:'ltr', _currency:'EUR',
     nav_hiw:'Cómo funciona', nav_alerts:'Alertas de precio', nav_deals:'Ofertas', nav_about:'Acerca de', nav_signup:'Regístrate gratis',
     hero_eyebrow:'Busca en 50+ tiendas al instante',
-    hero_h1:'Deja de pagar de más.', hero_h1_span:'Encuéntralo más barato.',
-    hero_p:"Busca por nombre, foto o enlace.",
+    hero_h1:'Deja de pagar de más.<br><span>Encuéntralo más barato.</span>',
+    hero_p:"Escribe lo que buscas — o sube una foto — y el algoritmo de Prixly detecta lo que necesitas y encuentra el precio más bajo en segundos.",
     currency_label:'Moneda:', tab_text:'🔤 Buscar por nombre', tab_image:'📷 Buscar por imagen',
     search_placeholder:'ej. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Buscar', url_hint:'💡 Consejo: también puedes pegar un enlace del producto en lugar de escribir un nombre', url_error:'⚠️ No se pudo leer ese enlace — intenta pegar el nombre del producto',
     drop_title:'Arrastra una imagen aquí', drop_sub:'o haz clic para subir', drop_formats:'JPG, PNG, WEBP admitidos',
-    trust_1:'Sin registro', trust_2:'Datos privados', trust_3:'Resultados instantáneos', trust_4:'50+ tiendas',
+    trust_1:'Sin registro necesario', trust_2:'Nunca vendemos tus datos', trust_3:'Resultados en menos de 3s', trust_4:'50+ tiendas buscadas',
     cat_label:'Explorar por categoría', recently_viewed:'Vistos recientemente',
     loading_text:'Analizando tu búsqueda...', best_price:'Mejor precio', view_deal:'Ver oferta →',
     sort_best:'Ordenar: Mejor coincidencia', sort_price:'Ordenar: Precio más bajo', sort_rating:'Ordenar: Mejor valorado', sort_score:'Ordenar: Puntuación Prixly',
@@ -925,20 +948,21 @@ const TRANSLATIONS = {
     alert_p:"Te enviaremos un email cuando el artículo baje de tu precio objetivo.",
     alert_email:'tu@email.com', alert_target:'Precio objetivo', alert_btn:'Avisarme',
     deals_title:"Las mejores ofertas de hoy", deals_p:'Las mayores bajadas de precio ahora — actualizadas a diario.',
-    about_h1:'Existimos para que puedas', about_span:'gastar menos, vivir más.',
+    about_h1:'Existimos para que puedas<br><span>gastar menos, vivir más.</span>',
     footer_privacy:'Privacidad', footer_terms:'Términos', footer_hiw:'Cómo funciona',
     hiw_title:'Cómo funciona Prixly',
+    hiw_eyebrow:'Simple. Rápido. Transparente.', hiw_intro:'De la búsqueda al ahorro — esto es exactamente lo que ocurre cuando usas Prixly para encontrar un precio más bajo.', step1_num:'Paso 01', step1_title:'Dinos qué estás buscando', step1_desc:'Escribe el nombre de cualquier producto — tan específico o vago como quieras — o simplemente sube una foto. Prixly acepta ambos. No se necesita cuenta, no se requiere registro.', step2_num:'Paso 02', step2_title:'El algoritmo detecta tu categoría', step2_desc:'El motor de Prixly analiza tu búsqueda e identifica al instante a qué categoría pertenece — Electrónica, Moda, Gaming y más. Luego selecciona las tiendas más relevantes para esa categoría y las prioriza, para que obtengas resultados de los lugares correctos primero.', step3_num:'Paso 03', step3_title:'Resultados ordenados de más barato a más caro', step3_desc:'El precio de cada tienda se extrae, compara y ordena de menor a mayor. La mejor oferta se destaca arriba. También puedes ordenar por valoración, velocidad de envío, o puntuación Prixly — una calificación combinada que calculamos para cada anuncio.', step4_num:'Paso 04', step4_title:'Consulta el historial de precios', step4_desc:'Cada resultado incluye un gráfico de historial de precios de 6 meses para que veas si el precio de hoy es realmente una buena oferta — o si es mejor esperar. Prixly también te dice la mejor época del año para comprar ese tipo de producto.', step5_num:'Paso 05', step5_title:'Crea una alerta y no te pierdas ninguna bajada', step5_desc:'¿Aún no estás listo para comprar? Define un precio objetivo y tu email, y Prixly te avisará en el momento en que el artículo baje de ese precio. Puedes gestionar todas tus alertas en la sección de Alertas de precio.', mock_search_bar:'🔍 Barra de búsqueda', mock_or_drop:'O sube una imagen...', mock_dragdrop:'📁 Arrastra y suelta una foto del producto', mock_category_detected:'Categoría detectada: 💻 Electrónica (94% de coincidencia)', mock_searching_priority:'Buscando en las mejores tiendas por prioridad:', mock_ship_nextday:'⚡ Envío gratis al día siguiente', mock_ship_free:'Envío gratis', mock_ship_shipping:'Envío gratuito', mock_price_history_header:'📈 Precio en los últimos 6 meses', mock_now:'ahora', mock_peak:'máximo', mock_lowest:'mínimo', mock_price_insight:'💡 El precio ha bajado un 27% desde enero', mock_set_alert:'🔔 Crear alerta de precio', mock_target_ph:'Objetivo', mock_alert_confirm:'✅ ¡Alerta creada! Te avisaremos por email cuando el Sony WH-1000XM5 baje de', pa_title:'🔔 Alertas de precio', pa_subtitle:'Artículos que estás vigilando — te avisaremos en el momento en que baje el precio.', pa_dropped_header:'🔥 El precio ha bajado — actúa ahora', pa_watching_header:'⏳ Aún vigilando', pa_suggested_header:'✨ También te puede interesar', pa_via:'vía', pa_your_target:'Tu objetivo:', pa_was:'antes', pa_below_target:'✅ Por debajo de tu objetivo', pa_target_label:'Objetivo:', pa_away:'de diferencia', pa_view_deal:'Ver oferta', pa_remove:'Quitar', pa_search_now:'Buscar ahora', pa_save:'Ahorra', deals_filter_all:'Todas las ofertas', deals_filter_electronics:'Electrónica', deals_filter_gaming:'Gaming', deals_filter_fashion:'Moda', deals_filter_home:'Hogar', deals_filter_sports:'Deportes', deals_filter_toys:'Juguetes', deals_filter_baby:'Bebé', deal_view:'Ver →', about_tagline:'«El comprador más inteligente no es el que compra más — es el que paga menos.»', about_intro:'Prixly se creó con una creencia simple: nadie debería pagar más de lo necesario. Buscamos en la web por ti, encontrando el mejor precio en todo, desde auriculares hasta pañales, en segundos.', about_stat1:'Tiendas consultadas', about_stat2:'Categorías de productos', about_stat3:'Tiempo medio de búsqueda', about_stat4:'Coste de uso', about_slogans_header:'Lo que defendemos', slogan1:'Tu dinero. Tu <span>elección.</span>', slogan2:'Mismo producto. <span>Mejor precio.</span>', slogan3:'Busca una vez. <span>Ahorra en todas partes.</span>', slogan4:'Sin trucos. Sin recargos. Solo <span>la verdad.</span>', slogan5:'Hecho para <span>personas reales,</span> no para tiendas.', about_values_header:'Qué nos hace diferentes', value1_title:'Detección inteligente de categorías', value1_desc:'Nuestro algoritmo lee tu búsqueda y sabe al instante si enviarte a Currys, Smyths o Decathlon — para que siempre obtengas resultados de las tiendas que realmente venden lo que buscas.', value2_title:'Historial de precios en el que puedes confiar', value2_desc:'Te mostramos si la "oferta" de hoy es realmente una oferta, o solo el precio normal con una línea tachada falsa. Seis meses de historial, visibles de un vistazo.', value3_title:'Alertas que realmente funcionan', value3_desc:'Define tu precio objetivo y olvídate de él. Te enviaremos un email en el momento en que algo baje, para que nunca te pierdas una oferta que realmente querías.', value4_title:'Nunca vendemos datos', value4_desc:'No vendemos tus datos. No te rastreamos por la web. Ganamos dinero a través de pequeñas comisiones de afiliado cuando encuentras una oferta y decides comprar — eso es todo.', about_mission_header:'El objetivo', about_mission_text:'Convertirnos en el primer lugar al que todos van antes de comprar cualquier cosa online. No solo para electrónica o moda — para todo. Piezas de coche, productos para bebés, videojuegos, ropa, muebles de jardín. Si se vende online, Prixly debería encontrarlo más barato. Esa es la misión. Así de simple.', footer_disclaimer:'Los precios mostrados son solo a modo de demostración. Prixly puede ganar una pequeña comisión de afiliado por las compras — sin coste adicional para ti.',
   },
   pt: {
     _name:'🇧🇷 Português', _dir:'ltr', _currency:'BRL',
     nav_hiw:'Como funciona', nav_alerts:'Alertas de preço', nav_deals:'Ofertas', nav_about:'Sobre', nav_signup:'Cadastre-se grátis',
     hero_eyebrow:'Pesquisa em 50+ lojas instantaneamente',
-    hero_h1:'Pare de pagar mais caro.', hero_h1_span:'Encontre mais barato.',
-    hero_p:"Busque por nome, foto ou link.",
+    hero_h1:'Pare de pagar mais caro.<br><span>Encontre mais barato.</span>',
+    hero_p:"Digite o que procura — ou envie uma foto — e o algoritmo do Prixly detecta o produto e encontra o menor preço em segundos.",
     currency_label:'Moeda:', tab_text:'🔤 Buscar por nome', tab_image:'📷 Buscar por imagem',
     search_placeholder:'ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Buscar', url_hint:'💡 Dica: você também pode colar um link do produto em vez de digitar um nome', url_error:'⚠️ Não foi possível ler esse link — tente colar o nome do produto',
     drop_title:'Solte uma imagem aqui', drop_sub:'ou clique para enviar', drop_formats:'JPG, PNG, WEBP aceitos',
-    trust_1:'Sem cadastro', trust_2:'Dados privados', trust_3:'Resultados instantâneos', trust_4:'50+ lojas',
+    trust_1:'Sem cadastro necessário', trust_2:'Nunca vendemos seus dados', trust_3:'Resultados em menos de 3s', trust_4:'50+ lojas pesquisadas',
     cat_label:'Explorar por categoria', recently_viewed:'Vistos recentemente',
     loading_text:'Analisando sua busca...', best_price:'Melhor preço', view_deal:'Ver oferta →',
     sort_best:'Ordenar: Melhor resultado', sort_price:'Ordenar: Menor preço', sort_rating:'Ordenar: Melhor avaliado', sort_score:'Ordenar: Pontuação Prixly',
@@ -946,20 +970,21 @@ const TRANSLATIONS = {
     alert_p:"Enviaremos um email quando o item cair abaixo do seu preço alvo.",
     alert_email:'seu@email.com', alert_target:'Preço alvo', alert_btn:'Me avisar',
     deals_title:"Melhores ofertas de hoje", deals_p:'As maiores quedas de preço agora — atualizadas diariamente.',
-    about_h1:'Existimos para que você possa', about_span:'gastar menos, viver mais.',
+    about_h1:'Existimos para que você possa<br><span>gastar menos, viver mais.</span>',
     footer_privacy:'Privacidade', footer_terms:'Termos', footer_hiw:'Como funciona',
     hiw_title:'Como o Prixly funciona',
+    hiw_eyebrow:'Simples. Rápido. Transparente.', hiw_intro:'Da busca à economia — é exatamente isso que acontece quando você usa o Prixly para encontrar um preço mais baixo.', step1_num:'Passo 01', step1_title:'Diga-nos o que você está procurando', step1_desc:'Digite o nome de qualquer produto — tão específico ou vago quanto quiser — ou simplesmente envie uma foto. O Prixly aceita ambos. Não é necessário cadastro nem conta.', step2_num:'Passo 02', step2_title:'O algoritmo detecta sua categoria', step2_desc:'O mecanismo do Prixly analisa sua busca e identifica instantaneamente a qual categoria ela pertence — Eletrônicos, Moda, Games e mais. Em seguida, seleciona as lojas mais relevantes para essa categoria e as prioriza, para que você obtenha resultados dos lugares certos primeiro.', step3_num:'Passo 03', step3_title:'Resultados classificados do mais barato ao mais caro', step3_desc:'O preço de cada loja é coletado, comparado e classificado do mais baixo ao mais alto. A melhor oferta é destacada no topo. Você também pode ordenar por avaliação, velocidade de entrega, ou pontuação Prixly — uma classificação combinada que calculamos para cada anúncio.', step4_num:'Passo 04', step4_title:'Veja o histórico de preços', step4_desc:'Cada resultado vem com um gráfico de histórico de preços de 6 meses para que você veja se o preço de hoje é realmente uma boa oferta — ou se vale esperar. O Prixly também informa a melhor época do ano para comprar esse tipo de produto.', step5_num:'Passo 05', step5_title:'Crie um alerta e nunca perca uma queda de preço', step5_desc:'Ainda não está pronto para comprar? Defina um preço alvo e seu email, e o Prixly avisará você no momento em que o item cair abaixo desse valor. Você pode gerenciar todos os seus alertas na seção Alertas de Preço.', mock_search_bar:'🔍 Barra de busca', mock_or_drop:'Ou envie uma imagem...', mock_dragdrop:'📁 Arraste e solte a foto do produto', mock_category_detected:'Categoria detectada: 💻 Eletrônicos (94% de correspondência)', mock_searching_priority:'Buscando nas melhores lojas por prioridade:', mock_ship_nextday:'⚡ Entrega grátis no dia seguinte', mock_ship_free:'Entrega grátis', mock_ship_shipping:'Frete grátis', mock_price_history_header:'📈 Preço nos últimos 6 meses', mock_now:'agora', mock_peak:'pico', mock_lowest:'mínimo', mock_price_insight:'💡 O preço caiu 27% desde janeiro', mock_set_alert:'🔔 Criar alerta de preço', mock_target_ph:'Alvo', mock_alert_confirm:'✅ Alerta criado! Enviaremos um email quando o Sony WH-1000XM5 cair abaixo de', pa_title:'🔔 Alertas de Preço', pa_subtitle:'Itens que você está acompanhando — avisaremos no momento em que o preço cair.', pa_dropped_header:'🔥 Preço caiu — aja agora', pa_watching_header:'⏳ Ainda acompanhando', pa_suggested_header:'✨ Você também pode gostar', pa_via:'via', pa_your_target:'Seu alvo:', pa_was:'era', pa_below_target:'✅ Abaixo do seu alvo', pa_target_label:'Alvo:', pa_away:'de diferença', pa_view_deal:'Ver oferta', pa_remove:'Remover', pa_search_now:'Buscar agora', pa_save:'Economize', deals_filter_all:'Todas as ofertas', deals_filter_electronics:'Eletrônicos', deals_filter_gaming:'Games', deals_filter_fashion:'Moda', deals_filter_home:'Casa', deals_filter_sports:'Esportes', deals_filter_toys:'Brinquedos', deals_filter_baby:'Bebê', deal_view:'Ver →', about_tagline:'"O comprador mais inteligente não é o que compra mais — é o que paga menos."', about_intro:'O Prixly foi criado com uma crença simples: ninguém deveria pagar mais do que precisa. Pesquisamos a web por você, encontrando o melhor preço em tudo, de fones de ouvido a fraldas, em segundos.', about_stat1:'Lojas pesquisadas', about_stat2:'Categorias de produtos', about_stat3:'Tempo médio de busca', about_stat4:'Custo de uso', about_slogans_header:'Pelo que lutamos', slogan1:'Seu dinheiro. Sua <span>escolha.</span>', slogan2:'Mesmo produto. <span>Melhor preço.</span>', slogan3:'Busque uma vez. <span>Economize em todo lugar.</span>', slogan4:'Sem truques. Sem markup. Só <span>a verdade.</span>', slogan5:'Feito para <span>pessoas reais,</span> não para lojas.', about_values_header:'O que nos torna diferentes', value1_title:'Detecção inteligente de categoria', value1_desc:'Nosso algoritmo lê sua busca e sabe instantaneamente se deve te enviar para Currys, Smyths ou Decathlon — assim você sempre obtém resultados das lojas que realmente vendem o que você procura.', value2_title:'Histórico de preços em que você pode confiar', value2_desc:'Mostramos se a "promoção" de hoje é realmente uma promoção, ou apenas o preço normal com uma linha falsa cortando-o. Seis meses de histórico, visíveis em um piscar de olhos.', value3_title:'Alertas que realmente funcionam', value3_desc:'Defina seu preço alvo e esqueça. Enviaremos um email no momento em que algo cair, para que você nunca perca uma oferta que realmente queria.', value4_title:'Nunca vendemos dados', value4_desc:'Não vendemos seus dados. Não rastreamos você na web. Ganhamos dinheiro através de pequenas comissões de afiliados quando você encontra uma oferta e decide comprar — é só isso.', about_mission_header:'O objetivo', about_mission_text:'Nos tornar o primeiro lugar que todos visitam antes de comprar qualquer coisa online. Não apenas eletrônicos ou moda — tudo. Peças de carro, produtos para bebês, videogames, roupas, móveis de jardim. Se é vendido online, o Prixly deve encontrá-lo mais barato. Essa é a missão. Simples assim.', footer_disclaimer:'Os preços exibidos são apenas para demonstração. O Prixly pode ganhar uma pequena comissão de afiliado nas compras — sem custo extra para você.',
   },
   it: {
     _name:'🇮🇹 Italiano', _dir:'ltr', _currency:'EUR',
     nav_hiw:'Come funziona', nav_alerts:'Avvisi prezzi', nav_deals:'Offerte', nav_about:'Chi siamo', nav_signup:'Registrati gratis',
     hero_eyebrow:'Cerca su 50+ rivenditori istantaneamente',
-    hero_h1:'Smetti di pagare troppo.', hero_h1_span:'Trovalo più economico.',
-    hero_p:"Cerca per nome, foto o link.",
+    hero_h1:'Smetti di pagare troppo.<br><span>Trovalo più economico.</span>',
+    hero_p:"Digita cosa cerchi — o carica una foto — e l'algoritmo di Prixly trova il prezzo più basso tra i migliori rivenditori in pochi secondi.",
     currency_label:'Valuta:', tab_text:'🔤 Cerca per nome', tab_image:'📷 Cerca per immagine',
     search_placeholder:'es. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Cerca', url_hint:'💡 Suggerimento: puoi anche incollare un link del prodotto invece di digitare un nome', url_error:'⚠️ Non è stato possibile leggere il link — provare a inserire il nome del prodotto',
     drop_title:"Trascina un'immagine qui", drop_sub:'o clicca per caricare', drop_formats:'JPG, PNG, WEBP supportati',
-    trust_1:'Senza registrazione', trust_2:'Dati privati', trust_3:'Risultati istantanei', trust_4:'50+ negozi',
+    trust_1:'Nessuna registrazione', trust_2:'Non vendiamo i tuoi dati', trust_3:'Risultati in meno di 3s', trust_4:'50+ rivenditori cercati',
     cat_label:'Sfoglia per categoria', recently_viewed:'Visualizzati di recente',
     loading_text:'Analisi della ricerca...', best_price:'Prezzo migliore', view_deal:"Vai all'offerta →",
     sort_best:'Ordina: Migliore corrispondenza', sort_price:'Ordina: Prezzo più basso', sort_rating:'Ordina: Più votato', sort_score:'Ordina: Punteggio Prixly',
@@ -967,20 +992,21 @@ const TRANSLATIONS = {
     alert_p:"Ti invieremo una email quando il prodotto scenderà sotto il tuo prezzo obiettivo.",
     alert_email:'tua@email.it', alert_target:'Prezzo obiettivo', alert_btn:'Avvisami',
     deals_title:"Le migliori offerte di oggi", deals_p:'I maggiori cali di prezzo in questo momento — aggiornati ogni giorno.',
-    about_h1:'Esistiamo perché tu possa', about_span:'spendere meno, vivere di più.',
+    about_h1:'Esistiamo perché tu possa<br><span>spendere meno, vivere di più.</span>',
     footer_privacy:'Privacy', footer_terms:'Termini', footer_hiw:'Come funziona',
     hiw_title:'Come funziona Prixly',
+    hiw_eyebrow:'Semplice. Veloce. Trasparente.', hiw_intro:'Dalla ricerca al risparmio — ecco esattamente cosa succede quando usi Prixly per trovare un prezzo più basso.', step1_num:'Passo 01', step1_title:'Dicci cosa stai cercando', step1_desc:'Digita il nome di qualsiasi prodotto — tanto specifico o vago quanto vuoi — oppure carica semplicemente una foto. Prixly accetta entrambi. Nessun account necessario, nessuna registrazione richiesta.', step2_num:'Passo 02', step2_title:'L\'algoritmo rileva la tua categoria', step2_desc:'Il motore di Prixly analizza la tua ricerca e identifica istantaneamente a quale categoria appartiene — Elettronica, Moda, Gaming e altro. Seleziona quindi i rivenditori più rilevanti per quella categoria e li classifica per priorità, così ottieni prima i risultati dai posti giusti.', step3_num:'Passo 03', step3_title:'Risultati ordinati dal più economico', step3_desc:'Il prezzo di ogni rivenditore viene estratto, confrontato e ordinato dal più basso al più alto. La migliore offerta viene evidenziata in alto. Puoi anche ordinare per valutazione, velocità di spedizione, o punteggio Prixly — una valutazione combinata che calcoliamo per ogni inserzione.', step4_num:'Passo 04', step4_title:'Consulta lo storico dei prezzi', step4_desc:'Ogni risultato include un grafico dello storico prezzi di 6 mesi per vedere se il prezzo di oggi è davvero un buon affare — o se conviene aspettare. Prixly ti dice anche il periodo migliore dell\'anno per acquistare quel tipo di prodotto.', step5_num:'Passo 05', step5_title:'Imposta un avviso e non perdere mai un calo di prezzo', step5_desc:'Non sei ancora pronto ad acquistare? Imposta un prezzo obiettivo e la tua email, e Prixly ti avviserà nel momento in cui l\'articolo scende sotto quel prezzo. Puoi gestire tutti i tuoi avvisi nella sezione Avvisi Prezzo.', mock_search_bar:'🔍 Barra di ricerca', mock_or_drop:'Oppure carica un\'immagine...', mock_dragdrop:'📁 Trascina e rilascia una foto del prodotto', mock_category_detected:'Categoria rilevata: 💻 Elettronica (94% di corrispondenza)', mock_searching_priority:'Ricerca nei migliori rivenditori per priorità:', mock_ship_nextday:'⚡ Consegna gratuita il giorno dopo', mock_ship_free:'Consegna gratuita', mock_ship_shipping:'Spedizione gratuita', mock_price_history_header:'📈 Prezzo negli ultimi 6 mesi', mock_now:'ora', mock_peak:'picco', mock_lowest:'minimo', mock_price_insight:'💡 Il prezzo è sceso del 27% da gennaio', mock_set_alert:'🔔 Crea un avviso prezzo', mock_target_ph:'Obiettivo', mock_alert_confirm:'✅ Avviso impostato! Ti invieremo un\'email quando il Sony WH-1000XM5 scenderà sotto', pa_title:'🔔 Avvisi Prezzo', pa_subtitle:'Articoli che stai monitorando — ti avviseremo nel momento in cui il prezzo scende.', pa_dropped_header:'🔥 Prezzo sceso — agisci ora', pa_watching_header:'⏳ Ancora in monitoraggio', pa_suggested_header:'✨ Potrebbe interessarti anche', pa_via:'tramite', pa_your_target:'Il tuo obiettivo:', pa_was:'era', pa_below_target:'✅ Sotto il tuo obiettivo', pa_target_label:'Obiettivo:', pa_away:'di distanza', pa_view_deal:'Vedi offerta', pa_remove:'Rimuovi', pa_search_now:'Cerca ora', pa_save:'Risparmia', deals_filter_all:'Tutte le offerte', deals_filter_electronics:'Elettronica', deals_filter_gaming:'Gaming', deals_filter_fashion:'Moda', deals_filter_home:'Casa', deals_filter_sports:'Sport', deals_filter_toys:'Giocattoli', deals_filter_baby:'Bambino', deal_view:'Vedi →', about_tagline:'"Il compratore più intelligente non è quello che compra di più — è quello che paga di meno."', about_intro:'Prixly è nato da una convinzione semplice: nessuno dovrebbe pagare più del necessario. Cerchiamo sul web per te, trovando il miglior prezzo su tutto, dalle cuffie ai pannolini, in pochi secondi.', about_stat1:'Rivenditori cercati', about_stat2:'Categorie di prodotti', about_stat3:'Tempo medio di ricerca', about_stat4:'Costo d\'uso', about_slogans_header:'In cosa crediamo', slogan1:'I tuoi soldi. La tua <span>scelta.</span>', slogan2:'Stesso prodotto. <span>Prezzo migliore.</span>', slogan3:'Cerca una volta. <span>Risparmia ovunque.</span>', slogan4:'Niente trucchi. Nessun ricarico. Solo <span>la verità.</span>', slogan5:'Pensato per <span>le persone vere,</span> non per i rivenditori.', about_values_header:'Cosa ci rende diversi', value1_title:'Rilevamento intelligente delle categorie', value1_desc:'Il nostro algoritmo legge la tua ricerca e sa istantaneamente se indirizzarti verso Currys, Smyths o Decathlon — così ottieni sempre risultati dai rivenditori che vendono realmente ciò che stai cercando.', value2_title:'Uno storico prezzi di cui ti puoi fidare', value2_desc:'Ti mostriamo se lo "sconto" di oggi è davvero uno sconto, o solo il prezzo normale con una falsa riga sopra. Sei mesi di storico, visibili a colpo d\'occhio.', value3_title:'Avvisi che funzionano davvero', value3_desc:'Imposta il tuo prezzo obiettivo e dimenticatene. Ti invieremo un\'email nel momento in cui qualcosa scende, così non perderai mai un\'offerta che desideravi davvero.', value4_title:'Nessuna vendita di dati, mai', value4_desc:'Non vendiamo i tuoi dati. Non ti tracciamo sul web. Guadagniamo tramite piccole commissioni di affiliazione quando trovi un\'offerta e decidi di acquistare — tutto qui.', about_mission_header:'L\'obiettivo', about_mission_text:'Diventare il primo posto dove tutti vanno prima di acquistare qualsiasi cosa online. Non solo per elettronica o moda — per tutto. Pezzi di ricambio auto, prodotti per bambini, videogiochi, abbigliamento, mobili da giardino. Se è venduto online, Prixly dovrebbe trovarlo più economico. Questa è la missione. Semplice così.', footer_disclaimer:'I prezzi mostrati sono a scopo demonstrativo. Prixly potrebbe guadagnare una piccola commissione di affiliazione sugli acquisti — senza costi aggiuntivi per te.',
   },
   nl: {
     _name:'🇳🇱 Nederlands', _dir:'ltr', _currency:'EUR',
     nav_hiw:'Hoe het werkt', nav_alerts:'Prijsalarmen', nav_deals:'Aanbiedingen', nav_about:'Over ons', nav_signup:'Gratis aanmelden',
     hero_eyebrow:'Doorzoekt 50+ winkels direct',
-    hero_h1:'Stop met te veel betalen.', hero_h1_span:'Vind het goedkoper.',
-    hero_p:"Zoek op naam, foto of link.",
+    hero_h1:'Stop met te veel betalen.<br><span>Vind het goedkoper.</span>',
+    hero_p:"Typ wat je zoekt — of upload een foto — en het algoritme van Prixly vindt de laagste prijs bij de beste winkels in seconden.",
     currency_label:'Valuta:', tab_text:'🔤 Zoeken op naam', tab_image:'📷 Zoeken op afbeelding',
     search_placeholder:'bijv. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Zoeken', url_hint:'💡 Tip: je kunt ook een productlink plakken in plaats van een naam te typen', url_error:'⚠️ Kon die link niet lezen — probeer de productnaam te plakken',
     drop_title:'Sleep een afbeelding hier', drop_sub:'of klik om te uploaden', drop_formats:'JPG, PNG, WEBP ondersteund',
-    trust_1:'Geen registratie', trust_2:'Privégegevens', trust_3:'Directe resultaten', trust_4:'50+ winkels',
+    trust_1:'Geen registratie nodig', trust_2:'We verkopen nooit je gegevens', trust_3:'Resultaten binnen 3s', trust_4:'50+ winkels doorzocht',
     cat_label:'Bladeren per categorie', recently_viewed:'Recent bekeken',
     loading_text:'Uw zoekopdracht analyseren...', best_price:'Beste prijs', view_deal:'Bekijk aanbieding →',
     sort_best:'Sorteren: Beste overeenkomst', sort_price:'Sorteren: Laagste prijs', sort_rating:'Sorteren: Best beoordeeld', sort_score:'Sorteren: Prixly score',
@@ -988,20 +1014,21 @@ const TRANSLATIONS = {
     alert_p:"We sturen je een e-mail zodra dit artikel onder jouw doelprijs zakt.",
     alert_email:'jouw@email.nl', alert_target:'Doelprijs', alert_btn:'Waarschuw mij',
     deals_title:"Beste aanbiedingen vandaag", deals_p:'De grootste prijsdalingen nu — dagelijks bijgewerkt.',
-    about_h1:'Wij bestaan zodat jij', about_span:'minder uitgeeft, meer leeft.',
+    about_h1:'Wij bestaan zodat jij<br><span>minder uitgeeft, meer leeft.</span>',
     footer_privacy:'Privacy', footer_terms:'Voorwaarden', footer_hiw:'Hoe het werkt',
     hiw_title:'Hoe Prixly werkt',
+    hiw_eyebrow:'Eenvoudig. Snel. Transparant.', hiw_intro:'Van zoeken tot besparen — dit gebeurt er precies wanneer je Prixly gebruikt om een lagere prijs te vinden.', step1_num:'Stap 01', step1_title:'Vertel ons waar je naar zoekt', step1_desc:'Typ de naam van een product — zo specifiek of vaag als je wilt — of upload gewoon een foto. Prixly accepteert beide. Geen account nodig, geen registratie vereist.', step2_num:'Stap 02', step2_title:'Het algoritme herkent je categorie', step2_desc:'De engine van Prixly analyseert je zoekopdracht en identificeert direct tot welke categorie deze behoort — Elektronica, Mode, Gaming en meer. Vervolgens selecteert het de meest relevante winkels voor die categorie en geeft ze prioriteit, zodat je eerst resultaten van de juiste plekken krijgt.', step3_num:'Stap 03', step3_title:'Resultaten gesorteerd van goedkoopst', step3_desc:'De prijs van elke winkel wordt opgehaald, vergeleken en gerangschikt van laag naar hoog. De beste deal wordt boven uitgelicht. Je kunt ook sorteren op beoordeling, verzendsnelheid, of Prixly-score — een gecombineerde beoordeling die we voor elke vermelding berekenen.', step4_num:'Stap 04', step4_title:'Bekijk de prijshistorie', step4_desc:'Elk resultaat heeft een prijshistorie-grafiek van 6 maanden, zodat je kunt zien of de prijs van vandaag echt een goede deal is — of dat het beter is om te wachten. Prixly vertelt je ook de beste tijd van het jaar om dat type product te kopen.', step5_num:'Stap 05', step5_title:'Stel een waarschuwing in en mis nooit een prijsdaling', step5_desc:'Nog niet klaar om te kopen? Stel een doelprijs en je e-mail in, en Prixly waarschuwt je zodra het artikel daaronder zakt. Je kunt al je waarschuwingen beheren in het gedeelte Prijsalarmen.', mock_search_bar:'🔍 Zoekbalk', mock_or_drop:'Of upload een afbeelding...', mock_dragdrop:'📁 Sleep een productfoto hierheen', mock_category_detected:'Categorie herkend: 💻 Elektronica (94% match)', mock_searching_priority:'Topwinkels worden doorzocht op prioriteit:', mock_ship_nextday:'⚡ Gratis levering de volgende dag', mock_ship_free:'Gratis levering', mock_ship_shipping:'Gratis verzending', mock_price_history_header:'📈 Prijs van de laatste 6 maanden', mock_now:'nu', mock_peak:'piek', mock_lowest:'laagste', mock_price_insight:'💡 De prijs is sinds januari met 27% gedaald', mock_set_alert:'🔔 Prijsalarm instellen', mock_target_ph:'Doel', mock_alert_confirm:'✅ Alarm ingesteld! We e-mailen je wanneer de Sony WH-1000XM5 onder dit bedrag zakt:', pa_title:'🔔 Prijsalarmen', pa_subtitle:'Artikelen die je volgt — we laten het je weten zodra de prijs daalt.', pa_dropped_header:'🔥 Prijs gedaald — actie nu', pa_watching_header:'⏳ Nog in de gaten gehouden', pa_suggested_header:'✨ Dit vind je misschien ook leuk', pa_via:'via', pa_your_target:'Jouw doel:', pa_was:'was', pa_below_target:'✅ Onder je doelprijs', pa_target_label:'Doel:', pa_away:'verwijderd', pa_view_deal:'Bekijk deal', pa_remove:'Verwijderen', pa_search_now:'Nu zoeken', pa_save:'Bespaar', deals_filter_all:'Alle deals', deals_filter_electronics:'Elektronica', deals_filter_gaming:'Gaming', deals_filter_fashion:'Mode', deals_filter_home:'Huis', deals_filter_sports:'Sport', deals_filter_toys:'Speelgoed', deals_filter_baby:'Baby', deal_view:'Bekijk →', about_tagline:'"De slimste shopper is niet degene die het meeste koopt — het is degene die het minste betaalt."', about_intro:'Prixly is gebouwd op één simpel idee: niemand zou meer moeten betalen dan nodig. Wij doorzoeken het web voor jou en vinden binnen seconden de beste prijs op alles, van koptelefoons tot luiers.', about_stat1:'Doorzochte winkels', about_stat2:'Productcategorieën', about_stat3:'Gemiddelde zoektijd', about_stat4:'Kosten voor gebruik', about_slogans_header:'Waar wij voor staan', slogan1:'Jouw geld. Jouw <span>keuze.</span>', slogan2:'Hetzelfde product. <span>Betere prijs.</span>', slogan3:'Eén keer zoeken. <span>Overal besparen.</span>', slogan4:'Geen trucs. Geen opslag. Alleen <span>de waarheid.</span>', slogan5:'Gemaakt voor <span>echte mensen,</span> niet voor winkels.', about_values_header:'Wat ons anders maakt', value1_title:'Slimme categorieherkenning', value1_desc:'Ons algoritme leest je zoekopdracht en weet direct of je naar Currys, Smyths of Decathlon moet — zo krijg je altijd resultaten van winkels die echt verkopen wat je zoekt.', value2_title:'Prijshistorie die je kunt vertrouwen', value2_desc:'Wij laten zien of de "aanbieding" van vandaag echt een aanbieding is, of gewoon de normale prijs met een nepstreep erdoorheen. Zes maanden historie, in één oogopslag zichtbaar.', value3_title:'Alarmen die echt afgaan', value3_desc:'Stel je doelprijs in en vergeet het. Wij sturen je een e-mail zodra iets daalt, zodat je nooit een deal mist die je echt wilde.', value4_title:'Nooit gegevens verkopen', value4_desc:'Wij verkopen je gegevens niet. Wij volgen je niet op het web. Wij verdienen geld via kleine affiliate-commissies wanneer je een deal vindt en besluit te kopen — dat is alles.', about_mission_header:'Het doel', about_mission_text:'De eerste plek worden waar iedereen naartoe gaat voordat ze iets online kopen. Niet alleen voor elektronica of mode — voor alles. Auto-onderdelen, babyproducten, videogames, kleding, tuinmeubels. Als het online verkocht wordt, zou Prixly het goedkoper moeten vinden. Dat is de missie. Zo simpel is het.', footer_disclaimer:'De weergegeven prijzen zijn ter demonstratie. Prixly kan een kleine affiliate-commissie verdienen op aankopen — zonder extra kosten voor jou.',
   },
   ja: {
     _name:'🇯🇵 日本語', _dir:'ltr', _currency:'JPY',
     nav_hiw:'使い方', nav_alerts:'価格アラート', nav_deals:'セール', nav_about:'概要', nav_signup:'無料登録',
     hero_eyebrow:'50以上のショップを瞬時に検索',
-    hero_h1:'高い買い物はやめましょう。', hero_h1_span:'もっと安く見つけよう。',
-    hero_p:'名前、写真、リンクで検索。',
+    hero_h1:'高い買い物はやめましょう。<br><span>もっと安く見つけよう。</span>',
+    hero_p:'探している商品を入力するか、写真をアップロードしてください。PrixlyのAIが商品を検出し、最安値を数秒で見つけます。',
     currency_label:'通貨：', tab_text:'🔤 名前で検索', tab_image:'📷 画像で検索',
     search_placeholder:'例：iPhone 15、Nike Air Max、LEGOテクニック...', search_btn:'検索', url_hint:'💡 ヒント：商品名の代わりに商品のリンクを貼り付けることもできます', url_error:'⚠️ そのリンクを読み取れませんでした — 商品名を貼り付けてみてください',
     drop_title:'ここに画像をドロップ', drop_sub:'またはクリックしてアップロード', drop_formats:'JPG、PNG、WEBPに対応',
-    trust_1:'登録不要', trust_2:'データは非公開', trust_3:'即時結果', trust_4:'50以上の店舗',
+    trust_1:'登録不要', trust_2:'データを販売しません', trust_3:'3秒以内に結果表示', trust_4:'50以上のショップを検索',
     cat_label:'カテゴリで探す', recently_viewed:'最近見た商品',
     loading_text:'検索を分析中...', best_price:'最安値', view_deal:'取引を見る →',
     sort_best:'並び替え：最適な結果', sort_price:'並び替え：価格が安い順', sort_rating:'並び替え：評価が高い順', sort_score:'並び替え：Prixlyスコア',
@@ -1009,20 +1036,21 @@ const TRANSLATIONS = {
     alert_p:'商品が目標価格を下回った瞬間にメールでお知らせします。',
     alert_email:'メールアドレス', alert_target:'目標価格', alert_btn:'通知を受け取る',
     deals_title:'本日のベストディール', deals_p:'今すぐ最大の値下げ情報 — 毎日更新。',
-    about_h1:'私たちの目標は', about_span:'より少ない出費で、より豊かな生活を。',
+    about_h1:'私たちの目標は<br><span>より少ない出費で、より豊かな生活を。</span>',
     footer_privacy:'プライバシー', footer_terms:'利用規約', footer_hiw:'使い方',
     hiw_title:'Prixlyの使い方',
+    hiw_eyebrow:'シンプル。高速。透明。', hiw_intro:'検索から節約まで — Prixlyを使ってより安い価格を見つける際に実際に起こることをご紹介します。', step1_num:'ステップ01', step1_title:'何をお探しか教えてください', step1_desc:'商品名を具体的に、またはざっくりと入力するか、写真をアップロードするだけです。Prixlyは両方に対応しています。アカウント登録は不要です。', step2_num:'ステップ02', step2_title:'アルゴリズムがカテゴリーを検出します', step2_desc:'Prixlyのエンジンは検索内容を分析し、電子機器、ファッション、ゲームなど、どのカテゴリーに属するかを即座に識別します。そのカテゴリーに最も関連性の高いショップを選び、優先順位をつけて、適切な場所からの結果を先に表示します。', step3_num:'ステップ03', step3_title:'最安値順に結果を表示', step3_desc:'各ショップの価格を取得し、比較して、低い順から高い順に並べます。最もお得な商品が上部に表示されます。評価、発送スピード、またはPrixlyスコア(各商品ごとに算出する総合評価)で並べ替えることもできます。', step4_num:'ステップ04', step4_title:'価格履歴を確認', step4_desc:'すべての結果には6ヶ月分の価格履歴グラフが付いているので、今の価格が本当にお得かどうか、または待った方が良いかが分かります。Prixlyはその商品タイプを購入する最適な時期も教えてくれます。', step5_num:'ステップ05', step5_title:'アラートを設定して値下げを見逃さない', step5_desc:'まだ購入する準備ができていませんか？目標価格とメールアドレスを設定すれば、商品がその価格を下回った瞬間にPrixlyがお知らせします。すべてのアラートは価格アラートセクションで管理できます。', mock_search_bar:'🔍 検索バー', mock_or_drop:'または画像をドロップ...', mock_dragdrop:'📁 商品の写真をドラッグ＆ドロップ', mock_category_detected:'カテゴリー検出：💻 電子機器（一致率94%）', mock_searching_priority:'優先順位で上位ショップを検索中：', mock_ship_nextday:'⚡ 翌日無料配送', mock_ship_free:'無料配送', mock_ship_shipping:'無料発送', mock_price_history_header:'📈 過去6ヶ月の価格', mock_now:'現在', mock_peak:'最高値', mock_lowest:'最安値', mock_price_insight:'💡 1月以降、価格は27%下落しました', mock_set_alert:'🔔 価格アラートを設定', mock_target_ph:'目標', mock_alert_confirm:'✅ アラート設定完了！Sony WH-1000XM5がこの価格を下回ったらメールでお知らせします：', pa_title:'🔔 価格アラート', pa_subtitle:'ウォッチ中の商品です — 価格が下がった瞬間にお知らせします。', pa_dropped_header:'🔥 価格が下落 — 今すぐチェック', pa_watching_header:'⏳ ウォッチ中', pa_suggested_header:'✨ こちらもおすすめ', pa_via:'経由', pa_your_target:'目標価格：', pa_was:'以前は', pa_below_target:'✅ 目標価格以下', pa_target_label:'目標：', pa_away:'差', pa_view_deal:'取引を見る', pa_remove:'削除', pa_search_now:'今すぐ検索', pa_save:'節約', deals_filter_all:'すべてのセール', deals_filter_electronics:'電子機器', deals_filter_gaming:'ゲーム', deals_filter_fashion:'ファッション', deals_filter_home:'ホーム', deals_filter_sports:'スポーツ', deals_filter_toys:'おもちゃ', deals_filter_baby:'ベビー', deal_view:'見る →', about_tagline:'「最も賢い買い物客とは、最も多く買う人ではなく、最も少なく支払う人のことだ。」', about_intro:'Prixlyは、誰も必要以上に支払うべきではないというシンプルな信念のもとに作られました。ヘッドホンからおむつまで、あらゆる商品の最安値を数秒でウェブ上から見つけます。', about_stat1:'検索した店舗数', about_stat2:'商品カテゴリー数', about_stat3:'平均検索時間', about_stat4:'利用コスト', about_slogans_header:'私たちが大切にしていること', slogan1:'あなたのお金は、あなたの<span>選択。</span>', slogan2:'同じ商品で、<span>もっと良い価格。</span>', slogan3:'一度検索すれば、<span>どこでも節約。</span>', slogan4:'トリックなし、上乗せなし。ただ<span>真実だけ。</span>', slogan5:'<span>本当の人々のために、</span>小売店のためではなく。', about_values_header:'私たちの違い', value1_title:'スマートなカテゴリー検出', value1_desc:'私たちのアルゴリズムは検索内容を読み取り、CurrysやSmyths、Decathlonのどこに送るべきかを即座に判断します。これにより、実際に探している商品を販売している店舗からの結果が常に得られます。', value2_title:'信頼できる価格履歴', value2_desc:'今日の「セール」が本当のセールなのか、それとも単に通常価格に偽の取り消し線を引いただけなのかをお見せします。6ヶ月分の履歴を一目で確認できます。', value3_title:'本当に作動するアラート', value3_desc:'目標価格を設定したら、あとは忘れて大丈夫です。価格が下がった瞬間にメールでお知らせするので、欲しかったお得な商品を見逃すことはありません。', value4_title:'データ販売は一切行いません', value4_desc:'お客様のデータを販売することはありません。ウェブ上で追跡することもありません。お得な商品を見つけて購入された際の少額のアフィリエイト報酬で収益を得ています。それだけです。', about_mission_header:'目標', about_mission_text:'オンラインで何かを購入する前に、誰もが最初に訪れる場所になること。電子機器やファッションだけでなく、あらゆるものに対して。車のパーツ、ベビー用品、ビデオゲーム、衣類、ガーデン家具。オンラインで販売されているものなら、Prixlyがより安く見つけ出します。それが私たちの使命です。とてもシンプルなことです。', footer_disclaimer:'表示されている価格はデモンストレーション用です。Prixlyは購入時に少額のアフィリエイト報酬を得ることがありますが、お客様に追加費用は発生しません。',
   },
   ko: {
     _name:'🇰🇷 한국어', _dir:'ltr', _currency:'KRW',
     nav_hiw:'이용 방법', nav_alerts:'가격 알림', nav_deals:'딜', nav_about:'소개', nav_signup:'무료 가입',
     hero_eyebrow:'50개 이상의 쇼핑몰 즉시 검색',
-    hero_h1:'더 이상 비싸게 사지 마세요.', hero_h1_span:'더 저렴하게 찾으세요.',
-    hero_p:'이름, 사진, 링크로 검색하세요.',
+    hero_h1:'더 이상 비싸게 사지 마세요.<br><span>더 저렴하게 찾으세요.</span>',
+    hero_p:'찾고 있는 상품을 입력하거나 사진을 올리세요. Prixly의 알고리즘이 최저가를 몇 초 안에 찾아드립니다.',
     currency_label:'통화:', tab_text:'🔤 이름으로 검색', tab_image:'📷 이미지로 검색',
     search_placeholder:'예: iPhone 15, 나이키 에어맥스, 레고 테크닉...', search_btn:'검색', url_hint:'💡 팁: 상품명 대신 상품 링크를 붙여넣을 수도 있습니다', url_error:'⚠️ 해당 링크를 읽을 수 없습니다 — 상품명을 붙여넣어 보세요',
     drop_title:'여기에 이미지를 드롭하세요', drop_sub:'또는 클릭하여 업로드', drop_formats:'JPG, PNG, WEBP 지원',
-    trust_1:'가입 불필요', trust_2:'데이터 비공개', trust_3:'즉시 결과', trust_4:'50개 이상 매장',
+    trust_1:'회원가입 불필요', trust_2:'데이터를 판매하지 않습니다', trust_3:'3초 이내 결과', trust_4:'50개 이상 쇼핑몰 검색',
     cat_label:'카테고리별 탐색', recently_viewed:'최근 본 항목',
     loading_text:'검색 분석 중...', best_price:'최저가', view_deal:'딜 보기 →',
     sort_best:'정렬: 최적 결과', sort_price:'정렬: 낮은 가격순', sort_rating:'정렬: 높은 평점순', sort_score:'정렬: Prixly 점수',
@@ -1030,20 +1058,21 @@ const TRANSLATIONS = {
     alert_p:'상품이 목표 가격 이하로 떨어지면 이메일로 알려드립니다.',
     alert_email:'이메일 주소', alert_target:'목표 가격', alert_btn:'알림 받기',
     deals_title:'오늘의 베스트 딜', deals_p:'지금 가장 큰 가격 인하 — 매일 업데이트.',
-    about_h1:'우리는 여러분이', about_span:'덜 쓰고, 더 많이 누리도록 존재합니다.',
+    about_h1:'우리는 여러분이<br><span>덜 쓰고, 더 많이 누리도록 존재합니다.</span>',
     footer_privacy:'개인정보처리방침', footer_terms:'이용약관', footer_hiw:'이용 방법',
     hiw_title:'Prixly 이용 방법',
+    hiw_eyebrow:'간단함. 빠름. 투명함.', hiw_intro:'검색부터 절약까지 — Prixly를 사용해 더 저렴한 가격을 찾을 때 정확히 무슨 일이 일어나는지 알려드립니다.', step1_num:'1단계', step1_title:'찾고 있는 것을 알려주세요', step1_desc:'원하는 만큼 구체적이거나 모호하게 상품명을 입력하거나, 사진을 업로드하세요. Prixly는 둘 다 지원합니다. 계정이나 가입이 필요 없습니다.', step2_num:'2단계', step2_title:'알고리즘이 카테고리를 감지합니다', step2_desc:'Prixly의 엔진은 검색을 분석하여 전자기기, 패션, 게임 등 어떤 카테고리에 속하는지 즉시 식별합니다. 그런 다음 해당 카테고리에 가장 관련성 높은 매장을 선택하고 우선순위를 매겨, 적절한 곳의 결과를 먼저 보여줍니다.', step3_num:'3단계', step3_title:'최저가순으로 정렬된 결과', step3_desc:'각 매장의 가격을 가져와 비교하고 낮은 가격에서 높은 가격순으로 정렬합니다. 가장 좋은 딜이 상단에 강조됩니다. 평점, 배송 속도, 또는 각 상품에 대해 계산하는 종합 평가인 Prixly 점수로도 정렬할 수 있습니다.', step4_num:'4단계', step4_title:'가격 기록 확인', step4_desc:'모든 결과에는 6개월간의 가격 기록 차트가 포함되어 있어, 오늘 가격이 정말 좋은 딜인지, 기다리는 게 나은지 확인할 수 있습니다. Prixly는 해당 제품 유형을 구매하기 가장 좋은 시기도 알려줍니다.', step5_num:'5단계', step5_title:'알림을 설정하고 가격 하락을 놓치지 마세요', step5_desc:'아직 구매할 준비가 안 되셨나요? 목표 가격과 이메일을 설정하면 상품이 그 가격 이하로 떨어지는 순간 Prixly가 알려드립니다. 가격 알림 섹션에서 모든 알림을 관리할 수 있습니다.', mock_search_bar:'🔍 검색창', mock_or_drop:'또는 이미지를 드롭하세요...', mock_dragdrop:'📁 상품 사진을 드래그 앤 드롭', mock_category_detected:'카테고리 감지됨: 💻 전자기기 (94% 일치)', mock_searching_priority:'우선순위에 따라 상위 매장 검색 중:', mock_ship_nextday:'⚡ 다음날 무료배송', mock_ship_free:'무료배송', mock_ship_shipping:'무료 발송', mock_price_history_header:'📈 지난 6개월 가격', mock_now:'현재', mock_peak:'최고가', mock_lowest:'최저가', mock_price_insight:'💡 1월 이후 가격이 27% 하락했습니다', mock_set_alert:'🔔 가격 알림 설정', mock_target_ph:'목표', mock_alert_confirm:'✅ 알림이 설정되었습니다! Sony WH-1000XM5가 이 가격 이하로 떨어지면 이메일로 알려드립니다:', pa_title:'🔔 가격 알림', pa_subtitle:'지켜보고 있는 항목입니다 — 가격이 떨어지는 순간 알려드립니다.', pa_dropped_header:'🔥 가격 하락 — 지금 확인하세요', pa_watching_header:'⏳ 계속 지켜보는 중', pa_suggested_header:'✨ 이런 상품도 좋아하실 거예요', pa_via:'판매처', pa_your_target:'목표 가격:', pa_was:'이전', pa_below_target:'✅ 목표 가격 이하', pa_target_label:'목표:', pa_away:'남음', pa_view_deal:'딜 보기', pa_remove:'삭제', pa_search_now:'지금 검색', pa_save:'절약', deals_filter_all:'전체 딜', deals_filter_electronics:'전자기기', deals_filter_gaming:'게임', deals_filter_fashion:'패션', deals_filter_home:'홈', deals_filter_sports:'스포츠', deals_filter_toys:'장난감', deals_filter_baby:'유아용품', deal_view:'보기 →', about_tagline:'"가장 현명한 쇼핑객은 가장 많이 사는 사람이 아니라 가장 적게 지불하는 사람입니다."', about_intro:'Prixly는 누구도 필요 이상으로 지불해서는 안 된다는 단순한 믿음에서 만들어졌습니다. 헤드폰부터 기저귀까지 모든 것의 최저가를 몇 초 안에 웹에서 찾아드립니다.', about_stat1:'검색한 매장 수', about_stat2:'상품 카테고리 수', about_stat3:'평균 검색 시간', about_stat4:'이용 비용', about_slogans_header:'우리가 지향하는 것', slogan1:'당신의 돈. 당신의 <span>선택.</span>', slogan2:'같은 상품, <span>더 좋은 가격.</span>', slogan3:'한 번 검색하고, <span>어디서나 절약하세요.</span>', slogan4:'속임수 없음. 마크업 없음. 오직 <span>진실만.</span>', slogan5:'소매업체가 아닌 <span>실제 사람들을 위해</span> 만들어졌습니다.', about_values_header:'우리가 다른 점', value1_title:'스마트한 카테고리 감지', value1_desc:'당사의 알고리즘은 검색 내용을 읽고 Currys, Smyths, Decathlon 중 어디로 보내야 할지 즉시 파악합니다. 그래서 항상 실제로 찾는 상품을 판매하는 매장에서 결과를 받게 됩니다.', value2_title:'신뢰할 수 있는 가격 기록', value2_desc:'오늘의 "세일"이 실제 세일인지, 아니면 가짜 줄이 그어진 일반 가격인지 보여드립니다. 6개월간의 기록을 한눈에 확인할 수 있습니다.', value3_title:'실제로 작동하는 알림', value3_desc:'목표 가격을 설정하고 잊어버리세요. 가격이 떨어지는 순간 이메일을 보내드리니, 정말 원했던 딜을 놓치지 않습니다.', value4_title:'절대 데이터 판매 없음', value4_desc:'고객님의 데이터를 판매하지 않습니다. 웹에서 추적하지도 않습니다. 딜을 찾아 구매를 선택했을 때 발생하는 소액의 제휴 수수료로 수익을 창출합니다. 그게 전부입니다.', about_mission_header:'목표', about_mission_text:'온라인에서 무엇이든 구매하기 전에 모두가 가장 먼저 찾는 곳이 되는 것입니다. 전자기기나 패션뿐 아니라 모든 것에 대해서요. 자동차 부품, 유아용품, 비디오 게임, 의류, 정원 가구까지. 온라인에서 판매되는 것이라면 Prixly가 더 저렴하게 찾아드려야 합니다. 그것이 우리의 사명입니다. 그만큼 간단합니다.', footer_disclaimer:'표시된 가격은 데모용입니다. Prixly는 구매 시 소액의 제휴 수수료를 받을 수 있으며, 고객님께 추가 비용은 발생하지 않습니다.',
   },
   zh: {
     _name:'🇨🇳 中文', _dir:'ltr', _currency:'CNY',
     nav_hiw:'使用方法', nav_alerts:'价格提醒', nav_deals:'优惠', nav_about:'关于我们', nav_signup:'免费注册',
     hero_eyebrow:'即时搜索50+家零售商',
-    hero_h1:'不再多花冤枉钱。', hero_h1_span:'找到更便宜的价格。',
-    hero_p:'按名称、图片或链接搜索。',
+    hero_h1:'不再多花冤枉钱。<br><span>找到更便宜的价格。</span>',
+    hero_p:'输入您想找的商品，或上传照片。Prixly的算法立即识别产品，几秒内找到最低价格。',
     currency_label:'货币：', tab_text:'🔤 按名称搜索', tab_image:'📷 按图片搜索',
     search_placeholder:'例如：iPhone 15、Nike Air Max、乐高...', search_btn:'搜索', url_hint:'💡 提示：您也可以粘贴商品链接，而不是输入名称', url_error:'⚠️ 无法读取该链接 — 请尝试粘贴商品名称',
     drop_title:'将图片拖放到此处', drop_sub:'或点击上传', drop_formats:'支持 JPG、PNG、WEBP',
-    trust_1:'无需注册', trust_2:'数据不公开', trust_3:'即时结果', trust_4:'50+商店',
+    trust_1:'无需注册', trust_2:'我们从不出售您的数据', trust_3:'3秒内出结果', trust_4:'搜索50+家零售商',
     cat_label:'按类别浏览', recently_viewed:'最近浏览',
     loading_text:'正在分析您的搜索...', best_price:'最低价', view_deal:'查看优惠 →',
     sort_best:'排序：最佳匹配', sort_price:'排序：价格最低', sort_rating:'排序：评分最高', sort_score:'排序：Prixly评分',
@@ -1051,20 +1080,21 @@ const TRANSLATIONS = {
     alert_p:'当商品价格低于您的目标价格时，我们将发送邮件通知您。',
     alert_email:'您的邮箱', alert_target:'目标价格', alert_btn:'提醒我',
     deals_title:'今日最佳优惠', deals_p:'当前最大幅度降价商品 — 每日更新。',
-    about_h1:'我们的使命是让您', about_span:'少花钱，多享受。',
+    about_h1:'我们的使命是让您<br><span>少花钱，多享受。</span>',
     footer_privacy:'隐私政策', footer_terms:'服务条款', footer_hiw:'使用方法',
     hiw_title:'Prixly使用方法',
+    hiw_eyebrow:'简单。快速。透明。', hiw_intro:'从搜索到省钱 — 这就是您使用 Prixly 寻找更低价格时发生的确切过程。', step1_num:'第1步', step1_title:'告诉我们您在找什么', step1_desc:'输入任意商品名称 — 可以具体也可以模糊 — 或直接上传一张照片。Prixly 都能识别。无需账户，无需注册。', step2_num:'第2步', step2_title:'算法检测您的类别', step2_desc:'Prixly 的引擎会分析您的搜索内容，立即识别它属于哪个类别 — 电子产品、时尚、游戏等。然后选择该类别中最相关的商店并按优先级排序，让您先看到来自正确地方的结果。', step3_num:'第3步', step3_title:'按最低价格排序的结果', step3_desc:'系统提取并比较每个商店的价格，从低到高排序。最优惠的交易会在顶部突出显示。您还可以按评分、配送速度或 Prixly 评分（我们为每个商品计算的综合评分）排序。', step4_num:'第4步', step4_title:'查看价格历史', step4_desc:'每个结果都附有6个月的价格历史图表，让您查看今天的价格是否真的划算 — 或者是否值得等待。Prixly 还会告诉您购买该类产品的最佳时机。', step5_num:'第5步', step5_title:'设置提醒，永不错过降价', step5_desc:'还没准备好购买？设置目标价格和您的邮箱，一旦商品价格降到该价格以下，Prixly 就会通知您。您可以在价格提醒部分管理所有提醒。', mock_search_bar:'🔍 搜索栏', mock_or_drop:'或拖放图片...', mock_dragdrop:'📁 拖放任意商品照片', mock_category_detected:'已检测到类别：💻 电子产品（94% 匹配）', mock_searching_priority:'正在按优先级搜索顶级商店：', mock_ship_nextday:'⚡ 次日免费送货', mock_ship_free:'免费送货', mock_ship_shipping:'免运费', mock_price_history_header:'📈 过去6个月的价格', mock_now:'现在', mock_peak:'最高', mock_lowest:'最低', mock_price_insight:'💡 自一月以来价格已下跌27%', mock_set_alert:'🔔 设置价格提醒', mock_target_ph:'目标', mock_alert_confirm:'✅ 提醒已设置！当 Sony WH-1000XM5 价格降至以下数值时，我们将发邮件通知您：', pa_title:'🔔 价格提醒', pa_subtitle:'您正在关注的商品 — 价格下降时我们会立即通知您。', pa_dropped_header:'🔥 价格已下降 — 立即行动', pa_watching_header:'⏳ 仍在关注', pa_suggested_header:'✨ 您可能还喜欢', pa_via:'来自', pa_your_target:'您的目标价：', pa_was:'曾为', pa_below_target:'✅ 低于您的目标价', pa_target_label:'目标：', pa_away:'之差', pa_view_deal:'查看优惠', pa_remove:'移除', pa_search_now:'立即搜索', pa_save:'节省', deals_filter_all:'所有优惠', deals_filter_electronics:'电子产品', deals_filter_gaming:'游戏', deals_filter_fashion:'时尚', deals_filter_home:'家居', deals_filter_sports:'运动', deals_filter_toys:'玩具', deals_filter_baby:'母婴', deal_view:'查看 →', about_tagline:'"最聪明的购物者不是买得最多的人 — 而是花费最少的人。"', about_intro:'Prixly 建立在一个简单的信念之上：没有人应该多花一分不必要的钱。我们为您搜索整个网络，几秒钟内就能找到从耳机到尿布的所有商品的最优价格。', about_stat1:'已搜索商店数', about_stat2:'商品类别数', about_stat3:'平均搜索时间', about_stat4:'使用费用', about_slogans_header:'我们的理念', slogan1:'您的钱。您的<span>选择。</span>', slogan2:'同样的商品。<span>更好的价格。</span>', slogan3:'搜索一次，<span>处处省钱。</span>', slogan4:'没有套路，没有加价，只有<span>真相。</span>', slogan5:'为<span>真实的人</span>而打造，而非为商家。', about_values_header:'我们的不同之处', value1_title:'智能类别检测', value1_desc:'我们的算法读取您的搜索内容，立即知道应该将您引导至 Currys、Smyths 或 Decathlon — 让您始终能从真正销售您所需商品的商店获得结果。', value2_title:'可信赖的价格历史', value2_desc:'我们会告诉您今天的"促销"是否真的是促销，还是只是带着虚假划线的正常价格。六个月的历史记录，一目了然。', value3_title:'真正有效的提醒', value3_desc:'设置好您的目标价格后就不用再操心了。一旦价格下降，我们会立即发邮件通知您，让您不会错过真正想要的优惠。', value4_title:'绝不出售数据', value4_desc:'我们不会出售您的数据，也不会在网络上追踪您。当您找到优惠并选择购买时，我们通过少量的联属佣金赚取收入 — 仅此而已。', about_mission_header:'我们的目标', about_mission_text:'成为每个人在网上购物之前首先访问的地方。不仅是电子产品或时尚 — 而是所有商品。汽车配件、母婴用品、电子游戏、服装、花园家具。只要是网上有售的商品，Prixly 都应该帮您找到更便宜的价格。这就是我们的使命，就这么简单。', footer_disclaimer:'显示的价格仅供演示。Prixly 可能会从购买中赚取少量联属佣金 — 不会给您带来额外费用。',
   },
   ar: {
     _name:'🇸🇦 العربية', _dir:'rtl', _currency:'USD',
     nav_hiw:'كيف يعمل', nav_alerts:'تنبيهات الأسعار', nav_deals:'العروض', nav_about:'من نحن', nav_signup:'سجّل مجاناً',
     hero_eyebrow:'يبحث في أكثر من 50 متجراً فورياً',
-    hero_h1:'توقف عن الدفع أكثر مما يجب.', hero_h1_span:'ابحث عن الأرخص.',
-    hero_p:'ابحث بالاسم أو الصورة أو الرابط.',
+    hero_h1:'توقف عن الدفع أكثر مما يجب.<br><span>ابحث عن الأرخص.</span>',
+    hero_p:'اكتب ما تبحث عنه — أو أسقط صورة — وسيكتشف خوارزمية Prixly ما تحتاجه ويجد أفضل سعر في ثوانٍ.',
     currency_label:':العملة', tab_text:'🔤 البحث بالاسم', tab_image:'📷 البحث بالصورة',
     search_placeholder:'مثال: iPhone 15، Nike Air Max، ليغو...', search_btn:'بحث', url_hint:'💡 نصيحة: يمكنك أيضًا لصق رابط المنتج بدلاً من كتابة الاسم', url_error:'⚠️ تعذّر قراءة هذا الرابط — حاول لصق اسم المنتج بدلاً من ذلك',
     drop_title:'أسقط صورة هنا', drop_sub:'أو انقر للتحميل', drop_formats:'يدعم JPG و PNG و WEBP',
-    trust_1:'بلا تسجيل', trust_2:'بياناتك خاصة', trust_3:'نتائج فورية', trust_4:'+50 متجراً',
+    trust_1:'لا تسجيل مطلوب', trust_2:'لا نبيع بياناتك أبداً', trust_3:'نتائج خلال 3 ثوانٍ', trust_4:'أكثر من 50 متجراً',
     cat_label:'تصفح حسب الفئة', recently_viewed:'شوهد مؤخراً',
     loading_text:'جارٍ تحليل بحثك...', best_price:'أفضل سعر', view_deal:'← عرض الصفقة',
     sort_best:'ترتيب: الأفضل تطابقاً', sort_price:'ترتيب: الأقل سعراً', sort_rating:'ترتيب: الأعلى تقييماً', sort_score:'ترتيب: نقاط Prixly',
@@ -1072,20 +1102,21 @@ const TRANSLATIONS = {
     alert_p:'سنرسل لك بريداً إلكترونياً فور انخفاض السعر عن هدفك.',
     alert_email:'بريدك@الإلكتروني', alert_target:'السعر المستهدف', alert_btn:'نبّهني',
     deals_title:'أفضل العروض اليوم', deals_p:'أكبر تخفيضات الأسعار الآن — تُحدَّث يومياً.',
-    about_h1:'نحن موجودون لتتمكن من', about_span:'إنفاق أقل والعيش أكثر.',
+    about_h1:'نحن موجودون لتتمكن من<br><span>إنفاق أقل والعيش أكثر.</span>',
     footer_privacy:'الخصوصية', footer_terms:'الشروط', footer_hiw:'كيف يعمل',
     hiw_title:'كيف يعمل Prixly',
+    hiw_eyebrow:'بسيط. سريع. شفاف.', hiw_intro:'من البحث إلى التوفير — هذا بالضبط ما يحدث عندما تستخدم Prixly للعثور على سعر أرخص.', step1_num:'الخطوة 01', step1_title:'أخبرنا عن ما تبحث عنه', step1_desc:'اكتب اسم أي منتج — بدقة أو بشكل عام كما تشاء — أو ألقِ صورة له فقط. يقبل Prixly كلا الطريقتين. لا حاجة لحساب، ولا تسجيل مطلوب.', step2_num:'الخطوة 02', step2_title:'الخوارزمية تكتشف فئتك', step2_desc:'يحلل محرك Prixly بحثك ويحدد فورًا الفئة التي ينتمي إليها — إلكترونيات، أزياء، ألعاب وأكثر. ثم يختار المتاجر الأكثر صلة بهذه الفئة ويعطيها الأولوية، لتحصل على النتائج من الأماكن الصحيحة أولاً.', step3_num:'الخطوة 03', step3_title:'النتائج مرتبة من الأرخص', step3_desc:'يتم سحب سعر كل متجر ومقارنته وترتيبه من الأقل إلى الأعلى. يتم تمييز أفضل عرض في الأعلى. يمكنك أيضًا الترتيب حسب التقييم، سرعة الشحن، أو نقاط Prixly — تقييم مجمّع نحسبه لكل قائمة.', step4_num:'الخطوة 04', step4_title:'اطلع على سجل الأسعار', step4_desc:'تأتي كل نتيجة مع رسم بياني لسجل الأسعار لمدة 6 أشهر لترى إن كان سعر اليوم صفقة جيدة بالفعل — أو إن كان الانتظار أفضل. يخبرك Prixly أيضًا بأفضل وقت في السنة لشراء ذلك النوع من المنتجات.', step5_num:'الخطوة 05', step5_title:'اضبط تنبيهًا ولا تفوّت أي انخفاض في السعر', step5_desc:'لست جاهزًا للشراء بعد؟ حدد سعرًا مستهدفًا وبريدك الإلكتروني، وسيُخبرك Prixly فور انخفاض المنتج إلى هذا السعر. يمكنك إدارة جميع تنبيهاتك في قسم تنبيهات الأسعار.', mock_search_bar:'🔍 شريط البحث', mock_or_drop:'أو أسقط صورة...', mock_dragdrop:'📁 اسحب وأسقط صورة المنتج', mock_category_detected:'تم اكتشاف الفئة: 💻 إلكترونيات (تطابق 94%)', mock_searching_priority:'يتم البحث في أفضل المتاجر حسب الأولوية:', mock_ship_nextday:'⚡ توصيل مجاني في اليوم التالي', mock_ship_free:'توصيل مجاني', mock_ship_shipping:'شحن مجاني', mock_price_history_header:'📈 السعر خلال آخر 6 أشهر', mock_now:'الآن', mock_peak:'الأعلى', mock_lowest:'الأدنى', mock_price_insight:'💡 انخفض السعر بنسبة 27% منذ يناير', mock_set_alert:'🔔 إنشاء تنبيه سعر', mock_target_ph:'الهدف', mock_alert_confirm:'✅ تم ضبط التنبيه! سنرسل لك بريدًا إلكترونيًا عندما ينخفض سعر Sony WH-1000XM5 عن:', pa_title:'🔔 تنبيهات الأسعار', pa_subtitle:'العناصر التي تراقبها — سنخبرك فور انخفاض السعر.', pa_dropped_header:'🔥 انخفض السعر — تصرف الآن', pa_watching_header:'⏳ لا زلنا نراقب', pa_suggested_header:'✨ قد يعجبك أيضًا', pa_via:'عبر', pa_your_target:'هدفك:', pa_was:'كان', pa_below_target:'✅ أقل من هدفك', pa_target_label:'الهدف:', pa_away:'متبقي', pa_view_deal:'عرض الصفقة', pa_remove:'إزالة', pa_search_now:'بحث الآن', pa_save:'وفّر', deals_filter_all:'كل العروض', deals_filter_electronics:'إلكترونيات', deals_filter_gaming:'ألعاب', deals_filter_fashion:'أزياء', deals_filter_home:'المنزل', deals_filter_sports:'رياضة', deals_filter_toys:'ألعاب أطفال', deals_filter_baby:'أطفال', deal_view:'عرض ←', about_tagline:'«أذكى المتسوقين ليس من يشتري أكثر — بل من يدفع أقل.»', about_intro:'تأسس Prixly على إيمان بسيط: لا ينبغي لأحد أن يدفع أكثر مما يجب. نبحث في الويب نيابة عنك، لنجد أفضل سعر على كل شيء من سماعات الرأس إلى الحفاضات، في ثوانٍ.', about_stat1:'متاجر تم البحث فيها', about_stat2:'فئات المنتجات', about_stat3:'متوسط وقت البحث', about_stat4:'تكلفة الاستخدام', about_slogans_header:'ما نؤمن به', slogan1:'أموالك. <span>اختيارك.</span>', slogan2:'نفس المنتج. <span>سعر أفضل.</span>', slogan3:'ابحث مرة واحدة. <span>وفّر في كل مكان.</span>', slogan4:'لا حيل. لا زيادات خفية. فقط <span>الحقيقة.</span>', slogan5:'صُنع <span>للناس الحقيقيين،</span> لا للمتاجر.', about_values_header:'ما يميزنا', value1_title:'كشف ذكي للفئات', value1_desc:'تقرأ خوارزميتنا بحثك وتعرف فورًا إن كان يجب توجيهك إلى Currys أو Smyths أو Decathlon — لتحصل دائمًا على نتائج من المتاجر التي تبيع فعليًا ما تبحث عنه.', value2_title:'سجل أسعار يمكنك الوثوق به', value2_desc:'نوضح لك إن كان "التخفيض" اليوم تخفيضًا حقيقيًا، أو مجرد السعر العادي مع خط مزيف عليه. ستة أشهر من السجل، مرئية بنظرة واحدة.', value3_title:'تنبيهات تعمل بالفعل', value3_desc:'حدد سعرك المستهدف وانسَ الأمر. سنرسل لك بريدًا إلكترونيًا فور انخفاض أي شيء، حتى لا تفوّت صفقة كنت تريدها بالفعل.', value4_title:'لا بيع للبيانات، أبدًا', value4_desc:'لا نبيع بياناتك. لا نتتبعك على الويب. نكسب المال من خلال عمولات إحالة صغيرة عندما تجد صفقة وتختار الشراء — هذا كل ما في الأمر.', about_mission_header:'الهدف', about_mission_text:'أن نصبح المكان الأول الذي يذهب إليه الجميع قبل شراء أي شيء عبر الإنترنت. ليس فقط للإلكترونيات أو الأزياء — بل لكل شيء. قطع غيار السيارات، منتجات الأطفال، ألعاب الفيديو، الملابس، أثاث الحدائق. إذا كان يُباع عبر الإنترنت، يجب أن يجده Prixly بسعر أرخص. هذه هي المهمة. بهذه البساطة.', footer_disclaimer:'الأسعار المعروضة لأغراض العرض التوضيحي فقط. قد يحصل Prixly على عمولة إحالة صغيرة من عمليات الشراء — دون أي تكلفة إضافية عليك.',
   },
   hi: {
     _name:'🇮🇳 हिन्दी', _dir:'ltr', _currency:'INR',
     nav_hiw:'यह कैसे काम करता है', nav_alerts:'मूल्य अलर्ट', nav_deals:'डील्स', nav_about:'हमारे बारे में', nav_signup:'मुफ्त साइन अप',
     hero_eyebrow:'50+ रिटेलर पर तुरंत खोज',
-    hero_h1:'ज़्यादा पैसे देना बंद करें।', hero_h1_span:'सस्ता खोजें।',
-    hero_p:'नाम, फोटो या लिंक से खोजें।',
+    hero_h1:'ज़्यादा पैसे देना बंद करें।<br><span>सस्ता खोजें।</span>',
+    hero_p:'जो खोज रहे हैं वह टाइप करें — या फोटो अपलोड करें — और Prixly का एल्गोरिद्म सेकंडों में सबसे कम कीमत ढूंढ देगा।',
     currency_label:'मुद्रा:', tab_text:'🔤 नाम से खोजें', tab_image:'📷 इमेज से खोजें',
     search_placeholder:'जैसे iPhone 15, Nike Air Max, LEGO...', search_btn:'खोजें', url_hint:'💡 सुझाव: आप नाम टाइप करने के बजाय उत्पाद लिंक भी पेस्ट कर सकते हैं', url_error:'⚠️ वह लिंक पढ़ा नहीं जा सका — कृपया उत्पाद का नाम पेस्ट करें',
     drop_title:'यहाँ इमेज छोड़ें', drop_sub:'या अपलोड करने के लिए क्लिक करें', drop_formats:'JPG, PNG, WEBP समर्थित',
-    trust_1:'साइन अप नहीं चाहिए', trust_2:'डेटा निजी रहता है', trust_3:'तुरंत परिणाम', trust_4:'50+ स्टोर',
+    trust_1:'साइन अप की जरूरत नहीं', trust_2:'हम आपका डेटा कभी नहीं बेचते', trust_3:'3 सेकंड में रिजल्ट', trust_4:'50+ रिटेलर खोजे गए',
     cat_label:'श्रेणी के अनुसार ब्राउज़ करें', recently_viewed:'हाल ही में देखा',
     loading_text:'आपकी खोज विश्लेषण हो रही है...', best_price:'सबसे कम कीमत', view_deal:'डील देखें →',
     sort_best:'क्रमबद्ध: सर्वश्रेष्ठ मिलान', sort_price:'क्रमबद्ध: सबसे कम कीमत', sort_rating:'क्रमबद्ध: सर्वोच्च रेटिंग', sort_score:'क्रमबद्ध: Prixly स्कोर',
@@ -1093,20 +1124,21 @@ const TRANSLATIONS = {
     alert_p:'जब यह आइटम आपके लक्ष्य मूल्य से नीचे जाएगा तो हम आपको ईमेल करेंगे।',
     alert_email:'आपका@ईमेल.com', alert_target:'लक्ष्य मूल्य', alert_btn:'मुझे सूचित करें',
     deals_title:'आज के सर्वश्रेष्ठ डील्स', deals_p:'अभी सबसे बड़ी कीमत गिरावट — रोज़ अपडेट।',
-    about_h1:'हम इसलिए हैं ताकि आप', about_span:'कम खर्च करें, ज़्यादा जिएं।',
+    about_h1:'हम इसलिए हैं ताकि आप<br><span>कम खर्च करें, ज़्यादा जिएं।</span>',
     footer_privacy:'गोपनीयता', footer_terms:'नियम', footer_hiw:'यह कैसे काम करता है',
     hiw_title:'Prixly कैसे काम करता है',
+    hiw_eyebrow:'सरल। तेज़। पारदर्शी।', hiw_intro:'खोज से बचत तक — जब आप Prixly का उपयोग सस्ती कीमत खोजने के लिए करते हैं तो ठीक यही होता है।', step1_num:'चरण 01', step1_title:'हमें बताएं आप क्या खोज रहे हैं', step1_desc:'किसी भी उत्पाद का नाम टाइप करें — जितना विशिष्ट या सामान्य चाहें — या बस उसकी फोटो डालें। Prixly दोनों को स्वीकार करता है। कोई खाता या साइन-अप की आवश्यकता नहीं है।', step2_num:'चरण 02', step2_title:'एल्गोरिद्म आपकी श्रेणी पहचानता है', step2_desc:'Prixly का इंजन आपकी खोज का विश्लेषण करता है और तुरंत पहचानता है कि यह किस श्रेणी से संबंधित है — इलेक्ट्रॉनिक्स, फैशन, गेमिंग और अधिक। फिर यह उस श्रेणी के लिए सबसे उपयुक्त स्टोर चुनता है और उन्हें प्राथमिकता देता है, ताकि आपको सही जगहों से परिणाम पहले मिलें।', step3_num:'चरण 03', step3_title:'सबसे सस्ते क्रम में परिणाम', step3_desc:'हर स्टोर की कीमत निकाली जाती है, तुलना की जाती है, और सबसे कम से सबसे अधिक क्रम में रखी जाती है। सबसे अच्छी डील को सबसे ऊपर हाइलाइट किया जाता है। आप रेटिंग, शिपिंग स्पीड, या Prixly स्कोर — हर लिस्टिंग के लिए हमारे द्वारा गणना की गई एक संयुक्त रेटिंग — के अनुसार भी क्रमबद्ध कर सकते हैं।', step4_num:'चरण 04', step4_title:'मूल्य इतिहास देखें', step4_desc:'हर परिणाम के साथ 6 महीने का मूल्य इतिहास चार्ट आता है ताकि आप देख सकें कि आज की कीमत वास्तव में अच्छी डील है या इंतजार करना बेहतर होगा। Prixly आपको उस प्रकार के उत्पाद को खरीदने का सबसे अच्छा समय भी बताता है।', step5_num:'चरण 05', step5_title:'अलर्ट सेट करें और कभी भी कीमत में गिरावट न चूकें', step5_desc:'अभी खरीदने के लिए तैयार नहीं हैं? लक्ष्य कीमत और अपना ईमेल सेट करें, और जैसे ही वह आइटम उस कीमत से नीचे जाएगा, Prixly आपको सूचित करेगा। आप अपने सभी अलर्ट मूल्य अलर्ट सेक्शन में प्रबंधित कर सकते हैं।', mock_search_bar:'🔍 खोज बार', mock_or_drop:'या एक इमेज ड्रॉप करें...', mock_dragdrop:'📁 किसी भी उत्पाद की फोटो को ड्रैग और ड्रॉप करें', mock_category_detected:'श्रेणी पहचानी गई: 💻 इलेक्ट्रॉनिक्स (94% मिलान)', mock_searching_priority:'प्राथमिकता के अनुसार शीर्ष स्टोर खोज रहे हैं:', mock_ship_nextday:'⚡ अगले दिन मुफ्त डिलीवरी', mock_ship_free:'मुफ्त डिलीवरी', mock_ship_shipping:'मुफ्त शिपिंग', mock_price_history_header:'📈 पिछले 6 महीनों की कीमत', mock_now:'अभी', mock_peak:'सबसे ऊंची', mock_lowest:'सबसे कम', mock_price_insight:'💡 जनवरी से कीमत में 27% की गिरावट आई है', mock_set_alert:'🔔 मूल्य अलर्ट सेट करें', mock_target_ph:'लक्ष्य', mock_alert_confirm:'✅ अलर्ट सेट हो गया! जब Sony WH-1000XM5 इस कीमत से नीचे जाएगा तो हम आपको ईमेल करेंगे:', pa_title:'🔔 मूल्य अलर्ट', pa_subtitle:'वे आइटम जिन्हें आप देख रहे हैं — कीमत गिरते ही हम आपको बताएंगे।', pa_dropped_header:'🔥 कीमत गिरी — अभी कार्रवाई करें', pa_watching_header:'⏳ अभी भी देख रहे हैं', pa_suggested_header:'✨ आपको यह भी पसंद आ सकता है', pa_via:'द्वारा', pa_your_target:'आपका लक्ष्य:', pa_was:'पहले था', pa_below_target:'✅ आपके लक्ष्य से नीचे', pa_target_label:'लक्ष्य:', pa_away:'दूर', pa_view_deal:'डील देखें', pa_remove:'हटाएं', pa_search_now:'अभी खोजें', pa_save:'बचाएं', deals_filter_all:'सभी डील्स', deals_filter_electronics:'इलेक्ट्रॉनिक्स', deals_filter_gaming:'गेमिंग', deals_filter_fashion:'फैशन', deals_filter_home:'होम', deals_filter_sports:'स्पोर्ट्स', deals_filter_toys:'खिलौने', deals_filter_baby:'बेबी', deal_view:'देखें →', about_tagline:'"सबसे स्मार्ट खरीदार वह नहीं है जो सबसे ज़्यादा खरीदता है — बल्कि वह है जो सबसे कम चुकाता है।"', about_intro:'Prixly एक साधारण विश्वास पर बनाया गया है: किसी को भी आवश्यकता से अधिक भुगतान नहीं करना चाहिए। हम आपके लिए वेब खोजते हैं, हेडफोन से लेकर डायपर तक हर चीज़ की सबसे अच्छी कीमत सेकंडों में ढूंढते हैं।', about_stat1:'खोजे गए स्टोर', about_stat2:'उत्पाद श्रेणियां', about_stat3:'औसत खोज समय', about_stat4:'उपयोग की लागत', about_slogans_header:'हम किसके लिए खड़े हैं', slogan1:'आपका पैसा। आपकी <span>पसंद।</span>', slogan2:'वही उत्पाद। <span>बेहतर कीमत।</span>', slogan3:'एक बार खोजें। <span>हर जगह बचाएं।</span>', slogan4:'कोई चालबाज़ी नहीं। कोई मार्कअप नहीं। केवल <span>सच्चाई।</span>', slogan5:'<span>असली लोगों के लिए</span> बनाया गया, स्टोर्स के लिए नहीं।', about_values_header:'हमें अलग क्या बनाता है', value1_title:'स्मार्ट श्रेणी पहचान', value1_desc:'हमारा एल्गोरिद्म आपकी खोज को पढ़ता है और तुरंत जानता है कि आपको Currys, Smyths, या Decathlon में से किसके पास भेजना है — ताकि आपको हमेशा उन स्टोर्स से परिणाम मिलें जो वास्तव में वह बेचते हैं जो आप खोज रहे हैं।', value2_title:'मूल्य इतिहास जिस पर आप भरोसा कर सकते हैं', value2_desc:'हम आपको दिखाते हैं कि क्या आज की "सेल" वास्तव में एक सेल है, या केवल नकली लाइन के साथ सामान्य कीमत है। छह महीने का इतिहास, एक नज़र में दिखाई देता है।', value3_title:'अलर्ट जो वास्तव में काम करते हैं', value3_desc:'अपनी लक्ष्य कीमत सेट करें और इसे भूल जाएं। जैसे ही कुछ गिरता है हम आपको ईमेल भेजेंगे, ताकि आप वह डील कभी न चूकें जो आप वास्तव में चाहते थे।', value4_title:'कभी भी डेटा बिक्री नहीं', value4_desc:'हम आपका डेटा नहीं बेचते। हम आपको वेब पर ट्रैक नहीं करते। जब आप कोई डील ढूंढते हैं और खरीदने का फैसला करते हैं तो हम छोटे एफिलिएट कमीशन के माध्यम से पैसा कमाते हैं — बस इतना ही।', about_mission_header:'लक्ष्य', about_mission_text:'ऑनलाइन कुछ भी खरीदने से पहले हर कोई जिस पहली जगह जाए, वह बनना। केवल इलेक्ट्रॉनिक्स या फैशन के लिए नहीं — हर चीज़ के लिए। कार पार्ट्स, बेबी प्रोडक्ट्स, वीडियो गेम्स, कपड़े, गार्डन फर्नीचर। यदि यह ऑनलाइन बिकता है, तो Prixly को इसे सस्ता खोजना चाहिए। यही मिशन है। इतना ही सरल।', footer_disclaimer:'दिखाई गई कीमतें केवल प्रदर्शन के लिए हैं। Prixly खरीदारी पर एक छोटा एफिलिएट कमीशन कमा सकता है — आपके लिए कोई अतिरिक्त लागत नहीं।',
   },
   tr: {
     _name:'🇹🇷 Türkçe', _dir:'ltr', _currency:'USD',
     nav_hiw:'Nasıl çalışır', nav_alerts:'Fiyat alarmları', nav_deals:'Fırsatlar', nav_about:'Hakkında', nav_signup:'Ücretsiz kaydol',
     hero_eyebrow:"50'den fazla mağazada anında arama",
-    hero_h1:'Fazla ödemeyi bırakın.', hero_h1_span:'Daha ucuzunu bulun.',
-    hero_p:"İsim, fotoğraf veya bağlantıyla arayın.",
+    hero_h1:'Fazla ödemeyi bırakın.<br><span>Daha ucuzunu bulun.</span>',
+    hero_p:"Aradığınızı yazın — ya da fotoğraf yükleyin — ve Prixly'nin algoritması saniyeler içinde en düşük fiyatı bulur.",
     currency_label:'Para birimi:', tab_text:'🔤 İsimle ara', tab_image:'📷 Görüntüyle ara',
     search_placeholder:'örn. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Ara', url_hint:'💡 İpucu: isim yazmak yerine ürün bağlantısı da yapıştırabilirsiniz', url_error:'⚠️ Bu bağlantı okunamadı — lütfen ürün adını yapıştırmayı deneyin',
     drop_title:'Buraya resim bırakın', drop_sub:'veya yüklemek için tıklayın', drop_formats:'JPG, PNG, WEBP desteklenir',
-    trust_1:'Kayıt gerekmez', trust_2:'Veriler gizli', trust_3:'Anında sonuç', trust_4:'50+ mağaza',
+    trust_1:'Kayıt gerekmez', trust_2:'Verilerinizi asla satmayız', trust_3:'3 saniyede sonuçlar', trust_4:"50'den fazla mağaza tarandı",
     cat_label:'Kategoriye göre göz at', recently_viewed:'Son görüntülenenler',
     loading_text:'Aramanız analiz ediliyor...', best_price:'En iyi fiyat', view_deal:'Fırsatı gör →',
     sort_best:'Sırala: En iyi eşleşme', sort_price:'Sırala: En düşük fiyat', sort_rating:'Sırala: En yüksek puan', sort_score:'Sırala: Prixly skoru',
@@ -1114,20 +1146,21 @@ const TRANSLATIONS = {
     alert_p:'Ürün hedef fiyatınızın altına düştüğünde sizi e-posta ile bilgilendireceğiz.',
     alert_email:'email@adresiniz.com', alert_target:'Hedef fiyat', alert_btn:'Beni bilgilendir',
     deals_title:"Bugünün en iyi fırsatları", deals_p:'Şu anda en büyük fiyat düşüşleri — her gün güncellenir.',
-    about_h1:'Biz varız ki siz', about_span:'daha az harcayıp daha çok yaşayın.',
+    about_h1:'Biz varız ki siz<br><span>daha az harcayıp daha çok yaşayın.</span>',
     footer_privacy:'Gizlilik', footer_terms:'Şartlar', footer_hiw:'Nasıl çalışır',
     hiw_title:"Prixly nasıl çalışır",
+    hiw_eyebrow:'Basit. Hızlı. Şeffaf.', hiw_intro:'Aramadan tasarrufa — Prixly\'yi daha ucuz bir fiyat bulmak için kullandığınızda tam olarak bu gerçekleşir.', step1_num:'Adım 01', step1_title:'Bize ne aradığınızı söyleyin', step1_desc:'Herhangi bir ürünün adını yazın — istediğiniz kadar spesifik veya genel olabilir — veya bir fotoğraf bırakın. Prixly her ikisini de kabul eder. Hesap veya kayıt gerekmez.', step2_num:'Adım 02', step2_title:'Algoritma kategorinizi tespit eder', step2_desc:'Prixly\'nin motoru aramanızı analiz eder ve hangi kategoriye ait olduğunu anında belirler — Elektronik, Moda, Oyun ve daha fazlası. Ardından o kategori için en alakalı mağazaları seçer ve önceliklendirir, böylece önce doğru yerlerden sonuçlar alırsınız.', step3_num:'Adım 03', step3_title:'En ucuzdan sıralanmış sonuçlar', step3_desc:'Her mağazanın fiyatı alınır, karşılaştırılır ve en düşükten en yükseğe sıralanır. En iyi fırsat üstte vurgulanır. Ayrıca puana, kargo hızına veya her ilan için hesapladığımız birleşik bir derecelendirme olan Prixly puanına göre de sıralayabilirsiniz.', step4_num:'Adım 04', step4_title:'Fiyat geçmişini görün', step4_desc:'Her sonuçla birlikte, bugünkü fiyatın gerçekten iyi bir fırsat olup olmadığını — veya beklemenin daha iyi olup olmadığını görebileceğiniz 6 aylık bir fiyat geçmişi grafiği gelir. Prixly size o ürün türünü satın almak için en iyi zamanı da söyler.', step5_num:'Adım 05', step5_title:'Bir alarm kurun ve hiçbir fiyat düşüşünü kaçırmayın', step5_desc:'Henüz satın almaya hazır değil misiniz? Bir hedef fiyat ve e-postanızı belirleyin, ürün o fiyatın altına düştüğü anda Prixly size bildirim gönderir. Tüm alarmlarınızı Fiyat Alarmları bölümünden yönetebilirsiniz.', mock_search_bar:'🔍 Arama çubuğu', mock_or_drop:'Veya bir görsel bırakın...', mock_dragdrop:'📁 Herhangi bir ürün fotoğrafını sürükleyip bırakın', mock_category_detected:'Kategori tespit edildi: 💻 Elektronik (%94 eşleşme)', mock_searching_priority:'Önceliğe göre en iyi mağazalar aranıyor:', mock_ship_nextday:'⚡ Ertesi gün ücretsiz teslimat', mock_ship_free:'Ücretsiz teslimat', mock_ship_shipping:'Ücretsiz kargo', mock_price_history_header:'📈 Son 6 aydaki fiyat', mock_now:'şimdi', mock_peak:'en yüksek', mock_lowest:'en düşük', mock_price_insight:'💡 Fiyat Ocak ayından bu yana %27 düştü', mock_set_alert:'🔔 Fiyat alarmı kur', mock_target_ph:'Hedef', mock_alert_confirm:'✅ Alarm kuruldu! Sony WH-1000XM5 şu fiyatın altına düştüğünde size e-posta göndereceğiz:', pa_title:'🔔 Fiyat Alarmları', pa_subtitle:'İzlediğiniz ürünler — fiyat düştüğü anda size bildireceğiz.', pa_dropped_header:'🔥 Fiyat düştü — şimdi harekete geçin', pa_watching_header:'⏳ Hâlâ izleniyor', pa_suggested_header:'✨ Bunlar da ilginizi çekebilir', pa_via:'üzerinden', pa_your_target:'Hedefiniz:', pa_was:'öncekiydi', pa_below_target:'✅ Hedefinizin altında', pa_target_label:'Hedef:', pa_away:'uzakta', pa_view_deal:'Fırsatı gör', pa_remove:'Kaldır', pa_search_now:'Şimdi ara', pa_save:'Tasarruf et', deals_filter_all:'Tüm fırsatlar', deals_filter_electronics:'Elektronik', deals_filter_gaming:'Oyun', deals_filter_fashion:'Moda', deals_filter_home:'Ev', deals_filter_sports:'Spor', deals_filter_toys:'Oyuncak', deals_filter_baby:'Bebek', deal_view:'Gör →', about_tagline:'"En akıllı alışverişçi en çok satın alan değil — en az ödeyendir."', about_intro:'Prixly basit bir inanç üzerine kuruldu: hiç kimse gerekenden fazla ödememeli. Sizin için interneti tarıyoruz, kulaklıktan bebek bezine kadar her şeyde en iyi fiyatı saniyeler içinde buluyoruz.', about_stat1:'Taranan mağaza', about_stat2:'Ürün kategorisi', about_stat3:'Ortalama arama süresi', about_stat4:'Kullanım maliyeti', about_slogans_header:'Neyi savunuyoruz', slogan1:'Paranız. Sizin <span>seçiminiz.</span>', slogan2:'Aynı ürün. <span>Daha iyi fiyat.</span>', slogan3:'Bir kez arayın. <span>Her yerde tasarruf edin.</span>', slogan4:'Hile yok. Ek ücret yok. Sadece <span>gerçek.</span>', slogan5:'Mağazalar için değil, <span>gerçek insanlar için</span> tasarlandı.', about_values_header:'Bizi farklı kılan', value1_title:'Akıllı kategori tespiti', value1_desc:'Algoritmamız aramanızı okur ve sizi Currys, Smyths veya Decathlon\'a yönlendirmesi gerekip gerekmediğini anında bilir — böylece her zaman gerçekten aradığınızı satan mağazalardan sonuçlar alırsınız.', value2_title:'Güvenebileceğiniz fiyat geçmişi', value2_desc:'Bugünün "indirimi" gerçekten bir indirim mi, yoksa sadece üzerinde sahte bir çizgi olan normal fiyat mı olduğunu size gösteriyoruz. Bir bakışta görülebilen altı aylık geçmiş.', value3_title:'Gerçekten çalışan alarmlar', value3_desc:'Hedef fiyatınızı belirleyin ve unutun. Bir şey düştüğü anda size e-posta göndeririz, böylece gerçekten istediğiniz bir fırsatı asla kaçırmazsınız.', value4_title:'Asla veri satışı yok', value4_desc:'Verilerinizi satmıyoruz. Sizi internette takip etmiyoruz. Bir fırsat bulup satın almayı seçtiğinizde küçük bağlı kuruluş komisyonları yoluyla para kazanıyoruz — hepsi bu.', about_mission_header:'Hedef', about_mission_text:'İnternetten herhangi bir şey satın almadan önce herkesin gittiği ilk yer olmak. Sadece elektronik veya moda için değil — her şey için. Araba parçaları, bebek ürünleri, video oyunları, kıyafetler, bahçe mobilyaları. Eğer internette satılıyorsa, Prixly onu daha ucuza bulmalı. Misyon bu. O kadar basit.', footer_disclaimer:'Gösterilen fiyatlar yalnızca gösterim amaçlıdır. Prixly, satın alımlardan küçük bir bağlı kuruluş komisyonu kazanabilir — size ek bir maliyet getirmez.',
   },
   pl: {
     _name:'🇵🇱 Polski', _dir:'ltr', _currency:'EUR',
     nav_hiw:'Jak to działa', nav_alerts:'Alerty cenowe', nav_deals:'Okazje', nav_about:'O nas', nav_signup:'Zarejestruj się za darmo',
     hero_eyebrow:'Przeszukuje 50+ sklepów natychmiast',
-    hero_h1:'Przestań przepłacać.', hero_h1_span:'Znajdź taniej.',
-    hero_p:'Szukaj po nazwie, zdjęciu lub linku.',
+    hero_h1:'Przestań przepłacać.<br><span>Znajdź taniej.</span>',
+    hero_p:'Wpisz czego szukasz — lub prześlij zdjęcie — a algorytm Prixly znajdzie najniższą cenę w ciągu sekund.',
     currency_label:'Waluta:', tab_text:'🔤 Szukaj po nazwie', tab_image:'📷 Szukaj po zdjęciu',
     search_placeholder:'np. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Szukaj', url_hint:'💡 Wskazówka: możesz też wkleić link do produktu zamiast wpisywać nazwę', url_error:'⚠️ Nie można odczytać tego linku — spróbuj wkleić nazwę produktu',
     drop_title:'Upuść obraz tutaj', drop_sub:'lub kliknij aby przesłać', drop_formats:'Obsługiwane: JPG, PNG, WEBP',
-    trust_1:'Bez rejestracji', trust_2:'Dane są prywatne', trust_3:'Natychmiastowe wyniki', trust_4:'50+ sklepów',
+    trust_1:'Bez rejestracji', trust_2:'Nigdy nie sprzedajemy danych', trust_3:'Wyniki w 3 sekundy', trust_4:'50+ sklepów przeszukanych',
     cat_label:'Przeglądaj według kategorii', recently_viewed:'Ostatnio oglądane',
     loading_text:'Analizowanie wyszukiwania...', best_price:'Najlepsza cena', view_deal:'Zobacz ofertę →',
     sort_best:'Sortuj: Najlepsze dopasowanie', sort_price:'Sortuj: Najniższa cena', sort_rating:'Sortuj: Najwyższa ocena', sort_score:'Sortuj: Wynik Prixly',
@@ -1135,20 +1168,21 @@ const TRANSLATIONS = {
     alert_p:'Wyślemy Ci e-mail, gdy cena spadnie poniżej Twojego celu.',
     alert_email:'twój@email.pl', alert_target:'Cena docelowa', alert_btn:'Powiadom mnie',
     deals_title:'Najlepsze oferty dnia', deals_p:'Największe obniżki cen teraz — aktualizowane codziennie.',
-    about_h1:'Istniejemy po to, byś mógł', about_span:'wydawać mniej i żyć więcej.',
+    about_h1:'Istniejemy po to, byś mógł<br><span>wydawać mniej i żyć więcej.</span>',
     footer_privacy:'Prywatność', footer_terms:'Warunki', footer_hiw:'Jak to działa',
     hiw_title:'Jak działa Prixly',
+    hiw_eyebrow:'Proste. Szybkie. Przejrzyste.', hiw_intro:'Od wyszukiwania do oszczędzania — to dokładnie dzieje się, gdy używasz Prixly, aby znaleźć niższą cenę.', step1_num:'Krok 01', step1_title:'Powiedz nam, czego szukasz', step1_desc:'Wpisz nazwę dowolnego produktu — tak precyzyjnie lub ogólnie, jak chcesz — lub po prostu wstaw zdjęcie. Prixly przyjmuje oba sposoby. Nie jest wymagane konto ani rejestracja.', step2_num:'Krok 02', step2_title:'Algorytm wykrywa Twoją kategorię', step2_desc:'Silnik Prixly analizuje Twoje wyszukiwanie i natychmiast identyfikuje, do której kategorii należy — Elektronika, Moda, Gaming i więcej. Następnie wybiera najbardziej trafne sklepy dla tej kategorii i ustala ich priorytet, dzięki czemu otrzymujesz wyniki z odpowiednich miejsc jako pierwsze.', step3_num:'Krok 03', step3_title:'Wyniki uszeregowane od najtańszych', step3_desc:'Cena każdego sklepu jest pobierana, porównywana i sortowana od najniższej do najwyższej. Najlepsza oferta jest wyróżniona na górze. Możesz także sortować według oceny, szybkości dostawy lub wyniku Prixly — łącznej oceny, którą obliczamy dla każdej oferty.', step4_num:'Krok 04', step4_title:'Sprawdź historię cen', step4_desc:'Każdy wynik zawiera wykres historii cen z ostatnich 6 miesięcy, dzięki czemu możesz sprawdzić, czy dzisiejsza cena to naprawdę dobra oferta — czy lepiej zaczekać. Prixly podaje też najlepszy czas roku na zakup danego typu produktu.', step5_num:'Krok 05', step5_title:'Ustaw alert i nigdy nie przegap spadku ceny', step5_desc:'Nie jesteś jeszcze gotowy do zakupu? Ustaw cenę docelową i swój e-mail, a Prixly powiadomi Cię, gdy tylko produkt spadnie poniżej tej ceny. Możesz zarządzać wszystkimi alertami w sekcji Alerty cenowe.', mock_search_bar:'🔍 Pasek wyszukiwania', mock_or_drop:'Lub wstaw obraz...', mock_dragdrop:'📁 Przeciągnij i upuść zdjęcie produktu', mock_category_detected:'Wykryto kategorię: 💻 Elektronika (94% zgodności)', mock_searching_priority:'Wyszukiwanie najlepszych sklepów według priorytetu:', mock_ship_nextday:'⚡ Bezpłatna dostawa następnego dnia', mock_ship_free:'Bezpłatna dostawa', mock_ship_shipping:'Bezpłatna wysyłka', mock_price_history_header:'📈 Cena w ostatnich 6 miesiącach', mock_now:'teraz', mock_peak:'szczyt', mock_lowest:'najniższa', mock_price_insight:'💡 Cena spadła o 27% od stycznia', mock_set_alert:'🔔 Ustaw alert cenowy', mock_target_ph:'Cel', mock_alert_confirm:'✅ Alert ustawiony! Wyślemy e-mail, gdy Sony WH-1000XM5 spadnie poniżej:', pa_title:'🔔 Alerty cenowe', pa_subtitle:'Produkty, które obserwujesz — powiadomimy Cię, gdy tylko cena spadnie.', pa_dropped_header:'🔥 Cena spadła — działaj teraz', pa_watching_header:'⏳ Wciąż obserwowane', pa_suggested_header:'✨ Może Ci się również spodobać', pa_via:'przez', pa_your_target:'Twój cel:', pa_was:'było', pa_below_target:'✅ Poniżej Twojego celu', pa_target_label:'Cel:', pa_away:'do osiągnięcia', pa_view_deal:'Zobacz ofertę', pa_remove:'Usuń', pa_search_now:'Szukaj teraz', pa_save:'Zaoszczędź', deals_filter_all:'Wszystkie oferty', deals_filter_electronics:'Elektronika', deals_filter_gaming:'Gaming', deals_filter_fashion:'Moda', deals_filter_home:'Dom', deals_filter_sports:'Sport', deals_filter_toys:'Zabawki', deals_filter_baby:'Dziecko', deal_view:'Zobacz →', about_tagline:'"Najmądrzejszy kupujący to nie ten, kto kupuje najwięcej — to ten, kto płaci najmniej."', about_intro:'Prixly powstało w oparciu o jedno proste przekonanie: nikt nie powinien płacić więcej, niż musi. Przeszukujemy internet za Ciebie, znajdując najlepszą cenę na wszystko, od słuchawek do pieluch, w kilka sekund.', about_stat1:'Przeszukane sklepy', about_stat2:'Kategorie produktów', about_stat3:'Średni czas wyszukiwania', about_stat4:'Koszt użytkowania', about_slogans_header:'Co jest dla nas ważne', slogan1:'Twoje pieniądze. Twój <span>wybór.</span>', slogan2:'Ten sam produkt. <span>Lepsza cena.</span>', slogan3:'Szukaj raz. <span>Oszczędzaj wszędzie.</span>', slogan4:'Bez sztuczek. Bez narzutu. Tylko <span>prawda.</span>', slogan5:'Stworzone dla <span>prawdziwych ludzi,</span> nie dla sklepów.', about_values_header:'Co nas wyróżnia', value1_title:'Inteligentne wykrywanie kategorii', value1_desc:'Nasz algorytm analizuje Twoje wyszukiwanie i natychmiast wie, czy wysłać Cię do Currys, Smyths czy Decathlon — dzięki czemu zawsze otrzymujesz wyniki ze sklepów, które faktycznie sprzedają to, czego szukasz.', value2_title:'Historia cen, której możesz ufać', value2_desc:'Pokazujemy, czy dzisiejsza "promocja" to naprawdę promocja, czy tylko normalna cena z fałszywą przekreśloną linią. Sześć miesięcy historii widocznych na pierwszy rzut oka.', value3_title:'Alerty, które naprawdę działają', value3_desc:'Ustaw swoją cenę docelową i zapomnij o niej. Wyślemy Ci e-mail, gdy tylko coś spadnie, dzięki czemu nigdy nie przegapisz oferty, na której Ci naprawdę zależało.', value4_title:'Nigdy nie sprzedajemy danych', value4_desc:'Nie sprzedajemy Twoich danych. Nie śledzimy Cię w internecie. Zarabiamy poprzez niewielkie prowizje partnerskie, gdy znajdziesz okazję i zdecydujesz się na zakup — to wszystko.', about_mission_header:'Cel', about_mission_text:'Stać się pierwszym miejscem, do którego każdy zagląda przed zakupem czegokolwiek online. Nie tylko dla elektroniki czy mody — dla wszystkiego. Części samochodowe, produkty dla dzieci, gry wideo, ubrania, meble ogrodowe. Jeśli coś jest sprzedawane online, Prixly powinno znaleźć to taniej. To jest misja. Po prostu tak.', footer_disclaimer:'Wyświetlane ceny służą jedynie do celów demonstracyjnych. Prixly może otrzymać niewielką prowizję partnerską od zakupów — bez dodatkowych kosztów dla Ciebie.',
   },
   sv: {
     _name:'🇸🇪 Svenska', _dir:'ltr', _currency:'SEK',
     nav_hiw:'Hur det fungerar', nav_alerts:'Prisvarningar', nav_deals:'Erbjudanden', nav_about:'Om oss', nav_signup:'Registrera gratis',
     hero_eyebrow:'Söker hos 50+ återförsäljare direkt',
-    hero_h1:'Sluta betala för mycket.', hero_h1_span:'Hitta det billigare.',
-    hero_p:'Sök efter namn, foto eller länk.',
+    hero_h1:'Sluta betala för mycket.<br><span>Hitta det billigare.</span>',
+    hero_p:'Skriv vad du letar efter — eller ladda upp ett foto — och Prixlys algoritm hittar lägsta priset på sekunder.',
     currency_label:'Valuta:', tab_text:'🔤 Sök efter namn', tab_image:'📷 Sök med bild',
     search_placeholder:'t.ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Sök', url_hint:'💡 Tips: du kan också klistra in en produktlänk istället för att skriva ett namn', url_error:'⚠️ Kunde inte läsa länken — försök klistra in produktnamnet istället',
     drop_title:'Släpp en bild här', drop_sub:'eller klicka för att ladda upp', drop_formats:'JPG, PNG, WEBP stöds',
-    trust_1:'Ingen registrering', trust_2:'Data förblir privat', trust_3:'Direkta resultat', trust_4:'50+ butiker',
+    trust_1:'Ingen registrering krävs', trust_2:'Vi säljer aldrig dina uppgifter', trust_3:'Resultat på under 3s', trust_4:'50+ återförsäljare sökte',
     cat_label:'Bläddra efter kategori', recently_viewed:'Nyligen visade',
     loading_text:'Analyserar din sökning...', best_price:'Bästa pris', view_deal:'Se erbjudande →',
     sort_best:'Sortera: Bästa matchning', sort_price:'Sortera: Lägsta pris', sort_rating:'Sortera: Högst betyg', sort_score:'Sortera: Prixly-poäng',
@@ -1156,9 +1190,10 @@ const TRANSLATIONS = {
     alert_p:'Vi skickar ett e-postmeddelande när priset sjunker under ditt mål.',
     alert_email:'din@email.se', alert_target:'Målpris', alert_btn:'Meddela mig',
     deals_title:'Dagens bästa erbjudanden', deals_p:'De största prissänkningarna just nu — uppdateras dagligen.',
-    about_h1:'Vi finns för att du ska kunna', about_span:'spendera mindre, leva mer.',
+    about_h1:'Vi finns för att du ska kunna<br><span>spendera mindre, leva mer.</span>',
     footer_privacy:'Integritet', footer_terms:'Villkor', footer_hiw:'Hur det fungerar',
     hiw_title:'Hur Prixly fungerar',
+    hiw_eyebrow:'Enkelt. Snabbt. Transparent.', hiw_intro:'Från sökning till besparing — det här händer exakt när du använder Prixly för att hitta ett billigare pris.', step1_num:'Steg 01', step1_title:'Berätta vad du letar efter', step1_desc:'Skriv namnet på vilken produkt som helst — så specifikt eller vagt som du vill — eller släpp helt enkelt ett foto av den. Prixly accepterar båda. Inget konto behövs, ingen registrering krävs.', step2_num:'Steg 02', step2_title:'Algoritmen upptäcker din kategori', step2_desc:'Prixlys motor analyserar din sökning och identifierar omedelbart vilken kategori den tillhör — Elektronik, Mode, Gaming och mer. Den väljer sedan de mest relevanta återförsäljarna för den kategorin och prioriterar dem, så att du får resultat från rätt ställen först.', step3_num:'Steg 03', step3_title:'Resultat rangordnade från billigast', step3_desc:'Varje återförsäljares pris hämtas, jämförs och rangordnas från lägst till högst. Den bästa affären lyfts fram högst upp. Du kan också sortera efter betyg, leveranshastighet, eller Prixly-poäng — ett kombinerat betyg vi beräknar för varje annons.', step4_num:'Steg 04', step4_title:'Se prishistoriken', step4_desc:'Varje resultat kommer med ett prishistorikdiagram för de senaste 6 månaderna så att du kan se om dagens pris verkligen är ett bra erbjudande — eller om det är bättre att vänta. Prixly berättar också den bästa tiden på året att köpa den typen av produkt.', step5_num:'Steg 05', step5_title:'Ställ in en avisering och missa aldrig en prissänkning', step5_desc:'Inte redo att köpa än? Ställ in ett målpris och din e-post, och Prixly meddelar dig så snart varan sjunker under det. Du kan hantera alla dina aviseringar i avsnittet Prisvarningar.', mock_search_bar:'🔍 Sökfält', mock_or_drop:'Eller släpp en bild...', mock_dragdrop:'📁 Dra och släpp ett produktfoto', mock_category_detected:'Kategori identifierad: 💻 Elektronik (94% matchning)', mock_searching_priority:'Söker bland toppåterförsäljare efter prioritet:', mock_ship_nextday:'⚡ Gratis leverans nästa dag', mock_ship_free:'Gratis leverans', mock_ship_shipping:'Fri frakt', mock_price_history_header:'📈 Pris de senaste 6 månaderna', mock_now:'nu', mock_peak:'topp', mock_lowest:'lägsta', mock_price_insight:'💡 Priset har sjunkit 27% sedan januari', mock_set_alert:'🔔 Ställ in prisvarning', mock_target_ph:'Mål', mock_alert_confirm:'✅ Avisering inställd! Vi mejlar dig när Sony WH-1000XM5 sjunker under:', pa_title:'🔔 Prisvarningar', pa_subtitle:'Varor du bevakar — vi meddelar dig så snart priset sjunker.', pa_dropped_header:'🔥 Priset har sjunkit — agera nu', pa_watching_header:'⏳ Bevakas fortfarande', pa_suggested_header:'✨ Du gillar kanske också', pa_via:'via', pa_your_target:'Ditt mål:', pa_was:'var', pa_below_target:'✅ Under ditt mål', pa_target_label:'Mål:', pa_away:'kvar', pa_view_deal:'Visa erbjudande', pa_remove:'Ta bort', pa_search_now:'Sök nu', pa_save:'Spara', deals_filter_all:'Alla erbjudanden', deals_filter_electronics:'Elektronik', deals_filter_gaming:'Gaming', deals_filter_fashion:'Mode', deals_filter_home:'Hem', deals_filter_sports:'Sport', deals_filter_toys:'Leksaker', deals_filter_baby:'Bebis', deal_view:'Visa →', about_tagline:'"Den smartaste shopparen är inte den som köper mest — det är den som betalar minst."', about_intro:'Prixly byggdes på en enkel övertygelse: ingen ska behöva betala mer än nödvändigt. Vi söker igenom webben åt dig och hittar bästa priset på allt från hörlurar till blöjor på några sekunder.', about_stat1:'Genomsökta återförsäljare', about_stat2:'Produktkategorier', about_stat3:'Genomsnittlig söktid', about_stat4:'Kostnad att använda', about_slogans_header:'Vad vi står för', slogan1:'Dina pengar. Ditt <span>val.</span>', slogan2:'Samma produkt. <span>Bättre pris.</span>', slogan3:'Sök en gång. <span>Spara överallt.</span>', slogan4:'Inga knep. Inget pålägg. Bara <span>sanningen.</span>', slogan5:'Byggt för <span>verkliga människor,</span> inte återförsäljare.', about_values_header:'Vad som gör oss annorlunda', value1_title:'Smart kategoriidentifiering', value1_desc:'Vår algoritm läser din sökning och vet omedelbart om du ska skickas till Currys, Smyths eller Decathlon — så att du alltid får resultat från återförsäljare som faktiskt säljer det du letar efter.', value2_title:'Prishistorik du kan lita på', value2_desc:'Vi visar om dagens "rea" verkligen är en rea, eller bara det normala priset med ett falskt streck över. Sex månaders historik, synlig på en blick.', value3_title:'Aviseringar som verkligen fungerar', value3_desc:'Ställ in ditt målpris och glöm det. Vi mejlar dig så snart något sjunker, så att du aldrig missar ett erbjudande du verkligen ville ha.', value4_title:'Säljer aldrig data', value4_desc:'Vi säljer inte dina uppgifter. Vi spårar dig inte på webben. Vi tjänar pengar genom små affiliateprovisioner när du hittar ett erbjudande och väljer att köpa — det är allt.', about_mission_header:'Målet', about_mission_text:'Att bli den första platsen alla går till innan de köper något online. Inte bara för elektronik eller mode — för allt. Bildelar, babyprodukter, videospel, kläder, trädgårdsmöbler. Om det säljs online ska Prixly hitta det billigare. Det är uppdraget. Så enkelt är det.', footer_disclaimer:'Visade priser är enbart i demonstrationssyfte. Prixly kan tjäna en liten affiliateprovision på köp — utan extra kostnad för dig.',
   },
 };
 
@@ -1599,6 +1634,8 @@ function renderCatStrip(){
       <span class="cat-card-name">${c.label}</span>
       <span class="cat-card-count">${c.count}+ items</span>
     </div>`).join('');
+  const now=new Date();
+  document.getElementById('catUpdated').textContent=`Updated today at ${now.getHours().toString().padStart(2,'0')}:00`;
 }
 
 function openCategory(key){
@@ -1729,7 +1766,15 @@ function toggleTheme(){
 }
 
 // ── TIMER ──
-// (deal timer removed along with the deal banner)
+let dealSecs=8*3600+42*60+17;
+setInterval(()=>{
+  if(dealSecs<=0)return;dealSecs--;
+  const h=String(Math.floor(dealSecs/3600)).padStart(2,'0');
+  const m=String(Math.floor((dealSecs%3600)/60)).padStart(2,'0');
+  const s=String(dealSecs%60).padStart(2,'0');
+  const el=document.getElementById('dealTimer');
+  if(el)el.textContent=`Expires in ${h}:${m}:${s}`;
+},1000);
 
 // ── CATEGORY ENGINE ──
 // ════════════════════════════════════════════════
@@ -2329,50 +2374,50 @@ function renderAlerts(){
   const watching=ALERT_ITEMS.filter(i=>!i.dropped);
   let html2='';
   if(dropped.length){
-    html2+=`<div class="pa-section-title">🔥 Price dropped — act now</div>`;
+    html2+=`<div class="pa-section-title">${t('pa_dropped_header')}</div>`;
     html2+=dropped.map(i=>`
       <div class="pa-alert-card dropped">
         <span class="pa-drop-badge">↓${i.savings} DROP</span>
         <div class="pa-alert-info">
           <div class="pa-alert-name">${i.name}</div>
-          <div class="pa-alert-meta"><span>${i.cat}</span><span>via ${i.retailer}</span><span>Your target: ${fmt(i.target)}</span></div>
+          <div class="pa-alert-meta"><span>${i.cat}</span><span>${t('pa_via')} ${i.retailer}</span><span>${t('pa_your_target')} ${fmt(i.target)}</span></div>
         </div>
         <div class="pa-alert-prices">
-          <div class="pa-was">was ${fmt(i.was)}</div>
+          <div class="pa-was">${t('pa_was')} ${fmt(i.was)}</div>
           <div class="pa-current">${fmt(i.current)}</div>
-          <div class="pa-target">✅ Below your target</div>
+          <div class="pa-target">${t('pa_below_target')}</div>
         </div>
         <div class="pa-cta-row">
-          <button class="pa-btn" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">View deal</button>
-          <button class="pa-btn-ghost">Remove</button>
+          <button class="pa-btn" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">${t('pa_view_deal')}</button>
+          <button class="pa-btn-ghost">${t('pa_remove')}</button>
         </div>
       </div>`).join('');
   }
   if(watching.length){
-    html2+=`<div class="pa-section-title" style="margin-top:1.5rem;">⏳ Still watching</div>`;
+    html2+=`<div class="pa-section-title" style="margin-top:1.5rem;">${t('pa_watching_header')}</div>`;
     html2+=watching.map(i=>`
       <div class="pa-alert-card">
         <div class="pa-alert-info">
           <div class="pa-alert-name">${i.name}</div>
-          <div class="pa-alert-meta"><span>${i.cat}</span><span>via ${i.retailer}</span></div>
+          <div class="pa-alert-meta"><span>${i.cat}</span><span>${t('pa_via')} ${i.retailer}</span></div>
         </div>
         <div class="pa-alert-prices">
           <div class="pa-current">${fmt(i.current)}</div>
-          <div class="pa-target">Target: ${fmt(i.target)} (${fmt(i.current-i.target)} away)</div>
+          <div class="pa-target">${t('pa_target_label')} ${fmt(i.target)} (${fmt(i.current-i.target)} ${t('pa_away')})</div>
         </div>
         <div class="pa-cta-row">
-          <button class="pa-btn-ghost" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">Search now</button>
-          <button class="pa-btn-ghost">Remove</button>
+          <button class="pa-btn-ghost" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">${t('pa_search_now')}</button>
+          <button class="pa-btn-ghost">${t('pa_remove')}</button>
         </div>
       </div>`).join('');
   }
-  html2+=`<div class="pa-section-title" style="margin-top:2rem;">✨ You might also like</div>
+  html2+=`<div class="pa-section-title" style="margin-top:2rem;">${t('pa_suggested_header')}</div>
     <div class="suggested-grid">${SUGGESTED_ITEMS.map(i=>`
       <div class="suggested-card" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">
         <div class="suggested-cat">${i.cat}</div>
         <div class="suggested-name">${i.name}</div>
         <div class="suggested-price">${fmt(i.price)}</div>
-        <span class="suggested-save">Save ${i.save}</span>
+        <span class="suggested-save">${t('pa_save')} ${i.save}</span>
       </div>`).join('')}</div>`;
   document.getElementById('paContent').innerHTML=html2;
 }
@@ -2460,9 +2505,9 @@ function renderDeals(){
       <div class="deal-card" onclick="showPage('home');setTimeout(()=>quickSearch('${d.name.replace(/'/g,"\\'")}'),100)">
         <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><span class="deal-card-discount">-${d.discount}</span></div>
         <div class="deal-card-name">${d.name}</div>
-        <div class="deal-card-retailer">via ${d.retailer}</div>
+        <div class="deal-card-retailer">${t('pa_via')} ${d.retailer}</div>
         <div class="deal-card-prices"><span class="deal-card-price">${fmt(d.price)}</span><span class="deal-card-was">${fmt(d.was)}</span></div>
-        <div class="deal-card-footer"><span class="deal-card-shipping">${d.shipping}</span><button class="deal-card-btn">View →</button></div>
+        <div class="deal-card-footer"><span class="deal-card-shipping">${d.shipping}</span><button class="deal-card-btn">${t('deal_view')}</button></div>
       </div>`).join('')}</div>`;
   }
   document.getElementById('dealsContent').innerHTML=html2;
