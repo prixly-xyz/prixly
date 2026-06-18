@@ -428,22 +428,14 @@ footer a{color:var(--accent);text-decoration:none;}
   </div>
 </nav>
 
-<div class="deal-banner">
-  <span class="deal-label">🔥 Deal of the day</span>
-  <span class="deal-text"><strong>Sony WH-1000XM5 Headphones</strong> — found 34% cheaper than RRP</span>
-  <span class="deal-cta" onclick="showPage('home');setTimeout(()=>quickSearch('Sony WH-1000XM5 Headphones'),100)">See the deal →</span>
-  <span class="deal-timer" id="dealTimer">Expires in 08:42:17</span>
-</div>
-
 <!-- ══════════════════════════════════════════ -->
 <!--  HOME PAGE                                 -->
 <!-- ══════════════════════════════════════════ -->
 <div id="page-home" class="page active">
 <main>
   <section class="hero">
-    <span class="hero-eyebrow" data-i18n="hero_eyebrow">Searches 50+ retailers instantly</span>
     <h1 data-i18n="hero_h1">Stop overpaying.<br><span data-i18n="hero_h1_span">Find it cheaper.</span></h1>
-    <p data-i18n="hero_p">Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.</p>
+    <p data-i18n="hero_p">Search by name, photo, or link.</p>
     <div class="currency-row">
       <span class="currency-label" data-i18n="currency_label">Currency:</span>
       <select class="currency-select" id="currencySelect" onchange="setCurrency(this.value)">
@@ -474,7 +466,6 @@ footer a{color:var(--accent);text-decoration:none;}
           <input class="search-input" type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="e.g. iPhone 15, Nike Air Max, LEGO Technic..." onkeydown="if(event.key==='Enter') doSearch()"/>
           <button class="search-btn" onclick="doSearch()" data-i18n="search_btn">Search</button>
         </div>
-        <p class="search-url-hint" data-i18n="url_hint">💡 Tip: you can also paste a product link instead of typing a name</p>
       </div>
       <div id="imageSearch" style="padding:.75rem;display:none;">
         <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
@@ -489,13 +480,12 @@ footer a{color:var(--accent);text-decoration:none;}
     <div class="cat-browse-wrap" id="catBrowseWrap">
       <p class="cat-browse-label">Browse by category</p>
       <div class="cat-browse-strip" id="catBrowseStrip"></div>
-      <div class="cat-updated" id="catUpdated"></div>
     </div>
     <div class="trust-strip">
-      <div class="trust-item">✅ <span data-i18n="trust_1">No sign-up needed</span></div>
-      <div class="trust-item">🔒 <span data-i18n="trust_2">We never sell your data</span></div>
-      <div class="trust-item">⚡ <span data-i18n="trust_3">Results in under 3s</span></div>
-      <div class="trust-item">🛒 <span data-i18n="trust_4">50+ retailers searched</span></div>
+      <div class="trust-item">✅ <span data-i18n="trust_1">No sign-up</span></div>
+      <div class="trust-item">🔒 <span data-i18n="trust_2">Data stays private</span></div>
+      <div class="trust-item">⚡ <span data-i18n="trust_3">Instant results</span></div>
+      <div class="trust-item">🛒 <span data-i18n="trust_4">50+ retailers</span></div>
     </div>
   </section>
   <div class="recently-viewed" id="recentlyViewed">
@@ -839,11 +829,11 @@ const TRANSLATIONS = {
     nav_hiw:'How it works', nav_alerts:'Price alerts', nav_deals:'Deals', nav_about:'About', nav_signup:'Sign up free',
     hero_eyebrow:'Searches 50+ retailers instantly',
     hero_h1:'Stop overpaying.', hero_h1_span:'Find it cheaper.',
-    hero_p:"Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.",
+    hero_p:"Search by name, photo, or link.",
     currency_label:'Currency:', tab_text:'🔤 Search by name', tab_image:'📷 Search by image',
     search_placeholder:'e.g. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Search', url_hint:'💡 Tip: you can also paste a product link instead of typing a name', url_error:'⚠️ Couldn\'t read that URL — try pasting the product name instead',
     drop_title:'Drop an image here', drop_sub:'or click to upload', drop_formats:'JPG, PNG, WEBP supported',
-    trust_1:'No sign-up needed', trust_2:'We never sell your data', trust_3:'Results in under 3s', trust_4:'50+ retailers searched',
+    trust_1:'No sign-up', trust_2:'Data stays private', trust_3:'Instant results', trust_4:'50+ retailers',
     cat_label:'Browse by category', recently_viewed:'Recently viewed',
     loading_text:'Analysing your search...', best_price:'Best price', view_deal:'View deal →',
     sort_best:'Sort: Best match', sort_price:'Sort: Lowest price', sort_rating:'Sort: Highest rated', sort_score:'Sort: Prixly score',
@@ -860,11 +850,11 @@ const TRANSLATIONS = {
     nav_hiw:'How it works', nav_alerts:'Price alerts', nav_deals:'Deals', nav_about:'About', nav_signup:'Sign up free',
     hero_eyebrow:'Searches 50+ retailers instantly',
     hero_h1:'Stop overpaying.', hero_h1_span:'Find it cheaper.',
-    hero_p:"Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.",
+    hero_p:"Search by name, photo, or link.",
     currency_label:'Currency:', tab_text:'🔤 Search by name', tab_image:'📷 Search by image',
     search_placeholder:'e.g. iPhone 15, Nike Air Max, LEGO set...', search_btn:'Search', url_hint:'💡 Tip: you can also paste a product link instead of typing a name', url_error:'⚠️ Couldn\'t read that URL — try pasting the product name instead',
     drop_title:'Drop an image here', drop_sub:'or click to upload', drop_formats:'JPG, PNG, WEBP supported',
-    trust_1:'No sign-up needed', trust_2:'We never sell your data', trust_3:'Results in under 3s', trust_4:'50+ retailers searched',
+    trust_1:'No sign-up', trust_2:'Data stays private', trust_3:'Instant results', trust_4:'50+ retailers',
     cat_label:'Browse by category', recently_viewed:'Recently viewed',
     loading_text:'Analysing your search...', best_price:'Best price', view_deal:'View deal →',
     sort_best:'Sort: Best match', sort_price:'Sort: Lowest price', sort_rating:'Sort: Highest rated', sort_score:'Sort: Prixly score',
@@ -881,11 +871,11 @@ const TRANSLATIONS = {
     nav_hiw:'Comment ça marche', nav_alerts:'Alertes prix', nav_deals:'Bons plans', nav_about:'À propos', nav_signup:'Inscription gratuite',
     hero_eyebrow:'Recherche sur 50+ détaillants instantanément',
     hero_h1:'Arrêtez de payer trop cher.', hero_h1_span:'Trouvez moins cher.',
-    hero_p:"Tapez ce que vous cherchez — ou déposez une photo — et l'algorithme de Prixly détecte votre besoin, choisit les bons détaillants et trouve le meilleur prix en secondes.",
+    hero_p:"Cherchez par nom, photo ou lien.",
     currency_label:'Devise :', tab_text:'🔤 Recherche par nom', tab_image:'📷 Recherche par image',
     search_placeholder:'ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Rechercher', url_hint:'💡 Astuce : vous pouvez aussi coller un lien produit au lieu de taper un nom', url_error:'⚠️ Impossible de lire ce lien — essayez de coller le nom du produit',
     drop_title:'Déposez une image ici', drop_sub:'ou cliquez pour télécharger', drop_formats:'JPG, PNG, WEBP acceptés',
-    trust_1:'Sans inscription', trust_2:'Nous ne vendons jamais vos données', trust_3:'Résultats en moins de 3s', trust_4:'50+ détaillants recherchés',
+    trust_1:'Sans inscription', trust_2:'Données privées', trust_3:'Résultats instantanés', trust_4:'50+ enseignes',
     cat_label:'Parcourir par catégorie', recently_viewed:'Récemment consultés',
     loading_text:'Analyse de votre recherche...', best_price:'Meilleur prix', view_deal:'Voir l\'offre →',
     sort_best:'Tri : Meilleure correspondance', sort_price:'Tri : Prix le plus bas', sort_rating:'Tri : Mieux noté', sort_score:'Tri : Score Prixly',
@@ -902,11 +892,11 @@ const TRANSLATIONS = {
     nav_hiw:'So funktioniert es', nav_alerts:'Preisalarme', nav_deals:'Angebote', nav_about:'Über uns', nav_signup:'Kostenlos anmelden',
     hero_eyebrow:'Durchsucht 50+ Händler sofort',
     hero_h1:'Hören Sie auf zu viel zu zahlen.', hero_h1_span:'Finden Sie es günstiger.',
-    hero_p:"Tippen Sie ein, was Sie suchen — oder laden Sie ein Foto hoch — und Prixlys Algorithmus erkennt Ihr Produkt und findet den günstigsten Preis in Sekunden.",
+    hero_p:"Suchen Sie nach Name, Foto oder Link.",
     currency_label:'Währung:', tab_text:'🔤 Nach Name suchen', tab_image:'📷 Per Bild suchen',
     search_placeholder:'z.B. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Suchen', url_hint:'💡 Tipp: Sie können auch einen Produktlink einfügen, statt einen Namen einzugeben', url_error:'⚠️ Link konnte nicht gelesen werden — versuchen Sie es mit dem Produktnamen',
     drop_title:'Bild hier ablegen', drop_sub:'oder zum Hochladen klicken', drop_formats:'JPG, PNG, WEBP unterstützt',
-    trust_1:'Keine Registrierung nötig', trust_2:'Wir verkaufen keine Daten', trust_3:'Ergebnisse in unter 3s', trust_4:'50+ Händler durchsucht',
+    trust_1:'Keine Anmeldung', trust_2:'Daten bleiben privat', trust_3:'Sofortige Ergebnisse', trust_4:'50+ Händler',
     cat_label:'Nach Kategorie stöbern', recently_viewed:'Zuletzt angesehen',
     loading_text:'Ihre Suche wird analysiert...', best_price:'Bester Preis', view_deal:'Zum Angebot →',
     sort_best:'Sortieren: Beste Übereinstimmung', sort_price:'Sortieren: Niedrigster Preis', sort_rating:'Sortieren: Beste Bewertung', sort_score:'Sortieren: Prixly-Score',
@@ -923,11 +913,11 @@ const TRANSLATIONS = {
     nav_hiw:'Cómo funciona', nav_alerts:'Alertas de precio', nav_deals:'Ofertas', nav_about:'Acerca de', nav_signup:'Regístrate gratis',
     hero_eyebrow:'Busca en 50+ tiendas al instante',
     hero_h1:'Deja de pagar de más.', hero_h1_span:'Encuéntralo más barato.',
-    hero_p:"Escribe lo que buscas — o sube una foto — y el algoritmo de Prixly detecta lo que necesitas y encuentra el precio más bajo en segundos.",
+    hero_p:"Busca por nombre, foto o enlace.",
     currency_label:'Moneda:', tab_text:'🔤 Buscar por nombre', tab_image:'📷 Buscar por imagen',
     search_placeholder:'ej. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Buscar', url_hint:'💡 Consejo: también puedes pegar un enlace del producto en lugar de escribir un nombre', url_error:'⚠️ No se pudo leer ese enlace — intenta pegar el nombre del producto',
     drop_title:'Arrastra una imagen aquí', drop_sub:'o haz clic para subir', drop_formats:'JPG, PNG, WEBP admitidos',
-    trust_1:'Sin registro necesario', trust_2:'Nunca vendemos tus datos', trust_3:'Resultados en menos de 3s', trust_4:'50+ tiendas buscadas',
+    trust_1:'Sin registro', trust_2:'Datos privados', trust_3:'Resultados instantáneos', trust_4:'50+ tiendas',
     cat_label:'Explorar por categoría', recently_viewed:'Vistos recientemente',
     loading_text:'Analizando tu búsqueda...', best_price:'Mejor precio', view_deal:'Ver oferta →',
     sort_best:'Ordenar: Mejor coincidencia', sort_price:'Ordenar: Precio más bajo', sort_rating:'Ordenar: Mejor valorado', sort_score:'Ordenar: Puntuación Prixly',
@@ -944,11 +934,11 @@ const TRANSLATIONS = {
     nav_hiw:'Como funciona', nav_alerts:'Alertas de preço', nav_deals:'Ofertas', nav_about:'Sobre', nav_signup:'Cadastre-se grátis',
     hero_eyebrow:'Pesquisa em 50+ lojas instantaneamente',
     hero_h1:'Pare de pagar mais caro.', hero_h1_span:'Encontre mais barato.',
-    hero_p:"Digite o que procura — ou envie uma foto — e o algoritmo do Prixly detecta o produto e encontra o menor preço em segundos.",
+    hero_p:"Busque por nome, foto ou link.",
     currency_label:'Moeda:', tab_text:'🔤 Buscar por nome', tab_image:'📷 Buscar por imagem',
     search_placeholder:'ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Buscar', url_hint:'💡 Dica: você também pode colar um link do produto em vez de digitar um nome', url_error:'⚠️ Não foi possível ler esse link — tente colar o nome do produto',
     drop_title:'Solte uma imagem aqui', drop_sub:'ou clique para enviar', drop_formats:'JPG, PNG, WEBP aceitos',
-    trust_1:'Sem cadastro necessário', trust_2:'Nunca vendemos seus dados', trust_3:'Resultados em menos de 3s', trust_4:'50+ lojas pesquisadas',
+    trust_1:'Sem cadastro', trust_2:'Dados privados', trust_3:'Resultados instantâneos', trust_4:'50+ lojas',
     cat_label:'Explorar por categoria', recently_viewed:'Vistos recentemente',
     loading_text:'Analisando sua busca...', best_price:'Melhor preço', view_deal:'Ver oferta →',
     sort_best:'Ordenar: Melhor resultado', sort_price:'Ordenar: Menor preço', sort_rating:'Ordenar: Melhor avaliado', sort_score:'Ordenar: Pontuação Prixly',
@@ -965,11 +955,11 @@ const TRANSLATIONS = {
     nav_hiw:'Come funziona', nav_alerts:'Avvisi prezzi', nav_deals:'Offerte', nav_about:'Chi siamo', nav_signup:'Registrati gratis',
     hero_eyebrow:'Cerca su 50+ rivenditori istantaneamente',
     hero_h1:'Smetti di pagare troppo.', hero_h1_span:'Trovalo più economico.',
-    hero_p:"Digita cosa cerchi — o carica una foto — e l'algoritmo di Prixly trova il prezzo più basso tra i migliori rivenditori in pochi secondi.",
+    hero_p:"Cerca per nome, foto o link.",
     currency_label:'Valuta:', tab_text:'🔤 Cerca per nome', tab_image:'📷 Cerca per immagine',
     search_placeholder:'es. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Cerca', url_hint:'💡 Suggerimento: puoi anche incollare un link del prodotto invece di digitare un nome', url_error:'⚠️ Non è stato possibile leggere il link — provare a inserire il nome del prodotto',
     drop_title:"Trascina un'immagine qui", drop_sub:'o clicca per caricare', drop_formats:'JPG, PNG, WEBP supportati',
-    trust_1:'Nessuna registrazione', trust_2:'Non vendiamo i tuoi dati', trust_3:'Risultati in meno di 3s', trust_4:'50+ rivenditori cercati',
+    trust_1:'Senza registrazione', trust_2:'Dati privati', trust_3:'Risultati istantanei', trust_4:'50+ negozi',
     cat_label:'Sfoglia per categoria', recently_viewed:'Visualizzati di recente',
     loading_text:'Analisi della ricerca...', best_price:'Prezzo migliore', view_deal:"Vai all'offerta →",
     sort_best:'Ordina: Migliore corrispondenza', sort_price:'Ordina: Prezzo più basso', sort_rating:'Ordina: Più votato', sort_score:'Ordina: Punteggio Prixly',
@@ -986,11 +976,11 @@ const TRANSLATIONS = {
     nav_hiw:'Hoe het werkt', nav_alerts:'Prijsalarmen', nav_deals:'Aanbiedingen', nav_about:'Over ons', nav_signup:'Gratis aanmelden',
     hero_eyebrow:'Doorzoekt 50+ winkels direct',
     hero_h1:'Stop met te veel betalen.', hero_h1_span:'Vind het goedkoper.',
-    hero_p:"Typ wat je zoekt — of upload een foto — en het algoritme van Prixly vindt de laagste prijs bij de beste winkels in seconden.",
+    hero_p:"Zoek op naam, foto of link.",
     currency_label:'Valuta:', tab_text:'🔤 Zoeken op naam', tab_image:'📷 Zoeken op afbeelding',
     search_placeholder:'bijv. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Zoeken', url_hint:'💡 Tip: je kunt ook een productlink plakken in plaats van een naam te typen', url_error:'⚠️ Kon die link niet lezen — probeer de productnaam te plakken',
     drop_title:'Sleep een afbeelding hier', drop_sub:'of klik om te uploaden', drop_formats:'JPG, PNG, WEBP ondersteund',
-    trust_1:'Geen registratie nodig', trust_2:'We verkopen nooit je gegevens', trust_3:'Resultaten binnen 3s', trust_4:'50+ winkels doorzocht',
+    trust_1:'Geen registratie', trust_2:'Privégegevens', trust_3:'Directe resultaten', trust_4:'50+ winkels',
     cat_label:'Bladeren per categorie', recently_viewed:'Recent bekeken',
     loading_text:'Uw zoekopdracht analyseren...', best_price:'Beste prijs', view_deal:'Bekijk aanbieding →',
     sort_best:'Sorteren: Beste overeenkomst', sort_price:'Sorteren: Laagste prijs', sort_rating:'Sorteren: Best beoordeeld', sort_score:'Sorteren: Prixly score',
@@ -1007,11 +997,11 @@ const TRANSLATIONS = {
     nav_hiw:'使い方', nav_alerts:'価格アラート', nav_deals:'セール', nav_about:'概要', nav_signup:'無料登録',
     hero_eyebrow:'50以上のショップを瞬時に検索',
     hero_h1:'高い買い物はやめましょう。', hero_h1_span:'もっと安く見つけよう。',
-    hero_p:'探している商品を入力するか、写真をアップロードしてください。PrixlyのAIが商品を検出し、最安値を数秒で見つけます。',
+    hero_p:'名前、写真、リンクで検索。',
     currency_label:'通貨：', tab_text:'🔤 名前で検索', tab_image:'📷 画像で検索',
     search_placeholder:'例：iPhone 15、Nike Air Max、LEGOテクニック...', search_btn:'検索', url_hint:'💡 ヒント：商品名の代わりに商品のリンクを貼り付けることもできます', url_error:'⚠️ そのリンクを読み取れませんでした — 商品名を貼り付けてみてください',
     drop_title:'ここに画像をドロップ', drop_sub:'またはクリックしてアップロード', drop_formats:'JPG、PNG、WEBPに対応',
-    trust_1:'登録不要', trust_2:'データを販売しません', trust_3:'3秒以内に結果表示', trust_4:'50以上のショップを検索',
+    trust_1:'登録不要', trust_2:'データは非公開', trust_3:'即時結果', trust_4:'50以上の店舗',
     cat_label:'カテゴリで探す', recently_viewed:'最近見た商品',
     loading_text:'検索を分析中...', best_price:'最安値', view_deal:'取引を見る →',
     sort_best:'並び替え：最適な結果', sort_price:'並び替え：価格が安い順', sort_rating:'並び替え：評価が高い順', sort_score:'並び替え：Prixlyスコア',
@@ -1028,11 +1018,11 @@ const TRANSLATIONS = {
     nav_hiw:'이용 방법', nav_alerts:'가격 알림', nav_deals:'딜', nav_about:'소개', nav_signup:'무료 가입',
     hero_eyebrow:'50개 이상의 쇼핑몰 즉시 검색',
     hero_h1:'더 이상 비싸게 사지 마세요.', hero_h1_span:'더 저렴하게 찾으세요.',
-    hero_p:'찾고 있는 상품을 입력하거나 사진을 올리세요. Prixly의 알고리즘이 최저가를 몇 초 안에 찾아드립니다.',
+    hero_p:'이름, 사진, 링크로 검색하세요.',
     currency_label:'통화:', tab_text:'🔤 이름으로 검색', tab_image:'📷 이미지로 검색',
     search_placeholder:'예: iPhone 15, 나이키 에어맥스, 레고 테크닉...', search_btn:'검색', url_hint:'💡 팁: 상품명 대신 상품 링크를 붙여넣을 수도 있습니다', url_error:'⚠️ 해당 링크를 읽을 수 없습니다 — 상품명을 붙여넣어 보세요',
     drop_title:'여기에 이미지를 드롭하세요', drop_sub:'또는 클릭하여 업로드', drop_formats:'JPG, PNG, WEBP 지원',
-    trust_1:'회원가입 불필요', trust_2:'데이터를 판매하지 않습니다', trust_3:'3초 이내 결과', trust_4:'50개 이상 쇼핑몰 검색',
+    trust_1:'가입 불필요', trust_2:'데이터 비공개', trust_3:'즉시 결과', trust_4:'50개 이상 매장',
     cat_label:'카테고리별 탐색', recently_viewed:'최근 본 항목',
     loading_text:'검색 분석 중...', best_price:'최저가', view_deal:'딜 보기 →',
     sort_best:'정렬: 최적 결과', sort_price:'정렬: 낮은 가격순', sort_rating:'정렬: 높은 평점순', sort_score:'정렬: Prixly 점수',
@@ -1049,11 +1039,11 @@ const TRANSLATIONS = {
     nav_hiw:'使用方法', nav_alerts:'价格提醒', nav_deals:'优惠', nav_about:'关于我们', nav_signup:'免费注册',
     hero_eyebrow:'即时搜索50+家零售商',
     hero_h1:'不再多花冤枉钱。', hero_h1_span:'找到更便宜的价格。',
-    hero_p:'输入您想找的商品，或上传照片。Prixly的算法立即识别产品，几秒内找到最低价格。',
+    hero_p:'按名称、图片或链接搜索。',
     currency_label:'货币：', tab_text:'🔤 按名称搜索', tab_image:'📷 按图片搜索',
     search_placeholder:'例如：iPhone 15、Nike Air Max、乐高...', search_btn:'搜索', url_hint:'💡 提示：您也可以粘贴商品链接，而不是输入名称', url_error:'⚠️ 无法读取该链接 — 请尝试粘贴商品名称',
     drop_title:'将图片拖放到此处', drop_sub:'或点击上传', drop_formats:'支持 JPG、PNG、WEBP',
-    trust_1:'无需注册', trust_2:'我们从不出售您的数据', trust_3:'3秒内出结果', trust_4:'搜索50+家零售商',
+    trust_1:'无需注册', trust_2:'数据不公开', trust_3:'即时结果', trust_4:'50+商店',
     cat_label:'按类别浏览', recently_viewed:'最近浏览',
     loading_text:'正在分析您的搜索...', best_price:'最低价', view_deal:'查看优惠 →',
     sort_best:'排序：最佳匹配', sort_price:'排序：价格最低', sort_rating:'排序：评分最高', sort_score:'排序：Prixly评分',
@@ -1070,11 +1060,11 @@ const TRANSLATIONS = {
     nav_hiw:'كيف يعمل', nav_alerts:'تنبيهات الأسعار', nav_deals:'العروض', nav_about:'من نحن', nav_signup:'سجّل مجاناً',
     hero_eyebrow:'يبحث في أكثر من 50 متجراً فورياً',
     hero_h1:'توقف عن الدفع أكثر مما يجب.', hero_h1_span:'ابحث عن الأرخص.',
-    hero_p:'اكتب ما تبحث عنه — أو أسقط صورة — وسيكتشف خوارزمية Prixly ما تحتاجه ويجد أفضل سعر في ثوانٍ.',
+    hero_p:'ابحث بالاسم أو الصورة أو الرابط.',
     currency_label:':العملة', tab_text:'🔤 البحث بالاسم', tab_image:'📷 البحث بالصورة',
     search_placeholder:'مثال: iPhone 15، Nike Air Max، ليغو...', search_btn:'بحث', url_hint:'💡 نصيحة: يمكنك أيضًا لصق رابط المنتج بدلاً من كتابة الاسم', url_error:'⚠️ تعذّر قراءة هذا الرابط — حاول لصق اسم المنتج بدلاً من ذلك',
     drop_title:'أسقط صورة هنا', drop_sub:'أو انقر للتحميل', drop_formats:'يدعم JPG و PNG و WEBP',
-    trust_1:'لا تسجيل مطلوب', trust_2:'لا نبيع بياناتك أبداً', trust_3:'نتائج خلال 3 ثوانٍ', trust_4:'أكثر من 50 متجراً',
+    trust_1:'بلا تسجيل', trust_2:'بياناتك خاصة', trust_3:'نتائج فورية', trust_4:'+50 متجراً',
     cat_label:'تصفح حسب الفئة', recently_viewed:'شوهد مؤخراً',
     loading_text:'جارٍ تحليل بحثك...', best_price:'أفضل سعر', view_deal:'← عرض الصفقة',
     sort_best:'ترتيب: الأفضل تطابقاً', sort_price:'ترتيب: الأقل سعراً', sort_rating:'ترتيب: الأعلى تقييماً', sort_score:'ترتيب: نقاط Prixly',
@@ -1091,11 +1081,11 @@ const TRANSLATIONS = {
     nav_hiw:'यह कैसे काम करता है', nav_alerts:'मूल्य अलर्ट', nav_deals:'डील्स', nav_about:'हमारे बारे में', nav_signup:'मुफ्त साइन अप',
     hero_eyebrow:'50+ रिटेलर पर तुरंत खोज',
     hero_h1:'ज़्यादा पैसे देना बंद करें।', hero_h1_span:'सस्ता खोजें।',
-    hero_p:'जो खोज रहे हैं वह टाइप करें — या फोटो अपलोड करें — और Prixly का एल्गोरिद्म सेकंडों में सबसे कम कीमत ढूंढ देगा।',
+    hero_p:'नाम, फोटो या लिंक से खोजें।',
     currency_label:'मुद्रा:', tab_text:'🔤 नाम से खोजें', tab_image:'📷 इमेज से खोजें',
     search_placeholder:'जैसे iPhone 15, Nike Air Max, LEGO...', search_btn:'खोजें', url_hint:'💡 सुझाव: आप नाम टाइप करने के बजाय उत्पाद लिंक भी पेस्ट कर सकते हैं', url_error:'⚠️ वह लिंक पढ़ा नहीं जा सका — कृपया उत्पाद का नाम पेस्ट करें',
     drop_title:'यहाँ इमेज छोड़ें', drop_sub:'या अपलोड करने के लिए क्लिक करें', drop_formats:'JPG, PNG, WEBP समर्थित',
-    trust_1:'साइन अप की जरूरत नहीं', trust_2:'हम आपका डेटा कभी नहीं बेचते', trust_3:'3 सेकंड में रिजल्ट', trust_4:'50+ रिटेलर खोजे गए',
+    trust_1:'साइन अप नहीं चाहिए', trust_2:'डेटा निजी रहता है', trust_3:'तुरंत परिणाम', trust_4:'50+ स्टोर',
     cat_label:'श्रेणी के अनुसार ब्राउज़ करें', recently_viewed:'हाल ही में देखा',
     loading_text:'आपकी खोज विश्लेषण हो रही है...', best_price:'सबसे कम कीमत', view_deal:'डील देखें →',
     sort_best:'क्रमबद्ध: सर्वश्रेष्ठ मिलान', sort_price:'क्रमबद्ध: सबसे कम कीमत', sort_rating:'क्रमबद्ध: सर्वोच्च रेटिंग', sort_score:'क्रमबद्ध: Prixly स्कोर',
@@ -1112,11 +1102,11 @@ const TRANSLATIONS = {
     nav_hiw:'Nasıl çalışır', nav_alerts:'Fiyat alarmları', nav_deals:'Fırsatlar', nav_about:'Hakkında', nav_signup:'Ücretsiz kaydol',
     hero_eyebrow:"50'den fazla mağazada anında arama",
     hero_h1:'Fazla ödemeyi bırakın.', hero_h1_span:'Daha ucuzunu bulun.',
-    hero_p:"Aradığınızı yazın — ya da fotoğraf yükleyin — ve Prixly'nin algoritması saniyeler içinde en düşük fiyatı bulur.",
+    hero_p:"İsim, fotoğraf veya bağlantıyla arayın.",
     currency_label:'Para birimi:', tab_text:'🔤 İsimle ara', tab_image:'📷 Görüntüyle ara',
     search_placeholder:'örn. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Ara', url_hint:'💡 İpucu: isim yazmak yerine ürün bağlantısı da yapıştırabilirsiniz', url_error:'⚠️ Bu bağlantı okunamadı — lütfen ürün adını yapıştırmayı deneyin',
     drop_title:'Buraya resim bırakın', drop_sub:'veya yüklemek için tıklayın', drop_formats:'JPG, PNG, WEBP desteklenir',
-    trust_1:'Kayıt gerekmez', trust_2:'Verilerinizi asla satmayız', trust_3:'3 saniyede sonuçlar', trust_4:"50'den fazla mağaza tarandı",
+    trust_1:'Kayıt gerekmez', trust_2:'Veriler gizli', trust_3:'Anında sonuç', trust_4:'50+ mağaza',
     cat_label:'Kategoriye göre göz at', recently_viewed:'Son görüntülenenler',
     loading_text:'Aramanız analiz ediliyor...', best_price:'En iyi fiyat', view_deal:'Fırsatı gör →',
     sort_best:'Sırala: En iyi eşleşme', sort_price:'Sırala: En düşük fiyat', sort_rating:'Sırala: En yüksek puan', sort_score:'Sırala: Prixly skoru',
@@ -1133,11 +1123,11 @@ const TRANSLATIONS = {
     nav_hiw:'Jak to działa', nav_alerts:'Alerty cenowe', nav_deals:'Okazje', nav_about:'O nas', nav_signup:'Zarejestruj się za darmo',
     hero_eyebrow:'Przeszukuje 50+ sklepów natychmiast',
     hero_h1:'Przestań przepłacać.', hero_h1_span:'Znajdź taniej.',
-    hero_p:'Wpisz czego szukasz — lub prześlij zdjęcie — a algorytm Prixly znajdzie najniższą cenę w ciągu sekund.',
+    hero_p:'Szukaj po nazwie, zdjęciu lub linku.',
     currency_label:'Waluta:', tab_text:'🔤 Szukaj po nazwie', tab_image:'📷 Szukaj po zdjęciu',
     search_placeholder:'np. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Szukaj', url_hint:'💡 Wskazówka: możesz też wkleić link do produktu zamiast wpisywać nazwę', url_error:'⚠️ Nie można odczytać tego linku — spróbuj wkleić nazwę produktu',
     drop_title:'Upuść obraz tutaj', drop_sub:'lub kliknij aby przesłać', drop_formats:'Obsługiwane: JPG, PNG, WEBP',
-    trust_1:'Bez rejestracji', trust_2:'Nigdy nie sprzedajemy danych', trust_3:'Wyniki w 3 sekundy', trust_4:'50+ sklepów przeszukanych',
+    trust_1:'Bez rejestracji', trust_2:'Dane są prywatne', trust_3:'Natychmiastowe wyniki', trust_4:'50+ sklepów',
     cat_label:'Przeglądaj według kategorii', recently_viewed:'Ostatnio oglądane',
     loading_text:'Analizowanie wyszukiwania...', best_price:'Najlepsza cena', view_deal:'Zobacz ofertę →',
     sort_best:'Sortuj: Najlepsze dopasowanie', sort_price:'Sortuj: Najniższa cena', sort_rating:'Sortuj: Najwyższa ocena', sort_score:'Sortuj: Wynik Prixly',
@@ -1154,11 +1144,11 @@ const TRANSLATIONS = {
     nav_hiw:'Hur det fungerar', nav_alerts:'Prisvarningar', nav_deals:'Erbjudanden', nav_about:'Om oss', nav_signup:'Registrera gratis',
     hero_eyebrow:'Söker hos 50+ återförsäljare direkt',
     hero_h1:'Sluta betala för mycket.', hero_h1_span:'Hitta det billigare.',
-    hero_p:'Skriv vad du letar efter — eller ladda upp ett foto — och Prixlys algoritm hittar lägsta priset på sekunder.',
+    hero_p:'Sök efter namn, foto eller länk.',
     currency_label:'Valuta:', tab_text:'🔤 Sök efter namn', tab_image:'📷 Sök med bild',
     search_placeholder:'t.ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Sök', url_hint:'💡 Tips: du kan också klistra in en produktlänk istället för att skriva ett namn', url_error:'⚠️ Kunde inte läsa länken — försök klistra in produktnamnet istället',
     drop_title:'Släpp en bild här', drop_sub:'eller klicka för att ladda upp', drop_formats:'JPG, PNG, WEBP stöds',
-    trust_1:'Ingen registrering krävs', trust_2:'Vi säljer aldrig dina uppgifter', trust_3:'Resultat på under 3s', trust_4:'50+ återförsäljare sökte',
+    trust_1:'Ingen registrering', trust_2:'Data förblir privat', trust_3:'Direkta resultat', trust_4:'50+ butiker',
     cat_label:'Bläddra efter kategori', recently_viewed:'Nyligen visade',
     loading_text:'Analyserar din sökning...', best_price:'Bästa pris', view_deal:'Se erbjudande →',
     sort_best:'Sortera: Bästa matchning', sort_price:'Sortera: Lägsta pris', sort_rating:'Sortera: Högst betyg', sort_score:'Sortera: Prixly-poäng',
@@ -1609,8 +1599,6 @@ function renderCatStrip(){
       <span class="cat-card-name">${c.label}</span>
       <span class="cat-card-count">${c.count}+ items</span>
     </div>`).join('');
-  const now=new Date();
-  document.getElementById('catUpdated').textContent=`Updated today at ${now.getHours().toString().padStart(2,'0')}:00`;
 }
 
 function openCategory(key){
@@ -1741,15 +1729,7 @@ function toggleTheme(){
 }
 
 // ── TIMER ──
-let dealSecs=8*3600+42*60+17;
-setInterval(()=>{
-  if(dealSecs<=0)return;dealSecs--;
-  const h=String(Math.floor(dealSecs/3600)).padStart(2,'0');
-  const m=String(Math.floor((dealSecs%3600)/60)).padStart(2,'0');
-  const s=String(dealSecs%60).padStart(2,'0');
-  const el=document.getElementById('dealTimer');
-  if(el)el.textContent=`Expires in ${h}:${m}:${s}`;
-},1000);
+// (deal timer removed along with the deal banner)
 
 // ── CATEGORY ENGINE ──
 // ════════════════════════════════════════════════
