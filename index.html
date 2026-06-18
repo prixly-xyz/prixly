@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prixly — Find it cheaper</title>
+<title>Prixly — Find it cheaper. Compare prices across 50+ retailers instantly</title>
+<meta name="description" content="Prixly searches Amazon, eBay and dozens of local retailers worldwide to find you the lowest price on anything — search by name, image, or paste a product link. Track price history and get alerts when prices drop.">
+<meta name="keywords" content="price comparison, find cheaper, compare prices, shopping search, deal finder, price tracker">
+<meta property="og:title" content="Prixly — Find it cheaper">
+<meta property="og:description" content="Search by name, photo, or link and Prixly finds the lowest price across 50+ retailers worldwide, instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prixly.xyz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Prixly — Find it cheaper">
+<meta name="twitter:description" content="Compare prices across 50+ retailers worldwide, instantly.">
+<link rel="canonical" href="https://prixly.xyz">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 [data-theme="dark"] {
@@ -61,6 +71,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 .search-row{display:flex;align-items:center;padding:.45rem;gap:.45rem;}
 .search-input{flex:1;border:none;outline:none;font-size:1rem;padding:.6rem .8rem;background:none;color:var(--text);}
 .search-input::placeholder{color:var(--muted2);}
+.search-url-hint{font-size:.72rem;color:var(--muted);text-align:center;padding:0 .75rem .6rem;}
 .search-btn{background:var(--accent);color:#fff;border:none;padding:.65rem 1.4rem;border-radius:var(--radius-sm);font-size:.92rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;white-space:nowrap;}
 .search-btn:hover{background:var(--accent-dark);}
 .search-btn:active{transform:scale(.97);}
@@ -463,6 +474,7 @@ footer a{color:var(--accent);text-decoration:none;}
           <input class="search-input" type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="e.g. iPhone 15, Nike Air Max, LEGO Technic..." onkeydown="if(event.key==='Enter') doSearch()"/>
           <button class="search-btn" onclick="doSearch()" data-i18n="search_btn">Search</button>
         </div>
+        <p class="search-url-hint" data-i18n="url_hint">💡 Tip: you can also paste a product link instead of typing a name</p>
       </div>
       <div id="imageSearch" style="padding:.75rem;display:none;">
         <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
@@ -829,7 +841,7 @@ const TRANSLATIONS = {
     hero_h1:'Stop overpaying.', hero_h1_span:'Find it cheaper.',
     hero_p:"Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.",
     currency_label:'Currency:', tab_text:'🔤 Search by name', tab_image:'📷 Search by image',
-    search_placeholder:'e.g. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Search',
+    search_placeholder:'e.g. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Search', url_hint:'💡 Tip: you can also paste a product link instead of typing a name', url_error:'⚠️ Couldn\'t read that URL — try pasting the product name instead',
     drop_title:'Drop an image here', drop_sub:'or click to upload', drop_formats:'JPG, PNG, WEBP supported',
     trust_1:'No sign-up needed', trust_2:'We never sell your data', trust_3:'Results in under 3s', trust_4:'50+ retailers searched',
     cat_label:'Browse by category', recently_viewed:'Recently viewed',
@@ -850,7 +862,7 @@ const TRANSLATIONS = {
     hero_h1:'Stop overpaying.', hero_h1_span:'Find it cheaper.',
     hero_p:"Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.",
     currency_label:'Currency:', tab_text:'🔤 Search by name', tab_image:'📷 Search by image',
-    search_placeholder:'e.g. iPhone 15, Nike Air Max, LEGO set...', search_btn:'Search',
+    search_placeholder:'e.g. iPhone 15, Nike Air Max, LEGO set...', search_btn:'Search', url_hint:'💡 Tip: you can also paste a product link instead of typing a name', url_error:'⚠️ Couldn\'t read that URL — try pasting the product name instead',
     drop_title:'Drop an image here', drop_sub:'or click to upload', drop_formats:'JPG, PNG, WEBP supported',
     trust_1:'No sign-up needed', trust_2:'We never sell your data', trust_3:'Results in under 3s', trust_4:'50+ retailers searched',
     cat_label:'Browse by category', recently_viewed:'Recently viewed',
@@ -871,7 +883,7 @@ const TRANSLATIONS = {
     hero_h1:'Arrêtez de payer trop cher.', hero_h1_span:'Trouvez moins cher.',
     hero_p:"Tapez ce que vous cherchez — ou déposez une photo — et l'algorithme de Prixly détecte votre besoin, choisit les bons détaillants et trouve le meilleur prix en secondes.",
     currency_label:'Devise :', tab_text:'🔤 Recherche par nom', tab_image:'📷 Recherche par image',
-    search_placeholder:'ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Rechercher',
+    search_placeholder:'ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Rechercher', url_hint:'💡 Astuce : vous pouvez aussi coller un lien produit au lieu de taper un nom', url_error:'⚠️ Impossible de lire ce lien — essayez de coller le nom du produit',
     drop_title:'Déposez une image ici', drop_sub:'ou cliquez pour télécharger', drop_formats:'JPG, PNG, WEBP acceptés',
     trust_1:'Sans inscription', trust_2:'Nous ne vendons jamais vos données', trust_3:'Résultats en moins de 3s', trust_4:'50+ détaillants recherchés',
     cat_label:'Parcourir par catégorie', recently_viewed:'Récemment consultés',
@@ -892,7 +904,7 @@ const TRANSLATIONS = {
     hero_h1:'Hören Sie auf zu viel zu zahlen.', hero_h1_span:'Finden Sie es günstiger.',
     hero_p:"Tippen Sie ein, was Sie suchen — oder laden Sie ein Foto hoch — und Prixlys Algorithmus erkennt Ihr Produkt und findet den günstigsten Preis in Sekunden.",
     currency_label:'Währung:', tab_text:'🔤 Nach Name suchen', tab_image:'📷 Per Bild suchen',
-    search_placeholder:'z.B. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Suchen',
+    search_placeholder:'z.B. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Suchen', url_hint:'💡 Tipp: Sie können auch einen Produktlink einfügen, statt einen Namen einzugeben', url_error:'⚠️ Link konnte nicht gelesen werden — versuchen Sie es mit dem Produktnamen',
     drop_title:'Bild hier ablegen', drop_sub:'oder zum Hochladen klicken', drop_formats:'JPG, PNG, WEBP unterstützt',
     trust_1:'Keine Registrierung nötig', trust_2:'Wir verkaufen keine Daten', trust_3:'Ergebnisse in unter 3s', trust_4:'50+ Händler durchsucht',
     cat_label:'Nach Kategorie stöbern', recently_viewed:'Zuletzt angesehen',
@@ -913,7 +925,7 @@ const TRANSLATIONS = {
     hero_h1:'Deja de pagar de más.', hero_h1_span:'Encuéntralo más barato.',
     hero_p:"Escribe lo que buscas — o sube una foto — y el algoritmo de Prixly detecta lo que necesitas y encuentra el precio más bajo en segundos.",
     currency_label:'Moneda:', tab_text:'🔤 Buscar por nombre', tab_image:'📷 Buscar por imagen',
-    search_placeholder:'ej. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Buscar',
+    search_placeholder:'ej. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Buscar', url_hint:'💡 Consejo: también puedes pegar un enlace del producto en lugar de escribir un nombre', url_error:'⚠️ No se pudo leer ese enlace — intenta pegar el nombre del producto',
     drop_title:'Arrastra una imagen aquí', drop_sub:'o haz clic para subir', drop_formats:'JPG, PNG, WEBP admitidos',
     trust_1:'Sin registro necesario', trust_2:'Nunca vendemos tus datos', trust_3:'Resultados en menos de 3s', trust_4:'50+ tiendas buscadas',
     cat_label:'Explorar por categoría', recently_viewed:'Vistos recientemente',
@@ -934,7 +946,7 @@ const TRANSLATIONS = {
     hero_h1:'Pare de pagar mais caro.', hero_h1_span:'Encontre mais barato.',
     hero_p:"Digite o que procura — ou envie uma foto — e o algoritmo do Prixly detecta o produto e encontra o menor preço em segundos.",
     currency_label:'Moeda:', tab_text:'🔤 Buscar por nome', tab_image:'📷 Buscar por imagem',
-    search_placeholder:'ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Buscar',
+    search_placeholder:'ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Buscar', url_hint:'💡 Dica: você também pode colar um link do produto em vez de digitar um nome', url_error:'⚠️ Não foi possível ler esse link — tente colar o nome do produto',
     drop_title:'Solte uma imagem aqui', drop_sub:'ou clique para enviar', drop_formats:'JPG, PNG, WEBP aceitos',
     trust_1:'Sem cadastro necessário', trust_2:'Nunca vendemos seus dados', trust_3:'Resultados em menos de 3s', trust_4:'50+ lojas pesquisadas',
     cat_label:'Explorar por categoria', recently_viewed:'Vistos recentemente',
@@ -955,7 +967,7 @@ const TRANSLATIONS = {
     hero_h1:'Smetti di pagare troppo.', hero_h1_span:'Trovalo più economico.',
     hero_p:"Digita cosa cerchi — o carica una foto — e l'algoritmo di Prixly trova il prezzo più basso tra i migliori rivenditori in pochi secondi.",
     currency_label:'Valuta:', tab_text:'🔤 Cerca per nome', tab_image:'📷 Cerca per immagine',
-    search_placeholder:'es. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Cerca',
+    search_placeholder:'es. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Cerca', url_hint:'💡 Suggerimento: puoi anche incollare un link del prodotto invece di digitare un nome', url_error:'⚠️ Non è stato possibile leggere il link — provare a inserire il nome del prodotto',
     drop_title:"Trascina un'immagine qui", drop_sub:'o clicca per caricare', drop_formats:'JPG, PNG, WEBP supportati',
     trust_1:'Nessuna registrazione', trust_2:'Non vendiamo i tuoi dati', trust_3:'Risultati in meno di 3s', trust_4:'50+ rivenditori cercati',
     cat_label:'Sfoglia per categoria', recently_viewed:'Visualizzati di recente',
@@ -976,7 +988,7 @@ const TRANSLATIONS = {
     hero_h1:'Stop met te veel betalen.', hero_h1_span:'Vind het goedkoper.',
     hero_p:"Typ wat je zoekt — of upload een foto — en het algoritme van Prixly vindt de laagste prijs bij de beste winkels in seconden.",
     currency_label:'Valuta:', tab_text:'🔤 Zoeken op naam', tab_image:'📷 Zoeken op afbeelding',
-    search_placeholder:'bijv. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Zoeken',
+    search_placeholder:'bijv. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Zoeken', url_hint:'💡 Tip: je kunt ook een productlink plakken in plaats van een naam te typen', url_error:'⚠️ Kon die link niet lezen — probeer de productnaam te plakken',
     drop_title:'Sleep een afbeelding hier', drop_sub:'of klik om te uploaden', drop_formats:'JPG, PNG, WEBP ondersteund',
     trust_1:'Geen registratie nodig', trust_2:'We verkopen nooit je gegevens', trust_3:'Resultaten binnen 3s', trust_4:'50+ winkels doorzocht',
     cat_label:'Bladeren per categorie', recently_viewed:'Recent bekeken',
@@ -997,7 +1009,7 @@ const TRANSLATIONS = {
     hero_h1:'高い買い物はやめましょう。', hero_h1_span:'もっと安く見つけよう。',
     hero_p:'探している商品を入力するか、写真をアップロードしてください。PrixlyのAIが商品を検出し、最安値を数秒で見つけます。',
     currency_label:'通貨：', tab_text:'🔤 名前で検索', tab_image:'📷 画像で検索',
-    search_placeholder:'例：iPhone 15、Nike Air Max、LEGOテクニック...', search_btn:'検索',
+    search_placeholder:'例：iPhone 15、Nike Air Max、LEGOテクニック...', search_btn:'検索', url_hint:'💡 ヒント：商品名の代わりに商品のリンクを貼り付けることもできます', url_error:'⚠️ そのリンクを読み取れませんでした — 商品名を貼り付けてみてください',
     drop_title:'ここに画像をドロップ', drop_sub:'またはクリックしてアップロード', drop_formats:'JPG、PNG、WEBPに対応',
     trust_1:'登録不要', trust_2:'データを販売しません', trust_3:'3秒以内に結果表示', trust_4:'50以上のショップを検索',
     cat_label:'カテゴリで探す', recently_viewed:'最近見た商品',
@@ -1018,7 +1030,7 @@ const TRANSLATIONS = {
     hero_h1:'더 이상 비싸게 사지 마세요.', hero_h1_span:'더 저렴하게 찾으세요.',
     hero_p:'찾고 있는 상품을 입력하거나 사진을 올리세요. Prixly의 알고리즘이 최저가를 몇 초 안에 찾아드립니다.',
     currency_label:'통화:', tab_text:'🔤 이름으로 검색', tab_image:'📷 이미지로 검색',
-    search_placeholder:'예: iPhone 15, 나이키 에어맥스, 레고 테크닉...', search_btn:'검색',
+    search_placeholder:'예: iPhone 15, 나이키 에어맥스, 레고 테크닉...', search_btn:'검색', url_hint:'💡 팁: 상품명 대신 상품 링크를 붙여넣을 수도 있습니다', url_error:'⚠️ 해당 링크를 읽을 수 없습니다 — 상품명을 붙여넣어 보세요',
     drop_title:'여기에 이미지를 드롭하세요', drop_sub:'또는 클릭하여 업로드', drop_formats:'JPG, PNG, WEBP 지원',
     trust_1:'회원가입 불필요', trust_2:'데이터를 판매하지 않습니다', trust_3:'3초 이내 결과', trust_4:'50개 이상 쇼핑몰 검색',
     cat_label:'카테고리별 탐색', recently_viewed:'최근 본 항목',
@@ -1039,7 +1051,7 @@ const TRANSLATIONS = {
     hero_h1:'不再多花冤枉钱。', hero_h1_span:'找到更便宜的价格。',
     hero_p:'输入您想找的商品，或上传照片。Prixly的算法立即识别产品，几秒内找到最低价格。',
     currency_label:'货币：', tab_text:'🔤 按名称搜索', tab_image:'📷 按图片搜索',
-    search_placeholder:'例如：iPhone 15、Nike Air Max、乐高...', search_btn:'搜索',
+    search_placeholder:'例如：iPhone 15、Nike Air Max、乐高...', search_btn:'搜索', url_hint:'💡 提示：您也可以粘贴商品链接，而不是输入名称', url_error:'⚠️ 无法读取该链接 — 请尝试粘贴商品名称',
     drop_title:'将图片拖放到此处', drop_sub:'或点击上传', drop_formats:'支持 JPG、PNG、WEBP',
     trust_1:'无需注册', trust_2:'我们从不出售您的数据', trust_3:'3秒内出结果', trust_4:'搜索50+家零售商',
     cat_label:'按类别浏览', recently_viewed:'最近浏览',
@@ -1060,7 +1072,7 @@ const TRANSLATIONS = {
     hero_h1:'توقف عن الدفع أكثر مما يجب.', hero_h1_span:'ابحث عن الأرخص.',
     hero_p:'اكتب ما تبحث عنه — أو أسقط صورة — وسيكتشف خوارزمية Prixly ما تحتاجه ويجد أفضل سعر في ثوانٍ.',
     currency_label:':العملة', tab_text:'🔤 البحث بالاسم', tab_image:'📷 البحث بالصورة',
-    search_placeholder:'مثال: iPhone 15، Nike Air Max، ليغو...', search_btn:'بحث',
+    search_placeholder:'مثال: iPhone 15، Nike Air Max، ليغو...', search_btn:'بحث', url_hint:'💡 نصيحة: يمكنك أيضًا لصق رابط المنتج بدلاً من كتابة الاسم', url_error:'⚠️ تعذّر قراءة هذا الرابط — حاول لصق اسم المنتج بدلاً من ذلك',
     drop_title:'أسقط صورة هنا', drop_sub:'أو انقر للتحميل', drop_formats:'يدعم JPG و PNG و WEBP',
     trust_1:'لا تسجيل مطلوب', trust_2:'لا نبيع بياناتك أبداً', trust_3:'نتائج خلال 3 ثوانٍ', trust_4:'أكثر من 50 متجراً',
     cat_label:'تصفح حسب الفئة', recently_viewed:'شوهد مؤخراً',
@@ -1081,7 +1093,7 @@ const TRANSLATIONS = {
     hero_h1:'ज़्यादा पैसे देना बंद करें।', hero_h1_span:'सस्ता खोजें।',
     hero_p:'जो खोज रहे हैं वह टाइप करें — या फोटो अपलोड करें — और Prixly का एल्गोरिद्म सेकंडों में सबसे कम कीमत ढूंढ देगा।',
     currency_label:'मुद्रा:', tab_text:'🔤 नाम से खोजें', tab_image:'📷 इमेज से खोजें',
-    search_placeholder:'जैसे iPhone 15, Nike Air Max, LEGO...', search_btn:'खोजें',
+    search_placeholder:'जैसे iPhone 15, Nike Air Max, LEGO...', search_btn:'खोजें', url_hint:'💡 सुझाव: आप नाम टाइप करने के बजाय उत्पाद लिंक भी पेस्ट कर सकते हैं', url_error:'⚠️ वह लिंक पढ़ा नहीं जा सका — कृपया उत्पाद का नाम पेस्ट करें',
     drop_title:'यहाँ इमेज छोड़ें', drop_sub:'या अपलोड करने के लिए क्लिक करें', drop_formats:'JPG, PNG, WEBP समर्थित',
     trust_1:'साइन अप की जरूरत नहीं', trust_2:'हम आपका डेटा कभी नहीं बेचते', trust_3:'3 सेकंड में रिजल्ट', trust_4:'50+ रिटेलर खोजे गए',
     cat_label:'श्रेणी के अनुसार ब्राउज़ करें', recently_viewed:'हाल ही में देखा',
@@ -1102,7 +1114,7 @@ const TRANSLATIONS = {
     hero_h1:'Fazla ödemeyi bırakın.', hero_h1_span:'Daha ucuzunu bulun.',
     hero_p:"Aradığınızı yazın — ya da fotoğraf yükleyin — ve Prixly'nin algoritması saniyeler içinde en düşük fiyatı bulur.",
     currency_label:'Para birimi:', tab_text:'🔤 İsimle ara', tab_image:'📷 Görüntüyle ara',
-    search_placeholder:'örn. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Ara',
+    search_placeholder:'örn. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Ara', url_hint:'💡 İpucu: isim yazmak yerine ürün bağlantısı da yapıştırabilirsiniz', url_error:'⚠️ Bu bağlantı okunamadı — lütfen ürün adını yapıştırmayı deneyin',
     drop_title:'Buraya resim bırakın', drop_sub:'veya yüklemek için tıklayın', drop_formats:'JPG, PNG, WEBP desteklenir',
     trust_1:'Kayıt gerekmez', trust_2:'Verilerinizi asla satmayız', trust_3:'3 saniyede sonuçlar', trust_4:"50'den fazla mağaza tarandı",
     cat_label:'Kategoriye göre göz at', recently_viewed:'Son görüntülenenler',
@@ -1123,7 +1135,7 @@ const TRANSLATIONS = {
     hero_h1:'Przestań przepłacać.', hero_h1_span:'Znajdź taniej.',
     hero_p:'Wpisz czego szukasz — lub prześlij zdjęcie — a algorytm Prixly znajdzie najniższą cenę w ciągu sekund.',
     currency_label:'Waluta:', tab_text:'🔤 Szukaj po nazwie', tab_image:'📷 Szukaj po zdjęciu',
-    search_placeholder:'np. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Szukaj',
+    search_placeholder:'np. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Szukaj', url_hint:'💡 Wskazówka: możesz też wkleić link do produktu zamiast wpisywać nazwę', url_error:'⚠️ Nie można odczytać tego linku — spróbuj wkleić nazwę produktu',
     drop_title:'Upuść obraz tutaj', drop_sub:'lub kliknij aby przesłać', drop_formats:'Obsługiwane: JPG, PNG, WEBP',
     trust_1:'Bez rejestracji', trust_2:'Nigdy nie sprzedajemy danych', trust_3:'Wyniki w 3 sekundy', trust_4:'50+ sklepów przeszukanych',
     cat_label:'Przeglądaj według kategorii', recently_viewed:'Ostatnio oglądane',
@@ -1144,7 +1156,7 @@ const TRANSLATIONS = {
     hero_h1:'Sluta betala för mycket.', hero_h1_span:'Hitta det billigare.',
     hero_p:'Skriv vad du letar efter — eller ladda upp ett foto — och Prixlys algoritm hittar lägsta priset på sekunder.',
     currency_label:'Valuta:', tab_text:'🔤 Sök efter namn', tab_image:'📷 Sök med bild',
-    search_placeholder:'t.ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Sök',
+    search_placeholder:'t.ex. iPhone 15, Nike Air Max, LEGO Technic...', search_btn:'Sök', url_hint:'💡 Tips: du kan också klistra in en produktlänk istället för att skriva ett namn', url_error:'⚠️ Kunde inte läsa länken — försök klistra in produktnamnet istället',
     drop_title:'Släpp en bild här', drop_sub:'eller klicka för att ladda upp', drop_formats:'JPG, PNG, WEBP stöds',
     trust_1:'Ingen registrering krävs', trust_2:'Vi säljer aldrig dina uppgifter', trust_3:'Resultat på under 3s', trust_4:'50+ återförsäljare sökte',
     cat_label:'Bläddra efter kategori', recently_viewed:'Nyligen visade',
@@ -1223,6 +1235,20 @@ function setRegion(code){
   activeRegion = code;
   window._regionManuallySet = true;
   try{ localStorage.setItem('prixly_region', activeRegion); }catch(e){}
+  // Currency follows region unless the user has explicitly chosen their own currency
+  if(!window._currencyManuallySet){
+    const regionCurrency = REGION_CURRENCY[activeRegion];
+    if(regionCurrency){
+      setCurrencyAuto(regionCurrency);
+      const curSel = document.getElementById('currencySelect');
+      if(curSel) curSel.value = regionCurrency;
+    }
+  }
+  // Refresh whichever page is currently visible so prices reflect the new currency
+  const alertsActive=document.getElementById('page-alerts').classList.contains('active');
+  const dealsActive=document.getElementById('page-deals').classList.contains('active');
+  if(alertsActive) renderAlerts();
+  if(dealsActive) renderDeals();
   // Re-run current search with new region if results are showing
   if(currentResults.length && currentResults[0]){
     const lastQuery = currentResults[0].name;
@@ -1296,12 +1322,9 @@ function setLanguage(code){
   const t = TRANSLATIONS[activeLang];
   // Set text direction for RTL languages
   document.documentElement.setAttribute('dir', t._dir || 'ltr');
-  // Auto-set currency if user hasn't manually changed it
-  if(t._currency && !window._currencyManuallySet){
-    setCurrencyAuto(t._currency);
-    const sel = document.getElementById('currencySelect');
-    if(sel) sel.value = t._currency;
-  }
+  // NOTE: currency is intentionally NOT set here. Currency follows the user's
+  // region (location) or manual choice only — never their language preference.
+  // A French-speaking user in Australia should still see AUD, not EUR.
   // Apply all translations to data-i18n elements
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
@@ -1353,6 +1376,7 @@ let activeCurrency='GBP';
 function setCurrency(code){
   activeCurrency=code;
   window._currencyManuallySet=true;
+  try{ localStorage.setItem('prixly_currency', code); }catch(e){}
   if(currentResults.length) renderResults(currentResults);
   const alertsActive=document.getElementById('page-alerts').classList.contains('active');
   const dealsActive=document.getElementById('page-deals').classList.contains('active');
@@ -1663,24 +1687,42 @@ function showPage(id) {
 window.addEventListener('DOMContentLoaded',()=>{
   renderCatStrip();
 
-  // Detect region first — drives both retailer selection and default currency
+  // ── THEME — restore saved choice, default stays dark if nothing saved ──
+  let savedTheme = null;
+  try{ savedTheme = localStorage.getItem('prixly_theme'); }catch(e){}
+  if(savedTheme){
+    html.setAttribute('data-theme', savedTheme);
+    const themeBtn = document.getElementById('themeBtn');
+    if(themeBtn) themeBtn.textContent = savedTheme==='dark' ? '☀️ Light' : '🌙 Dark';
+  }
+
+  // ── REGION — drives retailer selection and default currency ──
   let savedRegion = null;
   try{ savedRegion = localStorage.getItem('prixly_region'); }catch(e){}
   activeRegion = savedRegion || detectUserRegion();
   buildRegionSelector();
 
-  // Detect language — check saved preference first, then browser locale
+  // ── LANGUAGE — check saved preference first, then browser locale ──
   let savedLang = null;
   try{ savedLang = localStorage.getItem('prixly_lang'); }catch(e){}
   activeLang = savedLang || detectUserLanguage();
   buildLangSelector();
 
-  // Set currency from region (more accurate than language for currency purposes)
-  const regionCurrency = REGION_CURRENCY[activeRegion];
-  if(regionCurrency){
-    setCurrencyAuto(regionCurrency);
+  // ── CURRENCY — manual choice always wins, otherwise follows region only (never language) ──
+  let savedCurrency = null;
+  try{ savedCurrency = localStorage.getItem('prixly_currency'); }catch(e){}
+  if(savedCurrency && CURRENCIES[savedCurrency]){
+    activeCurrency = savedCurrency;
+    window._currencyManuallySet = true;
     const curSel = document.getElementById('currencySelect');
-    if(curSel) curSel.value = regionCurrency;
+    if(curSel) curSel.value = savedCurrency;
+  } else {
+    const regionCurrency = REGION_CURRENCY[activeRegion];
+    if(regionCurrency){
+      setCurrencyAuto(regionCurrency);
+      const curSel = document.getElementById('currencySelect');
+      if(curSel) curSel.value = regionCurrency;
+    }
   }
 
   setLanguage(activeLang);
@@ -1690,8 +1732,10 @@ window.addEventListener('DOMContentLoaded',()=>{
 const html = document.documentElement;
 function toggleTheme(){
   const isDark=html.getAttribute('data-theme')==='dark';
-  html.setAttribute('data-theme',isDark?'light':'dark');
+  const newTheme=isDark?'light':'dark';
+  html.setAttribute('data-theme',newTheme);
   document.getElementById('themeBtn').textContent=isDark?'🌙 Dark':'☀️ Light';
+  try{ localStorage.setItem('prixly_theme', newTheme); }catch(e){}
   if(chartInstance){chartInstance.destroy();chartInstance=null;}
   if(document.getElementById('resultsSection').classList.contains('visible')) drawChart();
 }
@@ -1995,12 +2039,12 @@ async function resolveURL(url){
   // Show detection state in search input area
   const input=document.getElementById('searchInput');
   input.value='';
-  input.placeholder='🔗 Detecting product from URL...';
+  input.placeholder='🔗 ...';
 
   // First try fast slug extraction
   const fromSlug=extractProductFromURL(url);
   if(fromSlug){
-    input.placeholder=`e.g. iPhone 15, Nike Air Max, LEGO Technic...`;
+    input.placeholder=t('search_placeholder');
     return fromSlug;
   }
 
@@ -2017,10 +2061,10 @@ async function resolveURL(url){
     });
     const data=await res.json();
     const result=data.content.map(c=>c.text||'').join('').trim();
-    input.placeholder=`e.g. iPhone 15, Nike Air Max, LEGO Technic...`;
+    input.placeholder=t('search_placeholder');
     return result||null;
   }catch(e){
-    input.placeholder=`e.g. iPhone 15, Nike Air Max, LEGO Technic...`;
+    input.placeholder=t('search_placeholder');
     return null;
   }
 }
@@ -2037,10 +2081,10 @@ async function doSearch(){
     input.style.opacity='1';
 
     if(!product){
-      // Couldn't parse — show friendly error inline
+      // Couldn't parse — show friendly error inline, in the user's language
       input.value='';
-      input.placeholder='⚠️ Couldn\'t read that URL — try pasting the product name instead';
-      setTimeout(()=>{ input.placeholder='e.g. iPhone 15, Nike Air Max, LEGO Technic...'; },3500);
+      input.placeholder=t('url_error');
+      setTimeout(()=>{ input.placeholder=t('search_placeholder'); },3500);
       return;
     }
 
@@ -2311,7 +2355,7 @@ function renderAlerts(){
         <span class="pa-drop-badge">↓${i.savings} DROP</span>
         <div class="pa-alert-info">
           <div class="pa-alert-name">${i.name}</div>
-          <div class="pa-alert-meta"><span>${i.cat}</span><span>via ${i.retailer}</span><span>Your target: £${i.target}</span></div>
+          <div class="pa-alert-meta"><span>${i.cat}</span><span>via ${i.retailer}</span><span>Your target: ${fmt(i.target)}</span></div>
         </div>
         <div class="pa-alert-prices">
           <div class="pa-was">was ${fmt(i.was)}</div>
@@ -2330,7 +2374,7 @@ function renderAlerts(){
       <div class="pa-alert-card">
         <div class="pa-alert-info">
           <div class="pa-alert-name">${i.name}</div>
-          <div class="pa-alert-meta"><span>${i.cat}</span><span>via ${i.retailer}</span><span>Your target: £${i.target}</span></div>
+          <div class="pa-alert-meta"><span>${i.cat}</span><span>via ${i.retailer}</span></div>
         </div>
         <div class="pa-alert-prices">
           <div class="pa-current">${fmt(i.current)}</div>
