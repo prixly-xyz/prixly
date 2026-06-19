@@ -87,9 +87,23 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 /* CURRENCY SELECTOR */
 .currency-row{display:flex;align-items:center;justify-content:flex-end;max-width:640px;margin:0 auto .4rem;gap:.5rem;}
 .currency-label{font-size:.73rem;color:var(--muted);}
-.currency-select{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.28rem .55rem;font-size:.78rem;color:var(--text);cursor:pointer;outline:none;transition:border-color .2s;color-scheme:light;}
+.currency-select{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.28rem .55rem;font-size:.78rem;color:var(--text);cursor:pointer;outline:none;transition:border-color .2s;}
 .currency-select:focus,.currency-select:hover{border-color:var(--accent);}
-[data-theme="dark"] .currency-select{color-scheme:dark;}
+/* Custom select dropdown — replaces native <select> to support full theme styling */
+.cselect{position:relative;display:inline-block;}
+.cselect-btn{background:none;border:none;padding:.13rem .35rem;font-size:.8rem;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;max-width:180px;}
+.cselect-val{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cselect-arrow{font-size:.6rem;opacity:.5;flex-shrink:0;transition:transform .15s;}
+.cselect-list.open ~ .cselect-btn .cselect-arrow,.cselect.open .cselect-arrow{transform:rotate(180deg);}
+.cselect-list{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);box-shadow:var(--shadow);min-width:190px;max-height:260px;overflow-y:auto;z-index:500;display:none;}
+.cselect-list.open{display:block;}
+.cselect-opt{padding:.48rem .9rem;font-size:.82rem;cursor:pointer;color:var(--text);white-space:nowrap;}
+.cselect-opt:hover{background:var(--accent-dim);color:var(--accent);}
+.cselect-opt.csel{color:var(--accent);font-weight:600;}
+/* Currency row custom select — wider */
+.currency-row .cselect-btn{font-size:.78rem;padding:.28rem .55rem;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);max-width:220px;}
+.currency-row .cselect-btn:hover{border-color:var(--accent);}
+.currency-row .cselect-list{min-width:210px;}
 .filters{max-width:640px;margin:0 auto .75rem;display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;}
 .filter-chip{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:.3rem .85rem;font-size:.78rem;cursor:pointer;transition:all .2s;color:var(--muted);}
 .filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
@@ -428,11 +442,23 @@ footer a{color:var(--accent);text-decoration:none;}
   <div class="nav-right">
     <div class="nav-selector-group" title="Region — changes nearby stores and currency">
       <span class="nav-selector-icon">📍</span>
-      <select class="currency-select" id="regionSelect" onchange="setRegion(this.value)" style="font-size:.8rem;padding:.28rem .5rem;"></select>
+      <div class="cselect" id="regionSelectWrap">
+        <button class="cselect-btn" onclick="cSelectToggle('regionSelectWrap')">
+          <span class="cselect-val" id="regionSelectVal"></span>
+          <span class="cselect-arrow">▾</span>
+        </button>
+        <div class="cselect-list" id="regionSelectList"></div>
+      </div>
     </div>
     <div class="nav-selector-group" title="Language — changes the site language">
       <span class="nav-selector-icon">🌐</span>
-      <select class="currency-select" id="langSelect" onchange="setLanguage(this.value)" style="font-size:.8rem;padding:.28rem .5rem;"></select>
+      <div class="cselect" id="langSelectWrap">
+        <button class="cselect-btn" onclick="cSelectToggle('langSelectWrap')">
+          <span class="cselect-val" id="langSelectVal"></span>
+          <span class="cselect-arrow">▾</span>
+        </button>
+        <div class="cselect-list" id="langSelectList"></div>
+      </div>
     </div>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
     <a class="nav-cta" onclick="showPage('alerts')" id="nav-signup">Sign up free</a>
@@ -457,23 +483,13 @@ footer a{color:var(--accent);text-decoration:none;}
     <p data-i18n="hero_p">Type what you're after — or drop a photo — and Prixly's algorithm detects what you need, picks the right retailers, and finds you the lowest price in seconds.</p>
     <div class="currency-row">
       <span class="currency-label" data-i18n="currency_label">Currency:</span>
-      <select class="currency-select" id="currencySelect" onchange="setCurrency(this.value)">
-        <option value="GBP">🇬🇧 GBP — £ Pound</option>
-        <option value="USD">🇺🇸 USD — $ Dollar</option>
-        <option value="EUR">🇪🇺 EUR — € Euro</option>
-        <option value="JPY">🇯🇵 JPY — ¥ Yen</option>
-        <option value="CAD">🇨🇦 CAD — $ Canadian</option>
-        <option value="AUD">🇦🇺 AUD — $ Australian</option>
-        <option value="CHF">🇨🇭 CHF — Fr Swiss Franc</option>
-        <option value="CNY">🇨🇳 CNY — ¥ Yuan</option>
-        <option value="INR">🇮🇳 INR — ₹ Rupee</option>
-        <option value="BRL">🇧🇷 BRL — R$ Real</option>
-        <option value="MXN">🇲🇽 MXN — $ Peso</option>
-        <option value="KRW">🇰🇷 KRW — ₩ Won</option>
-        <option value="SGD">🇸🇬 SGD — $ Singapore</option>
-        <option value="NOK">🇳🇴 NOK — kr Krone</option>
-        <option value="SEK">🇸🇪 SEK — kr Krona</option>
-      </select>
+      <div class="cselect" id="currencySelectWrap">
+        <button class="cselect-btn" onclick="cSelectToggle('currencySelectWrap')">
+          <span class="cselect-val" id="currencySelectVal"></span>
+          <span class="cselect-arrow">▾</span>
+        </button>
+        <div class="cselect-list" id="currencySelectList"></div>
+      </div>
     </div>
     <div class="search-container">
       <div class="search-tabs">
@@ -1262,14 +1278,15 @@ function setRegion(code){
   activeRegion = code;
   window._regionManuallySet = true;
   try{ localStorage.setItem('prixly_region', activeRegion); }catch(e){}
+  // Update region display label
+  const regionOpt = REGIONS.find(r=>r.code===code);
+  const regionVal = document.getElementById('regionSelectVal');
+  if(regionVal && regionOpt) regionVal.textContent = regionOpt.label;
+  document.querySelectorAll('#regionSelectList .cselect-opt').forEach(o=>o.classList.toggle('csel',o.dataset.code===code));
   // Currency follows region unless the user has explicitly chosen their own currency
   if(!window._currencyManuallySet){
     const regionCurrency = REGION_CURRENCY[activeRegion];
-    if(regionCurrency){
-      setCurrencyAuto(regionCurrency);
-      const curSel = document.getElementById('currencySelect');
-      if(curSel) curSel.value = regionCurrency;
-    }
+    if(regionCurrency) setCurrencyAuto(regionCurrency);
   }
   // Refresh whichever page is currently visible so prices reflect the new currency
   const alertsActive=document.getElementById('page-alerts').classList.contains('active');
@@ -1283,26 +1300,66 @@ function setRegion(code){
   }
 }
 
+const REGIONS = [
+  {code:'GB',label:'🇬🇧 United Kingdom'},{code:'US',label:'🇺🇸 United States'},
+  {code:'AU',label:'🇦🇺 Australia'},{code:'CA',label:'🇨🇦 Canada'},
+  {code:'NZ',label:'🇳🇿 New Zealand'},{code:'IE',label:'🇮🇪 Ireland'},
+  {code:'FR',label:'🇫🇷 France'},{code:'DE',label:'🇩🇪 Germany'},
+  {code:'ES',label:'🇪🇸 Spain'},{code:'IT',label:'🇮🇹 Italy'},
+  {code:'NL',label:'🇳🇱 Netherlands'},{code:'PT',label:'🇵🇹 Portugal'},
+  {code:'BR',label:'🇧🇷 Brazil'},{code:'MX',label:'🇲🇽 Mexico'},
+  {code:'JP',label:'🇯🇵 Japan'},{code:'KR',label:'🇰🇷 South Korea'},
+  {code:'CN',label:'🇨🇳 China'},{code:'HK',label:'🇭🇰 Hong Kong'},
+  {code:'SG',label:'🇸🇬 Singapore'},{code:'IN',label:'🇮🇳 India'},
+  {code:'AE',label:'🇦🇪 UAE'},{code:'SA',label:'🇸🇦 Saudi Arabia'},
+  {code:'ZA',label:'🇿🇦 South Africa'},{code:'TR',label:'🇹🇷 Turkey'},
+  {code:'PL',label:'🇵🇱 Poland'},{code:'SE',label:'🇸🇪 Sweden'},
+];
+
+const CURRENCY_OPTS = [
+  {code:'GBP',label:'🇬🇧 GBP — £ Pound'},{code:'USD',label:'🇺🇸 USD — $ Dollar'},
+  {code:'EUR',label:'🇪🇺 EUR — € Euro'},{code:'JPY',label:'🇯🇵 JPY — ¥ Yen'},
+  {code:'CAD',label:'🇨🇦 CAD — $ Canadian'},{code:'AUD',label:'🇦🇺 AUD — $ Australian'},
+  {code:'CHF',label:'🇨🇭 CHF — Fr Swiss Franc'},{code:'CNY',label:'🇨🇳 CNY — ¥ Yuan'},
+  {code:'INR',label:'🇮🇳 INR — ₹ Rupee'},{code:'BRL',label:'🇧🇷 BRL — R$ Real'},
+  {code:'MXN',label:'🇲🇽 MXN — $ Peso'},{code:'KRW',label:'🇰🇷 KRW — ₩ Won'},
+  {code:'SGD',label:'🇸🇬 SGD — $ Singapore'},{code:'NOK',label:'🇳🇴 NOK — kr Krone'},
+  {code:'SEK',label:'🇸🇪 SEK — kr Krona'},
+];
+
+function cSelectToggle(wrapId){
+  const wrap = document.getElementById(wrapId);
+  const list = wrap.querySelector('.cselect-list');
+  const isOpen = list.classList.contains('open');
+  document.querySelectorAll('.cselect-list').forEach(l=>l.classList.remove('open'));
+  document.querySelectorAll('.cselect').forEach(w=>w.classList.remove('open'));
+  if(!isOpen){ list.classList.add('open'); wrap.classList.add('open'); }
+}
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.cselect')){
+    document.querySelectorAll('.cselect-list').forEach(l=>l.classList.remove('open'));
+    document.querySelectorAll('.cselect').forEach(w=>w.classList.remove('open'));
+  }
+});
+
+function cSelectBuild(listId, valId, items, activeCode, onPick){
+  const list = document.getElementById(listId);
+  const val = document.getElementById(valId);
+  if(!list) return;
+  list.innerHTML = items.map(r=>`<div class="cselect-opt${r.code===activeCode?' csel':''}" data-code="${r.code}">${r.label}</div>`).join('');
+  list.querySelectorAll('.cselect-opt').forEach(opt=>{
+    opt.addEventListener('click',()=>{
+      onPick(opt.dataset.code);
+      document.querySelectorAll('.cselect-list').forEach(l=>l.classList.remove('open'));
+      document.querySelectorAll('.cselect').forEach(w=>w.classList.remove('open'));
+    });
+  });
+  const cur = items.find(r=>r.code===activeCode);
+  if(val && cur) val.textContent = cur.label;
+}
+
 function buildRegionSelector(){
-  const sel = document.getElementById('regionSelect');
-  if(!sel) return;
-  const regions = [
-    {code:'GB',label:'🇬🇧 United Kingdom'},{code:'US',label:'🇺🇸 United States'},
-    {code:'AU',label:'🇦🇺 Australia'},{code:'CA',label:'🇨🇦 Canada'},
-    {code:'NZ',label:'🇳🇿 New Zealand'},{code:'IE',label:'🇮🇪 Ireland'},
-    {code:'FR',label:'🇫🇷 France'},{code:'DE',label:'🇩🇪 Germany'},
-    {code:'ES',label:'🇪🇸 Spain'},{code:'IT',label:'🇮🇹 Italy'},
-    {code:'NL',label:'🇳🇱 Netherlands'},{code:'PT',label:'🇵🇹 Portugal'},
-    {code:'BR',label:'🇧🇷 Brazil'},{code:'MX',label:'🇲🇽 Mexico'},
-    {code:'JP',label:'🇯🇵 Japan'},{code:'KR',label:'🇰🇷 South Korea'},
-    {code:'CN',label:'🇨🇳 China'},{code:'HK',label:'🇭🇰 Hong Kong'},
-    {code:'SG',label:'🇸🇬 Singapore'},{code:'IN',label:'🇮🇳 India'},
-    {code:'AE',label:'🇦🇪 UAE'},{code:'SA',label:'🇸🇦 Saudi Arabia'},
-    {code:'ZA',label:'🇿🇦 South Africa'},{code:'TR',label:'🇹🇷 Turkey'},
-    {code:'PL',label:'🇵🇱 Poland'},{code:'SE',label:'🇸🇪 Sweden'},
-  ];
-  sel.innerHTML = regions.map(r=>`<option value="${r.code}">${r.label}</option>`).join('');
-  sel.value = activeRegion;
+  cSelectBuild('regionSelectList','regionSelectVal', REGIONS, activeRegion, setRegion);
 }
 
 // Country → currency mapping (used to auto-set currency from region too)
@@ -1363,19 +1420,21 @@ function setLanguage(code){
     if(t[key] !== undefined) el.placeholder = t[key];
   });
   // Update language selector display
-  const sel = document.getElementById('langSelect');
-  if(sel) sel.value = activeLang;
+  const langVal = document.getElementById('langSelectVal');
+  if(langVal){ const t2=TRANSLATIONS[activeLang]; if(t2) langVal.textContent=t2._name; }
+  // Re-highlight active option
+  document.querySelectorAll('#langSelectList .cselect-opt').forEach(o=>o.classList.toggle('csel',o.dataset.code===activeLang));
   // Store preference
   try{ localStorage.setItem('prixly_lang', activeLang); }catch(e){}
 }
 
 function buildLangSelector(){
-  const sel = document.getElementById('langSelect');
-  if(!sel) return;
-  sel.innerHTML = Object.entries(TRANSLATIONS)
-    .map(([code,t])=>`<option value="${code}">${t._name}</option>`)
-    .join('');
-  sel.value = activeLang;
+  const langs = Object.entries(TRANSLATIONS).map(([code,t])=>({code, label:t._name}));
+  cSelectBuild('langSelectList','langSelectVal', langs, activeLang, setLanguage);
+}
+
+function buildCurrencySelector(){
+  cSelectBuild('currencySelectList','currencySelectVal', CURRENCY_OPTS, activeCurrency, setCurrency);
 }
 
 function t(key){ return (TRANSLATIONS[activeLang]||TRANSLATIONS.en)[key] || key; }
@@ -1400,10 +1459,18 @@ const CURRENCIES={
 };
 let activeCurrency='GBP';
 
+function _updateCurrencyDisplay(code){
+  const opt = CURRENCY_OPTS.find(o=>o.code===code);
+  const val = document.getElementById('currencySelectVal');
+  if(val && opt) val.textContent = opt.label;
+  document.querySelectorAll('#currencySelectList .cselect-opt').forEach(o=>o.classList.toggle('csel',o.dataset.code===code));
+}
+
 function setCurrency(code){
   activeCurrency=code;
   window._currencyManuallySet=true;
   try{ localStorage.setItem('prixly_currency', code); }catch(e){}
+  _updateCurrencyDisplay(code);
   if(currentResults.length) renderResults(currentResults);
   const alertsActive=document.getElementById('page-alerts').classList.contains('active');
   const dealsActive=document.getElementById('page-deals').classList.contains('active');
@@ -1414,6 +1481,7 @@ function setCurrency(code){
 // Sets currency without marking it as a manual override — used by auto-detection
 function setCurrencyAuto(code){
   activeCurrency=code;
+  _updateCurrencyDisplay(code);
   if(currentResults.length) renderResults(currentResults);
 }
 
@@ -1741,16 +1809,11 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(savedCurrency && CURRENCIES[savedCurrency]){
     activeCurrency = savedCurrency;
     window._currencyManuallySet = true;
-    const curSel = document.getElementById('currencySelect');
-    if(curSel) curSel.value = savedCurrency;
   } else {
     const regionCurrency = REGION_CURRENCY[activeRegion];
-    if(regionCurrency){
-      setCurrencyAuto(regionCurrency);
-      const curSel = document.getElementById('currencySelect');
-      if(curSel) curSel.value = regionCurrency;
-    }
+    if(regionCurrency) activeCurrency = regionCurrency;
   }
+  buildCurrencySelector();
 
   setLanguage(activeLang);
 });
