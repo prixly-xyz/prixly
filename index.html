@@ -87,8 +87,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 /* CURRENCY SELECTOR */
 .currency-row{display:flex;align-items:center;justify-content:flex-end;max-width:640px;margin:0 auto .4rem;gap:.5rem;}
 .currency-label{font-size:.73rem;color:var(--muted);}
-.currency-select{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.28rem .55rem;font-size:.78rem;color:var(--text);cursor:pointer;outline:none;transition:border-color .2s;}
+.currency-select{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.28rem .55rem;font-size:.78rem;color:var(--text);cursor:pointer;outline:none;transition:border-color .2s;color-scheme:light;}
 .currency-select:focus,.currency-select:hover{border-color:var(--accent);}
+[data-theme="dark"] .currency-select{color-scheme:dark;}
 .filters{max-width:640px;margin:0 auto .75rem;display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;}
 .filter-chip{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:.3rem .85rem;font-size:.78rem;cursor:pointer;transition:all .2s;color:var(--muted);}
 .filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
@@ -177,7 +178,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:1rem;flex-wrap:wrap;}
 .results-title{font-size:.9rem;color:var(--muted);}
 .results-title strong{color:var(--text);}
-.sort-select{border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.38rem .75rem;font-size:.82rem;background:var(--surface);color:var(--text);cursor:pointer;}
+.sort-select{border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.38rem .75rem;font-size:.82rem;background:var(--surface);color:var(--text);cursor:pointer;color-scheme:light;}
+[data-theme="dark"] .sort-select{color-scheme:dark;}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-bottom:.6rem;display:flex;align-items:center;gap:1rem;transition:border-color .2s,box-shadow .2s;cursor:pointer;text-decoration:none;color:inherit;}
 .result-card:hover{border-color:var(--border2);box-shadow:var(--shadow);}
 .result-card.best-deal{border-color:var(--accent);border-width:2px;}
