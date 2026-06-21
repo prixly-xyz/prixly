@@ -190,18 +190,37 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 .recent-chip{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.35rem .85rem;font-size:.82rem;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:6px;transition:all .2s;}
 .recent-chip:hover{border-color:var(--accent);color:var(--accent);}
 .recent-icon{font-size:.75rem;color:var(--muted);}
-.loading{display:none;text-align:center;padding:3rem;}
+.loading{display:none;padding:0 0 2rem;}
 .loading.visible{display:block;}
-.spinner{width:34px;height:34px;border:2.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite;margin:0 auto 1rem;}
+.loading-header{text-align:center;padding:1.8rem 2rem 1.2rem;}
+.spinner{width:28px;height:28px;border:2.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite;margin:0 auto .7rem;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading p{color:var(--muted);font-size:.9rem;}
-.loading-category{margin:.6rem 0 .3rem;font-size:.82rem;}
+.loading-category{margin:.4rem 0 .25rem;font-size:.82rem;}
 .loading-category span{color:var(--accent);font-weight:600;}
-.scanning-sites{display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;margin-top:.5rem;}
+.scanning-sites{display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;margin-top:.4rem;}
 .scan-chip{font-size:.73rem;padding:.2rem .6rem;border-radius:20px;border:1px solid var(--border2);color:var(--muted);animation:pulse 1.5s ease-in-out infinite;}
 .scan-chip.top-priority{border-color:var(--accent);color:var(--accent);}
 .scan-chip:nth-child(2){animation-delay:.12s}.scan-chip:nth-child(3){animation-delay:.24s}
 .scan-chip:nth-child(4){animation-delay:.36s}.scan-chip:nth-child(5){animation-delay:.48s}
+/* ── SKELETON LOADERS ── */
+.skel-list{max-width:900px;margin:0 auto;padding:0 2rem;}
+.skel-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-bottom:.6rem;display:flex;align-items:center;gap:1rem;overflow:hidden;position:relative;}
+.skel-card::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%);animation:shimmer 1.5s infinite;}
+[data-theme="light"] .skel-card::after{background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.55) 50%,transparent 100%);}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.skel-block{background:var(--border2);border-radius:4px;flex-shrink:0;}
+.skel-logo{width:64px;height:38px;border-radius:var(--radius-xs);}
+.skel-info{flex:1;display:flex;flex-direction:column;gap:.5rem;}
+.skel-price-col{display:flex;flex-direction:column;gap:.4rem;align-items:flex-end;flex-shrink:0;}
+.skel-btn-box{width:80px;height:34px;border-radius:var(--radius-sm);}
+/* cached result flash-in */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.results-cached .result-card{animation:fadeInUp .18s ease both;}
+.results-cached .result-card:nth-child(2){animation-delay:.04s}
+.results-cached .result-card:nth-child(3){animation-delay:.08s}
+.results-cached .result-card:nth-child(4){animation-delay:.12s}
+.results-cached .result-card:nth-child(5){animation-delay:.16s}
 .scan-chip:nth-child(6){animation-delay:.6s}.scan-chip:nth-child(7){animation-delay:.72s}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 .results-section{max-width:900px;margin:0 auto;padding:0 2rem 4rem;display:none;}
@@ -584,10 +603,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     </div>
   </div>
   <div class="loading" id="loadingState">
-    <div class="spinner"></div>
-    <p>Analysing your search...</p>
-    <p class="loading-category" id="loadingCategory"></p>
-    <div class="scanning-sites" id="scanningSites"></div>
+    <div class="loading-header">
+      <div class="spinner"></div>
+      <p>Searching retailers...</p>
+      <p class="loading-category" id="loadingCategory"></p>
+      <div class="scanning-sites" id="scanningSites"></div>
+    </div>
+    <div class="skel-list" id="skeletonList"></div>
   </div>
   <div class="category-banner" id="categoryBanner">
     <div class="cat-pill">
@@ -2307,13 +2329,33 @@ function addRecent(query){
   document.getElementById('recentlyViewed').classList.add('visible');
   document.getElementById('recentBar').innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${q.replace(/'/g,"\\'")}')"><span class="recent-icon">&#8635;</span>${q}</span>`).join('');
 }
+// ── SEARCH CACHE — keyed by normalised query string ──
+const searchCache=new Map();
+
+function buildSkeletons(){
+  return Array(6).fill(0).map((_,i)=>`
+    <div class="skel-card" style="animation-delay:${i*0.07}s">
+      <div class="skel-block skel-logo"></div>
+      <div class="skel-info">
+        <div class="skel-block" style="width:${55+Math.random()*25|0}%;height:12px;"></div>
+        <div class="skel-block" style="width:${30+Math.random()*20|0}%;height:10px;margin-top:2px;"></div>
+      </div>
+      <div class="skel-price-col">
+        <div class="skel-block" style="width:52px;height:10px;"></div>
+        <div class="skel-block" style="width:64px;height:18px;"></div>
+      </div>
+      <div class="skel-block skel-btn-box"></div>
+    </div>`).join('');
+}
+
 function runSearch(query){
   addRecent(query);
+  const cacheKey=query.trim().toLowerCase();
+  const cached=searchCache.get(cacheKey);
   const detection=manualCategory?{key:manualCategory,confidence:100,auto:false}:detectCategory(query);
   detectedCat=detection;
   const cat=CATEGORIES[detection.key];
   const retailers=getRetailersForRegion(detection.key,activeRegion);
-  // Safely hide elements that may or may not exist
   const revSec=document.getElementById('reviewsSection');
   if(revSec) revSec.style.display='none';
   document.getElementById('resultsSection').classList.remove('visible');
@@ -2322,29 +2364,47 @@ function runSearch(query){
   document.getElementById('alertForm').style.display='flex';
   document.getElementById('alertSuccess').style.display='none';
   if(chartInstance){chartInstance.destroy();chartInstance=null;}
-  document.getElementById('loadingCategory').innerHTML=`Detected category: <span>${cat.label}</span> — searching ${retailers.length} retailers near you...`;
-  document.getElementById('scanningSites').innerHTML=retailers.slice(0,9).map((r,i)=>`<span class="scan-chip ${i<3?'top-priority':''}">${r.name}</span>`).join('');
+  document.getElementById('skeletonList').innerHTML=buildSkeletons();
+  if(cached){
+    // Cached — show skeletons briefly then render instantly
+    document.getElementById('loadingCategory').innerHTML=`Results loaded from cache`;
+    document.getElementById('scanningSites').innerHTML='';
+  } else {
+    document.getElementById('loadingCategory').innerHTML=`Detected category: <span>${cat.label}</span> — searching ${retailers.length} retailers...`;
+    document.getElementById('scanningSites').innerHTML=retailers.slice(0,9).map((r,i)=>`<span class="scan-chip ${i<3?'top-priority':''}">${r.name}</span>`).join('');
+  }
   window.scrollTo({top:document.getElementById('loadingState').offsetTop-80,behavior:'smooth'});
-  setTimeout(()=>showResults(query,detection.key,detection),2200);
+  const delay=cached?320:2200;
+  setTimeout(()=>showResults(query,detection.key,detection,cached||null),delay);
 }
-function showResults(query,catKey,detection){
+
+function showResults(query,catKey,detection,cached){
   document.getElementById('loadingState').classList.remove('visible');
+  document.getElementById('skeletonList').innerHTML='';
   const cat=CATEGORIES[catKey];
   const retailers=getRetailersForRegion(catKey,activeRegion);
-  currentResults=generateResults(query,catKey);
+  const cacheKey=query.trim().toLowerCase();
+  if(cached){
+    currentResults=cached.results;
+  } else {
+    currentResults=generateResults(query,catKey);
+    // Store in cache for instant re-searches
+    searchCache.set(cacheKey,{results:currentResults,catKey,detection});
+  }
   document.getElementById('catIcon').textContent='';
   document.getElementById('catName').textContent=cat.label;
   document.getElementById('catConfidence').textContent=detection.auto?`${detection.confidence}% match`:'manually selected';
   document.getElementById('retailerPriority').innerHTML=`<span style="color:var(--muted);font-size:.75rem;">Searching ${retailers.length} retailers for your region (${activeRegion}):</span>`+retailers.map((r,i)=>`<span class="priority-tag ${i<3?'top':''}">${i<3?'★ ':''}${r.name}</span>`).join('');
   document.getElementById('categoryBanner').classList.add('visible');
+  const list=document.getElementById('resultsList');
+  if(cached) list.classList.add('results-cached'); else list.classList.remove('results-cached');
   renderResults(currentResults);
   const bp=currentResults[0].price;
   document.getElementById('historyStats').innerHTML=`<div class="history-stat good"><div class="stat-val">${fmt(bp)}</div><div class="stat-label">Best now</div></div><div class="history-stat bad"><div class="stat-val">${fmt(bp*1.35)}</div><div class="stat-label">Highest</div></div><div class="history-stat good"><div class="stat-val">${fmt(bp*.92)}</div><div class="stat-label">Lowest ever</div></div><div class="history-stat"><div class="stat-val">↓26%</div><div class="stat-label">vs peak</div></div>`;
   document.getElementById('historyInsight').innerHTML=cat.priceInsight;
   document.getElementById('resultsSection').classList.add('visible');
   setTimeout(drawChart,100);
-  // Fetch real reviews via Claude API
-  fetchReviews(query);
+  if(!cached) fetchReviews(query);
   window.scrollTo({top:document.getElementById('categoryBanner').offsetTop-80,behavior:'smooth'});
 }
 function renderResults(results){
