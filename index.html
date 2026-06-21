@@ -34,13 +34,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 /* NAV */
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:200;}
-.logo{display:flex;align-items:center;gap:10px;font-size:1.35rem;font-weight:800;color:var(--accent);text-decoration:none;letter-spacing:-.02em;cursor:pointer;}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.35rem;font-weight:800;color:var(--accent);text-decoration:none;letter-spacing:-.02em;cursor:pointer;flex:1;}
 .logo svg{width:28px;height:28px;}
-.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-right{display:flex;align-items:center;gap:1rem;justify-content:flex-end;flex:1;}
 .nav-selector-group{display:flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:.15rem .15rem .15rem .55rem;}
 .nav-selector-group .currency-select{border:none;background:none;padding:.13rem .35rem;}
 .nav-selector-icon{font-size:.78rem;line-height:1;opacity:.8;}
-.nav-links{display:flex;gap:1.4rem;list-style:none;}
+.nav-links{display:flex;gap:1.4rem;list-style:none;justify-content:center;flex:2;}
 .nav-links a{text-decoration:none;color:var(--muted);font-size:.88rem;transition:color .2s;cursor:pointer;}
 .nav-links a:hover,.nav-links a.active{color:var(--accent);}
 .theme-toggle{background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:.3rem .75rem;font-size:.8rem;cursor:pointer;color:var(--muted);transition:all .2s;}
@@ -81,11 +81,23 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 /* drag-over highlight on unified search */
 #unifiedSearch.dragover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,204,113,0.18);}
 
-/* ── CATEGORIES PAGE ── */
-.catsbrowse-hero{padding:2.5rem 2rem 1.2rem;max-width:900px;margin:0 auto;}
-.catsbrowse-hero h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.35rem;}
-.catsbrowse-hero p{font-size:.92rem;color:var(--muted);}
-.catsbrowse-grid{max-width:900px;margin:0 auto;padding:0 2rem 4rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:flex-start;}
+/* ── CATEGORIES BROWSE PAGE ── */
+.catsbrowse-hero{padding:2.5rem 2rem 1.5rem;max-width:1100px;margin:0 auto;}
+.catsbrowse-hero h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.3rem;}
+.catsbrowse-hero p{font-size:.9rem;color:var(--muted);}
+.cat-row{margin-bottom:2.5rem;}
+.cat-row-header{display:flex;align-items:baseline;justify-content:space-between;padding:0 2rem;max-width:1100px;margin:0 auto .75rem;}
+.cat-row-title{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;color:var(--text);}
+.cat-row-seeall{font-size:.8rem;color:var(--accent);cursor:pointer;text-decoration:none;white-space:nowrap;}
+.cat-row-seeall:hover{text-decoration:underline;}
+.cat-row-scroll{display:flex;gap:.75rem;overflow-x:auto;padding:0 2rem .75rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.cat-row-scroll::-webkit-scrollbar{display:none;}
+.cat-scroll-card{flex:0 0 200px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:all .2s;scroll-snap-align:start;display:flex;flex-direction:column;gap:.35rem;}
+.cat-scroll-card:hover{border-color:var(--accent);box-shadow:var(--shadow);transform:translateY(-2px);}
+.cat-scroll-tag{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;}
+.cat-scroll-name{font-size:.85rem;font-weight:700;color:var(--text);line-height:1.3;flex:1;}
+.cat-scroll-price{font-size:1rem;font-weight:800;color:var(--accent);}
+.cat-scroll-save{font-size:.68rem;background:var(--accent-dim);color:var(--accent);padding:.1rem .4rem;border-radius:3px;display:inline-block;}
 
 /* CURRENCY SELECTOR */
 .currency-row{display:flex;align-items:center;justify-content:flex-end;max-width:640px;margin:0 auto .4rem;gap:.5rem;}
@@ -415,7 +427,7 @@ footer a{color:var(--accent);text-decoration:none;}
 @media(max-width:640px){
   .result-card{flex-wrap:wrap;gap:.75rem}
   .result-price-block{text-align:left}
-  nav{padding:0 1rem}
+  nav{padding:0 .75rem}
   .nav-links{display:none}
   .hero,.hiw-hero,.pa-hero,.deals-hero,.about-hero{padding-left:1rem;padding-right:1rem}
   .hiw-step,.hiw-step:nth-child(even){flex-direction:column}
@@ -423,6 +435,20 @@ footer a{color:var(--accent);text-decoration:none;}
   .relevance-bar{display:none}
   .deals-grid{grid-template-columns:1fr 1fr}
   .about-stats{grid-template-columns:1fr 1fr}
+  .hero{padding-left:1rem;padding-right:1rem;}
+  .search-container{margin-left:0;margin-right:0;}
+  .search-row{flex-wrap:wrap;gap:.4rem;}
+  .search-btn{width:100%;}
+  .currency-row{justify-content:flex-start;}
+  .trust-strip{gap:1rem;padding:1rem;}
+  .trust-item{font-size:.75rem;}
+  .nav-right{gap:.5rem;}
+  .nav-cta{padding:.35rem .75rem;font-size:.8rem;}
+  .cselect-btn{font-size:.75rem;}
+  .result-cta{width:100%;text-align:center;}
+  .catpage-grid{grid-template-columns:1fr 1fr;padding:0 1rem 3rem;}
+  .deals-grid{grid-template-columns:1fr 1fr;}
+  .about-stats{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -437,6 +463,7 @@ footer a{color:var(--accent);text-decoration:none;}
     Prixly
   </a>
   <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home">Home</a></li>
     <li><a onclick="showPage('hiw')" id="nav-hiw" data-i18n="nav_hiw">How it works</a></li>
     <li><a onclick="showPage('alerts')" id="nav-alerts" data-i18n="nav_alerts">Price alerts</a></li>
     <li><a onclick="showPage('deals')" id="nav-deals" data-i18n="nav_deals">Deals</a></li>
@@ -598,9 +625,9 @@ footer a{color:var(--accent);text-decoration:none;}
 <div id="page-categories" class="page">
   <div class="catsbrowse-hero">
     <h1>Categories</h1>
-    <p>Browse all product categories — click any to explore the best deals inside.</p>
+    <p>Browse today's best deals by category — scroll to explore, click to search.</p>
   </div>
-  <div class="catsbrowse-grid" id="catsBrowseGrid"></div>
+  <div id="catsBrowseRows"></div>
 </div>
 
 <!-- ══════════════════════════════════════════ -->
@@ -1488,186 +1515,186 @@ function fmt(gbpPrice){
   return `${c.symbol}${converted.toFixed(2)}`;
 }
 
-// ── BROWSE CATEGORIES (top 10 most bought online globally) ──
+// ── BROWSE CATEGORIES ──
 const BROWSE_CATS=[
   {
-    key:'fashion', label:'Clothing & Fashion', icon:'👗', badge:'hot',
-    subtitle:'The most searched category online — clothes, shoes, accessories and more.',
-    count:240,
+    key:'fashion', label:'Fashion and Apparel',
+    subtitle:"Clothing, shoes and accessories from the world's top brands.",
+    count:310,
     subcats:['All','Trainers','Jackets','Dresses','Jeans','Accessories'],
     items:[
-      {name:'Nike Air Max 90',tag:'Trainers',emoji:'👟',summary:'Iconic chunky sole runner, available in dozens of colourways. A wardrobe staple for sneaker fans.',price:74.99,was:109.99,save:'32%'},
-      {name:'Levi\'s 501 Original Jeans',tag:'Jeans',emoji:'👖',summary:'The original straight-leg jean. Durable denim that fits every body and only gets better with age.',price:49.99,was:79.99,save:'38%'},
-      {name:'North Face Puffer Jacket',tag:'Jackets',emoji:'🧥',summary:'Lightweight 550-fill down jacket, windproof and water-resistant. Perfect for cold commutes.',price:99.99,was:179.99,save:'44%'},
-      {name:'Adidas Ultraboost 22',tag:'Trainers',emoji:'👟',summary:'Responsive Boost cushioning and a Primeknit upper. The go-to trainer for runners and casual wearers.',price:89.99,was:129.99,save:'31%'},
-      {name:'Ray-Ban Aviator Classic',tag:'Accessories',emoji:'🕶️',summary:'Timeless metal-frame aviators with UV400 lenses. Goes with everything.',price:89.99,was:149.99,save:'40%'},
-      {name:'Zara Oversized Blazer',tag:'Jackets',emoji:'🧥',summary:'Relaxed double-breasted blazer in a biscuit tone. Works as a smart-casual layer over anything.',price:49.99,was:79.99,save:'37%'},
-      {name:'Dr. Martens 1460 Boots',tag:'Trainers',emoji:'👢',summary:'8-eye leather boots with the iconic yellow welt stitch and air-cushion sole. Built to last decades.',price:99.99,was:169.99,save:'41%'},
-      {name:'Vans Old Skool Classic',tag:'Trainers',emoji:'👟',summary:'Low-top canvas and suede skate shoe with the signature side stripe. A forever classic.',price:44.99,was:69.99,save:'36%'},
-      {name:'Reformation Linen Dress',tag:'Dresses',emoji:'👗',summary:'Breezy linen mini dress with adjustable straps. Sustainably made and endlessly wearable.',price:79.99,was:128.00,save:'37%'},
-      {name:'Le Specs Air Heart Sunglasses',tag:'Accessories',emoji:'🕶️',summary:'Heart-shaped retro frames with polarised lenses. Fun, bold and surprisingly versatile.',price:34.99,was:59.99,save:'42%'},
+      {name:'Nike Air Max 90',tag:'Trainers',summary:'Iconic chunky sole runner in dozens of colourways. A wardrobe staple for sneaker fans.',price:74.99,was:109.99,save:'32%'},
+      {name:"Levi's 501 Original Jeans",tag:'Jeans',summary:'The original straight-leg jean. Durable denim that only gets better with age.',price:49.99,was:79.99,save:'38%'},
+      {name:'The North Face Puffer Jacket',tag:'Jackets',summary:'Lightweight 550-fill down jacket, windproof and water-resistant. Perfect for cold commutes.',price:99.99,was:179.99,save:'44%'},
+      {name:'Adidas Ultraboost 22',tag:'Trainers',summary:'Responsive Boost cushioning and a Primeknit upper. The go-to trainer for runners.',price:89.99,was:129.99,save:'31%'},
+      {name:'Ray-Ban Aviator Classic',tag:'Accessories',summary:'Timeless metal-frame aviators with UV400 lenses. Goes with everything.',price:89.99,was:149.99,save:'40%'},
+      {name:'Zara Oversized Blazer',tag:'Jackets',summary:'Relaxed double-breasted blazer in a biscuit tone. Smart-casual over anything.',price:49.99,was:79.99,save:'37%'},
+      {name:'Dr. Martens 1460 Boots',tag:'Trainers',summary:'8-eye leather boots with the iconic yellow welt stitch. Built to last decades.',price:99.99,was:169.99,save:'41%'},
+      {name:'Vans Old Skool Classic',tag:'Trainers',summary:'Low-top canvas and suede skate shoe with signature side stripe.',price:44.99,was:69.99,save:'36%'},
+      {name:'Reformation Linen Dress',tag:'Dresses',summary:'Breezy linen mini dress with adjustable straps. Sustainably made and endlessly wearable.',price:79.99,was:128.00,save:'37%'},
+      {name:'Tommy Hilfiger Polo Shirt',tag:'Accessories',summary:'Classic pique cotton polo with embroidered logo. A timeless casual essential.',price:34.99,was:59.99,save:'42%'},
     ]
   },
   {
-    key:'electronics', label:'Electronics & Tech', icon:'💻', badge:'hot',
-    subtitle:'From smartphones to smart home — the best tech deals found across 50+ retailers.',
-    count:310,
-    subcats:['All','Phones','Laptops','Headphones','TVs','Smart Home'],
+    key:'electronics', label:'Electronics and Technology',
+    subtitle:'Smartphones, laptops, audio and smart home — always at the sharpest price.',
+    count:290,
+    subcats:['All','Phones','Laptops','Audio','TVs','Smart Home'],
     items:[
-      {name:'Sony WH-1000XM5',tag:'Headphones',emoji:'🎧',summary:'Class-leading noise cancellation with 30-hour battery. The benchmark for wireless headphones in 2024.',price:189.99,was:249.99,save:'24%'},
-      {name:'Apple AirPods Pro 2',tag:'Headphones',emoji:'🎧',summary:'Active noise cancellation, Adaptive Audio, and MagSafe charging. The best truly wireless earbuds.',price:199.99,was:279.99,save:'29%'},
-      {name:'Samsung Galaxy S24',tag:'Phones',emoji:'📱',summary:'Snapdragon 8 Gen 3, 50MP camera and 7 years of OS updates. The Android to beat.',price:649.99,was:899.99,save:'28%'},
-      {name:'iPad 10th Generation',tag:'Laptops',emoji:'📱',summary:'A14 Bionic chip, USB-C, and a bright 10.9" display. Brilliant for students and creative work.',price:329.99,was:499.99,save:'34%'},
-      {name:'Dyson V15 Detect',tag:'Smart Home',emoji:'🌀',summary:'Laser reveals hidden dust. HEPA filtration captures 99.99% of particles. Our top-rated vacuum.',price:449.99,was:599.99,save:'25%'},
-      {name:'Samsung 65" QLED 4K TV',tag:'TVs',emoji:'📺',summary:'Quantum Dot colour, 120Hz panel and built-in Alexa. Cinematic viewing at a real-world price.',price:799.99,was:1299.99,save:'38%'},
-      {name:'MacBook Air M3',tag:'Laptops',emoji:'💻',summary:'18-hour battery, fanless design and the M3 chip. The best thin-and-light laptop money can buy.',price:999.99,was:1299.99,save:'23%'},
-      {name:'GoPro Hero 12 Black',tag:'Phones',emoji:'📷',summary:'5.3K video, HyperSmooth 6.0 stabilisation and waterproof to 10m. Go anywhere and shoot everything.',price:299.99,was:399.99,save:'25%'},
-      {name:'Amazon Echo Dot 5th Gen',tag:'Smart Home',emoji:'🔊',summary:'Compact smart speaker with improved sound and built-in temperature sensor. Alexa anywhere.',price:24.99,was:54.99,save:'55%'},
-      {name:'Kindle Paperwhite 16GB',tag:'Laptops',emoji:'📖',summary:'300ppi glare-free display, weeks of battery, and waterproof. The ultimate reading device.',price:99.99,was:159.99,save:'38%'},
+      {name:'Sony WH-1000XM5',tag:'Audio',summary:'Class-leading noise cancellation with 30-hour battery. The benchmark for wireless headphones.',price:189.99,was:249.99,save:'24%'},
+      {name:'Apple AirPods Pro 2',tag:'Audio',summary:'Active noise cancellation, Adaptive Audio and MagSafe charging.',price:199.99,was:279.99,save:'29%'},
+      {name:'Samsung Galaxy S24',tag:'Phones',summary:'Snapdragon 8 Gen 3, 50MP camera and 7 years of OS updates.',price:649.99,was:899.99,save:'28%'},
+      {name:'iPad 10th Generation',tag:'Laptops',summary:'A14 Bionic chip, USB-C and a bright 10.9-inch display. Brilliant for students.',price:329.99,was:499.99,save:'34%'},
+      {name:'Dyson V15 Detect',tag:'Smart Home',summary:'Laser reveals hidden dust. HEPA filtration captures 99.99% of particles.',price:449.99,was:599.99,save:'25%'},
+      {name:'Samsung 65-inch QLED 4K TV',tag:'TVs',summary:'Quantum Dot colour, 120Hz panel and built-in Alexa. Cinematic viewing.',price:799.99,was:1299.99,save:'38%'},
+      {name:'MacBook Air M3',tag:'Laptops',summary:'18-hour battery, fanless design and the M3 chip. The best thin-and-light laptop.',price:999.99,was:1299.99,save:'23%'},
+      {name:'GoPro Hero 12 Black',tag:'Phones',summary:'5.3K video, HyperSmooth 6.0 stabilisation and waterproof to 10m.',price:299.99,was:399.99,save:'25%'},
+      {name:'Amazon Echo Dot 5th Gen',tag:'Smart Home',summary:'Compact smart speaker with improved sound and built-in temperature sensor.',price:24.99,was:54.99,save:'55%'},
+      {name:'Kindle Paperwhite 16GB',tag:'Laptops',summary:'300ppi glare-free display, weeks of battery and waterproof. The ultimate reading device.',price:99.99,was:159.99,save:'38%'},
     ]
   },
   {
-    key:'cosmetics', label:'Beauty & Cosmetics', icon:'💄', badge:'trending',
-    subtitle:'Skincare, makeup, fragrance and haircare — all at the best price online.',
-    count:185,
-    subcats:['All','Skincare','Makeup','Fragrance','Haircare'],
+    key:'health', label:'Health and Beauty',
+    subtitle:'Skincare, supplements, personal care and cosmetics.',
+    count:220,
+    subcats:['All','Skincare','Makeup','Supplements','Haircare','Fragrance'],
     items:[
-      {name:'Charlotte Tilbury Pillow Talk Lipstick',tag:'Makeup',emoji:'💄',summary:'The cult peachy-nude that suits every skin tone. Creamy, long-lasting and endlessly repurchased.',price:26.99,was:34.00,save:'21%'},
-      {name:'CeraVe Moisturising Cream 340g',tag:'Skincare',emoji:'🧴',summary:'Dermatologist-developed with 3 essential ceramides and hyaluronic acid. A skincare cabinet staple.',price:10.99,was:18.99,save:'42%'},
-      {name:'Dior Sauvage EDT 100ml',tag:'Fragrance',emoji:'🌸',summary:'Fresh, woody, and effortlessly masculine. One of the world\'s best-selling men\'s fragrances.',price:64.99,was:99.00,save:'34%'},
-      {name:'Dyson Airwrap Multi-Styler',tag:'Haircare',emoji:'💇',summary:'Styles, curls, and smooths using Coanda airflow — no extreme heat. The icon of hair tools.',price:399.99,was:479.99,save:'17%'},
-      {name:'La Roche-Posay SPF50+ Sunscreen',tag:'Skincare',emoji:'☀️',summary:'Ultra-light daily SPF that sits under makeup without greasiness. Recommended by dermatologists worldwide.',price:14.99,was:24.99,save:'40%'},
-      {name:'MAC Studio Fix Powder Foundation',tag:'Makeup',emoji:'✨',summary:'Full coverage matte finish, buildable and long-wearing. Available in 50+ shades.',price:29.99,was:39.50,save:'24%'},
-      {name:'Chanel No.5 EDP 50ml',tag:'Fragrance',emoji:'🌸',summary:'The world\'s most iconic fragrance. Floral-aldehyde with enduring elegance.',price:79.99,was:124.00,save:'35%'},
-      {name:'Olaplex No.3 Hair Perfector',tag:'Haircare',emoji:'💆',summary:'At-home treatment that repairs broken bonds inside the hair strand. Salon results at home.',price:22.99,was:32.00,save:'28%'},
-      {name:'The Ordinary Niacinamide 30ml',tag:'Skincare',emoji:'🧴',summary:'10% niacinamide + 1% zinc to balance sebum and reduce pores. A cult affordable serum.',price:5.49,was:9.99,save:'45%'},
-      {name:'Rare Beauty Soft Pinch Blush',tag:'Makeup',emoji:'🌸',summary:'Buildable liquid blush with a natural flush. A little goes a very long way.',price:21.99,was:28.00,save:'21%'},
+      {name:'Charlotte Tilbury Pillow Talk Lipstick',tag:'Makeup',summary:'The cult peachy-nude that suits every skin tone. Creamy and long-lasting.',price:26.99,was:34.00,save:'21%'},
+      {name:'CeraVe Moisturising Cream 340g',tag:'Skincare',summary:'Dermatologist-developed with 3 essential ceramides and hyaluronic acid.',price:10.99,was:18.99,save:'42%'},
+      {name:'Dior Sauvage EDT 100ml',tag:'Fragrance',summary:'Fresh, woody and effortlessly masculine. One of the world\'s best-selling fragrances.',price:64.99,was:99.00,save:'34%'},
+      {name:'Dyson Airwrap Multi-Styler',tag:'Haircare',summary:'Styles, curls and smooths using Coanda airflow. No extreme heat.',price:399.99,was:479.99,save:'17%'},
+      {name:'La Roche-Posay SPF50 Sunscreen',tag:'Skincare',summary:'Ultra-light daily SPF that sits under makeup without greasiness.',price:14.99,was:24.99,save:'40%'},
+      {name:'MAC Studio Fix Powder Foundation',tag:'Makeup',summary:'Full coverage matte finish, buildable and long-wearing. Available in 50+ shades.',price:29.99,was:39.50,save:'24%'},
+      {name:'Chanel No.5 EDP 50ml',tag:'Fragrance',summary:'The world\'s most iconic fragrance. Floral-aldehyde with enduring elegance.',price:79.99,was:124.00,save:'35%'},
+      {name:'Olaplex No.3 Hair Perfector',tag:'Haircare',summary:'At-home treatment that repairs broken bonds inside the hair strand.',price:22.99,was:32.00,save:'28%'},
+      {name:'The Ordinary Niacinamide 30ml',tag:'Skincare',summary:'10% niacinamide plus 1% zinc to balance sebum and reduce pores.',price:5.49,was:9.99,save:'45%'},
+      {name:'Myprotein Impact Whey 2.5kg',tag:'Supplements',summary:'Premium whey protein concentrate, 21g protein per serving. Best value per gram.',price:29.99,was:54.99,save:'45%'},
     ]
   },
   {
-    key:'gaming', label:'Gaming', icon:'🎮', badge:'hot',
-    subtitle:'Consoles, games, accessories and peripherals — always at the sharpest price.',
-    count:198,
-    subcats:['All','Consoles','Games','Accessories','PC Gaming'],
-    items:[
-      {name:'PS5 DualSense Controller',tag:'Accessories',emoji:'🎮',summary:'Haptic feedback and adaptive triggers give you a physical feel for every in-game action. A generational leap.',price:44.99,was:69.99,save:'36%'},
-      {name:'Nintendo Switch OLED',tag:'Consoles',emoji:'🕹️',summary:'Vibrant 7" OLED screen, enhanced audio, and 64GB storage. Play anywhere, connect anywhere.',price:279.99,was:319.99,save:'13%'},
-      {name:'FIFA 25 (PS5)',tag:'Games',emoji:'⚽',summary:'Revamped Rush mode, FC IQ player intelligence, and more authentic club football than ever.',price:34.99,was:69.99,save:'50%'},
-      {name:'Xbox Series S Console',tag:'Consoles',emoji:'🕹️',summary:'All-digital next-gen gaming at a budget price. Hundreds of games via Game Pass from day one.',price:249.99,was:299.99,save:'17%'},
-      {name:'Razer BlackShark V2 Headset',tag:'Accessories',emoji:'🎧',summary:'THX 7.1 spatial audio and a detachable HyperClear cardioid mic. Esports-grade sound.',price:59.99,was:99.99,save:'40%'},
-      {name:'ASUS ROG Strix Gaming Mouse',tag:'PC Gaming',emoji:'🖱️',summary:'36,000 DPI optical sensor, programmable buttons and ROG Armoury Crate software.',price:39.99,was:69.99,save:'43%'},
-      {name:'Hogwarts Legacy (PC)',tag:'Games',emoji:'⚡',summary:'Explore an open-world Wizarding World in the 1800s. One of the most visually stunning RPGs ever made.',price:24.99,was:59.99,save:'58%'},
-      {name:'SteelSeries Apex 3 Keyboard',tag:'PC Gaming',emoji:'⌨️',summary:'10-zone RGB illumination, quiet switches and whisper-quiet gaming at a mid-range price.',price:49.99,was:79.99,save:'37%'},
-      {name:'Meta Quest 3 VR Headset',tag:'Consoles',emoji:'🥽',summary:'Mixed reality passthrough, pancake lenses and the Snapdragon XR2 Gen 2. The best standalone VR.',price:469.99,was:549.99,save:'14%'},
-      {name:'Nintendo Switch Pro Controller',tag:'Accessories',emoji:'🎮',summary:'Full-size ergonomic controller with HD rumble, amiibo NFC and 40-hour battery life.',price:49.99,was:69.99,save:'29%'},
-    ]
-  },
-  {
-    key:'home', label:'Home & Garden', icon:'🏡', badge:null,
-    subtitle:'Everything for the home — kitchen, living room, garden and beyond.',
-    count:276,
+    key:'home', label:'Home and Garden',
+    subtitle:'Everything for your home — kitchen, furniture, garden and decor.',
+    count:265,
     subcats:['All','Kitchen','Furniture','Garden','Bedding','Lighting'],
     items:[
-      {name:'Ninja Dual Zone Air Fryer',tag:'Kitchen',emoji:'🍳',summary:'Two independent zones cook different foods simultaneously at different temperatures. A genuine kitchen game-changer.',price:119.99,was:199.99,save:'40%'},
-      {name:'Dunelm Supersoft Duvet Set',tag:'Bedding',emoji:'🛏️',summary:'Ultra-soft brushed microfibre duvet cover and pillowcases. Hotel-quality comfort for half the price.',price:24.99,was:49.99,save:'50%'},
-      {name:'Philips Hue Starter Kit',tag:'Lighting',emoji:'💡',summary:'3 colour-changing bulbs plus a Bridge. Control lighting scenes from your phone or with voice.',price:79.99,was:129.99,save:'38%'},
-      {name:'Joseph Joseph Index Chopping Set',tag:'Kitchen',emoji:'🔪',summary:'Colour-coded boards for meat, fish, veg and cooked food. Hygienic, stackable and dishwasher safe.',price:34.99,was:54.99,save:'36%'},
-      {name:'Tefal Ingenio Pan Set 5pc',tag:'Kitchen',emoji:'🍲',summary:'Stackable pans with removable handles save 80% storage space. Oven and induction compatible.',price:79.99,was:139.99,save:'43%'},
-      {name:'Outland Living Fire Pit',tag:'Garden',emoji:'🔥',summary:'Portable propane fire pit with carry cover. Gather outdoors year-round with zero mess.',price:149.99,was:229.99,save:'35%'},
-      {name:'Bestway Steel Pro Pool 10ft',tag:'Garden',emoji:'🏊',summary:'Quick-set above-ground pool fits up to 6 adults. Includes filter pump and cover.',price:199.99,was:329.99,save:'39%'},
-      {name:'Russell Hobbs Glass Kettle',tag:'Kitchen',emoji:'☕',summary:'1.7L illuminated glass kettle with keep-warm function and quiet boil technology.',price:29.99,was:54.99,save:'45%'},
-      {name:'Homcom Grey Corner Sofa',tag:'Furniture',emoji:'🛋️',summary:'L-shaped 4-seater in durable linen-feel fabric. Modular design adapts to any living room layout.',price:449.99,was:699.99,save:'36%'},
-      {name:'Ring Video Doorbell 4',tag:'Lighting',emoji:'🔔',summary:'1080p HD video, colour pre-roll, and motion detection. See and speak to visitors from anywhere.',price:129.99,was:199.99,save:'35%'},
+      {name:'Ninja Dual Zone Air Fryer',tag:'Kitchen',summary:'Two independent zones cook different foods simultaneously at different temperatures.',price:119.99,was:199.99,save:'40%'},
+      {name:'Dunelm Supersoft Duvet Set',tag:'Bedding',summary:'Ultra-soft brushed microfibre duvet cover and pillowcases. Hotel-quality comfort.',price:24.99,was:49.99,save:'50%'},
+      {name:'Philips Hue Starter Kit',tag:'Lighting',summary:'3 colour-changing bulbs plus a Bridge. Control lighting from your phone or with voice.',price:79.99,was:129.99,save:'38%'},
+      {name:'Joseph Joseph Index Chopping Set',tag:'Kitchen',summary:'Colour-coded boards for meat, fish, veg and cooked food. Dishwasher safe.',price:34.99,was:54.99,save:'36%'},
+      {name:'Tefal Ingenio Pan Set 5pc',tag:'Kitchen',summary:'Stackable pans with removable handles save 80% storage space. Induction compatible.',price:79.99,was:139.99,save:'43%'},
+      {name:'Outland Living Fire Pit',tag:'Garden',summary:'Portable propane fire pit with carry cover. Gather outdoors year-round with zero mess.',price:149.99,was:229.99,save:'35%'},
+      {name:'Bestway Steel Pro Pool 10ft',tag:'Garden',summary:'Quick-set above-ground pool fits up to 6 adults. Includes filter pump and cover.',price:199.99,was:329.99,save:'39%'},
+      {name:'Russell Hobbs Glass Kettle',tag:'Kitchen',summary:'1.7L illuminated glass kettle with keep-warm function and quiet boil technology.',price:29.99,was:54.99,save:'45%'},
+      {name:'Homcom Grey Corner Sofa',tag:'Furniture',summary:'L-shaped 4-seater in durable linen-feel fabric. Modular design for any living room.',price:449.99,was:699.99,save:'36%'},
+      {name:'Ring Video Doorbell 4',tag:'Lighting',summary:'1080p HD video, colour pre-roll and motion detection. See visitors from anywhere.',price:129.99,was:199.99,save:'35%'},
     ]
   },
   {
-    key:'sports', label:'Sports & Fitness', icon:'⚽', badge:null,
-    subtitle:'Training gear, outdoor equipment and sports accessories for every level.',
-    count:163,
-    subcats:['All','Running','Gym','Football','Outdoor','Cycling'],
+    key:'food', label:'Food and Grocery',
+    subtitle:'Everyday essentials, premium brands and health foods.',
+    count:180,
+    subcats:['All','Coffee and Tea','Snacks','Health Foods','Bulk Buys'],
     items:[
-      {name:'Decathlon Domyos 10kg Dumbbells',tag:'Gym',emoji:'🏋️',summary:'Hex rubber-coated dumbbells with ergonomic handle. A home gym essential at an unbeatable price.',price:19.99,was:34.99,save:'43%'},
-      {name:'Garmin Forerunner 55',tag:'Running',emoji:'⌚',summary:'GPS running watch with suggested daily workouts, race time predictor and 2-week battery.',price:149.99,was:229.99,save:'35%'},
-      {name:'Nike Dri-FIT Running T-Shirt',tag:'Running',emoji:'👕',summary:'Sweat-wicking Dri-FIT fabric keeps you cool and dry. Slim fit with reflective detailing.',price:19.99,was:34.99,save:'43%'},
-      {name:'Theragun Mini 2nd Gen',tag:'Gym',emoji:'💆',summary:'Pocket-sized percussive therapy device with 3 speeds and 2-hour battery. Recovery anywhere.',price:129.99,was:199.99,save:'35%'},
-      {name:'Adidas Predator Club FG Boots',tag:'Football',emoji:'⚽',summary:'Hybrid upper with rubber spike zones for precision passing and shooting. Firm-ground stud pattern.',price:49.99,was:89.99,save:'44%'},
-      {name:'Osprey Daylite 13L Backpack',tag:'Outdoor',emoji:'🎒',summary:'Lightweight daypack with padded back panel and hipbelt. Perfect for hiking and commuting.',price:49.99,was:79.99,save:'38%'},
-      {name:'Fitbit Charge 6',tag:'Running',emoji:'⌚',summary:'Built-in GPS, heart rate, sleep tracking and Google Maps. The best fitness tracker under £100.',price:89.99,was:139.99,save:'36%'},
-      {name:'Bosch Universal Chain Pole 18V',tag:'Outdoor',emoji:'🌲',summary:'Cordless telescopic chainsaw reaches 3m high. Clean pruning for trees and hedges.',price:149.99,was:229.99,save:'35%'},
-      {name:'Wilson Pro Staff Tennis Racket',tag:'Outdoor',emoji:'🎾',summary:'Control-oriented racket used by Roger Federer. 97 sq in head, 315g and pure feel.',price:179.99,was:279.99,save:'36%'},
-      {name:'Boardman SLR 8.6 Road Bike',tag:'Cycling',emoji:'🚴',summary:'Lightweight aluminium frame with Shimano 105 groupset. Enthusiast performance without the premium.',price:899.99,was:1299.99,save:'31%'},
+      {name:'Nespresso Vertuo Pop Bundle',tag:'Coffee and Tea',summary:'Next-gen Vertuo machine with 10 capsule welcome pack. Barista-quality coffee.',price:59.99,was:109.99,save:'45%'},
+      {name:'Myprotein Impact Whey 5kg',tag:'Health Foods',summary:'Premium whey protein concentrate, 21g protein per serving, 60+ flavours.',price:44.99,was:84.99,save:'47%'},
+      {name:'Cadbury Celebrations Box 240g',tag:'Snacks',summary:'Mixed box with Roses, Twirl and more. The ultimate sharing tin.',price:4.99,was:9.99,save:'50%'},
+      {name:'Twinings Everyday Tea x200',tag:'Coffee and Tea',summary:'Classic British brew, bold and refreshing. Value pack for restocking.',price:5.49,was:9.99,save:'45%'},
+      {name:'Nature Valley Oat and Honey x30',tag:'Snacks',summary:'Crunchy granola bars made with whole grain oats. High fibre, no artificial flavours.',price:7.99,was:13.99,save:'43%'},
+      {name:'Grenade Carb Killa Bar x12',tag:'Health Foods',summary:'High protein, low sugar chocolate bars. 20g protein per bar.',price:19.99,was:35.99,save:'44%'},
+      {name:'Lavazza Crema e Gusto 1kg',tag:'Coffee and Tea',summary:'Rich, full-bodied Italian espresso blend. Perfect for Moka pots.',price:12.99,was:22.99,save:'43%'},
+      {name:'Heinz Beanz x24 Cans',tag:'Bulk Buys',summary:'The original baked beans in tomato sauce. Bulk buying cuts cost per can.',price:11.99,was:21.99,save:'45%'},
+      {name:'Holland and Barrett Omega 3 x120',tag:'Health Foods',summary:'1000mg fish oil capsules for heart and brain health. Enteric coated.',price:9.99,was:18.99,save:'47%'},
+      {name:"Tony's Chocolonely Mixed 4pk",tag:'Snacks',summary:'Fairtrade chocolate in four flavours — milk, dark, caramel and white.',price:12.99,was:23.96,save:'46%'},
     ]
   },
   {
-    key:'toys', label:'Toys & Games', icon:'🧸', badge:null,
-    subtitle:'The most popular toys and board games, always found cheaper with Prixly.',
-    count:142,
-    subcats:['All','LEGO','Board Games','Action Figures','Outdoor','Arts & Crafts'],
+    key:'sports', label:'Sports and Outdoors',
+    subtitle:'Fitness gear, outdoor equipment and sports accessories for every level.',
+    count:195,
+    subcats:['All','Running','Gym','Outdoor','Cycling','Team Sports'],
     items:[
-      {name:'LEGO Technic Ferrari Daytona',tag:'LEGO',emoji:'🏎️',summary:'1,749 pieces of authentic Ferrari engineering. A display-worthy build for teens and adults.',price:39.99,was:54.99,save:'27%'},
-      {name:'Monopoly Classic Board Game',tag:'Board Games',emoji:'🎲',summary:'The original property trading game. Buy, sell and build your way to victory — if your family survives.',price:14.99,was:29.99,save:'50%'},
-      {name:'Barbie Dreamhouse 2024',tag:'Action Figures',emoji:'🏠',summary:'3 floors, 10 play areas, slide, pool and working elevator. The ultimate dollhouse experience.',price:149.99,was:199.99,save:'25%'},
-      {name:'Nerf Elite 2.0 Phoenix CS-6',tag:'Outdoor',emoji:'🔫',summary:'6-dart clip, tactical rail and slam-fire action. Lightweight and accurate — great for garden battles.',price:19.99,was:34.99,save:'43%'},
-      {name:'Hot Wheels Ultimate Garage',tag:'Action Figures',emoji:'🚗',summary:'Stores 140 cars across 4 levels with spiral launcher and working elevator.',price:79.99,was:119.99,save:'33%'},
-      {name:'Pokemon Scarlet Booster Bundle',tag:'Arts & Crafts',emoji:'⚡',summary:'36 booster packs from the Scarlet & Violet series. Great chance of pulling rare ex cards.',price:89.99,was:144.00,save:'38%'},
-      {name:'Ravensburger Puzzles 1000pc',tag:'Board Games',emoji:'🧩',summary:'Premium quality puzzle with precisely cut pieces and linen-finish print. A relaxing evening project.',price:9.99,was:19.99,save:'50%'},
-      {name:'LEGO City Police Station',tag:'LEGO',emoji:'🚔',summary:'668 pieces with 5 minifigures, working cell doors and police car. A classic City set for 6+.',price:89.99,was:119.99,save:'25%'},
-      {name:'Catan Board Game',tag:'Board Games',emoji:'🌾',summary:'The definitive modern strategy game. Build settlements, trade resources, and outsmart your opponents.',price:29.99,was:49.99,save:'40%'},
-      {name:'Play-Doh Ultimate Colour Kit',tag:'Arts & Crafts',emoji:'🎨',summary:'65 cans of non-toxic modelling compound. Hours of creative play for toddlers and young kids.',price:24.99,was:44.99,save:'44%'},
+      {name:'Decathlon Domyos 10kg Dumbbells',tag:'Gym',summary:'Hex rubber-coated dumbbells with ergonomic handle. A home gym essential.',price:19.99,was:34.99,save:'43%'},
+      {name:'Garmin Forerunner 55',tag:'Running',summary:'GPS running watch with suggested daily workouts and 2-week battery.',price:149.99,was:229.99,save:'35%'},
+      {name:'Nike Dri-FIT Running T-Shirt',tag:'Running',summary:'Sweat-wicking Dri-FIT fabric keeps you cool and dry. Slim fit with reflective detailing.',price:19.99,was:34.99,save:'43%'},
+      {name:'Theragun Mini 2nd Gen',tag:'Gym',summary:'Pocket-sized percussive therapy device with 3 speeds and 2-hour battery.',price:129.99,was:199.99,save:'35%'},
+      {name:'Adidas Predator Club FG Boots',tag:'Team Sports',summary:'Hybrid upper with rubber spike zones for precision passing and shooting.',price:49.99,was:89.99,save:'44%'},
+      {name:'Osprey Daylite 13L Backpack',tag:'Outdoor',summary:'Lightweight daypack with padded back panel and hipbelt. Perfect for hiking.',price:49.99,was:79.99,save:'38%'},
+      {name:'Fitbit Charge 6',tag:'Running',summary:'Built-in GPS, heart rate, sleep tracking and Google Maps integration.',price:89.99,was:139.99,save:'36%'},
+      {name:'Wilson Pro Staff Tennis Racket',tag:'Outdoor',summary:'Control-oriented racket. 97 sq in head, 315g and pure feel.',price:179.99,was:279.99,save:'36%'},
+      {name:'Boardman SLR 8.6 Road Bike',tag:'Cycling',summary:'Lightweight aluminium frame with Shimano 105 groupset. Enthusiast performance.',price:899.99,was:1299.99,save:'31%'},
+      {name:'Speedo Fastskin Swim Goggles',tag:'Outdoor',summary:'Low-profile racing goggles with UV protection and anti-fog lenses.',price:29.99,was:49.99,save:'40%'},
     ]
   },
   {
-    key:'baby', label:'Baby & Toddler', icon:'👶', badge:null,
+    key:'toys', label:'Toys and Games',
+    subtitle:'The most popular toys, board games and creative play for all ages.',
+    count:155,
+    subcats:['All','Building Toys','Board Games','Outdoor Toys','Arts and Crafts'],
+    items:[
+      {name:'LEGO Technic Ferrari Daytona',tag:'Building Toys',summary:'1,749 pieces of authentic Ferrari engineering. A display-worthy build for teens and adults.',price:39.99,was:54.99,save:'27%'},
+      {name:'Monopoly Classic Board Game',tag:'Board Games',summary:'The original property trading game. Buy, sell and build your way to victory.',price:14.99,was:29.99,save:'50%'},
+      {name:'Barbie Dreamhouse 2024',tag:'Building Toys',summary:'3 floors, 10 play areas, slide, pool and working elevator.',price:149.99,was:199.99,save:'25%'},
+      {name:'Nerf Elite 2.0 Phoenix CS-6',tag:'Outdoor Toys',summary:'6-dart clip and slam-fire action. Lightweight and accurate for garden battles.',price:19.99,was:34.99,save:'43%'},
+      {name:'Hot Wheels Ultimate Garage',tag:'Building Toys',summary:'Stores 140 cars across 4 levels with spiral launcher and working elevator.',price:79.99,was:119.99,save:'33%'},
+      {name:'Pokemon Scarlet Booster Bundle',tag:'Arts and Crafts',summary:'36 booster packs from the Scarlet and Violet series.',price:89.99,was:144.00,save:'38%'},
+      {name:'Ravensburger Puzzle 1000pc',tag:'Board Games',summary:'Premium quality puzzle with precisely cut pieces and linen-finish print.',price:9.99,was:19.99,save:'50%'},
+      {name:'LEGO City Police Station',tag:'Building Toys',summary:'668 pieces with 5 minifigures, working cell doors and police car.',price:89.99,was:119.99,save:'25%'},
+      {name:'Catan Board Game',tag:'Board Games',summary:'Build settlements, trade resources and outsmart your opponents.',price:29.99,was:49.99,save:'40%'},
+      {name:'Play-Doh Ultimate Colour Kit',tag:'Arts and Crafts',summary:'65 cans of non-toxic modelling compound. Hours of creative play for young kids.',price:24.99,was:44.99,save:'44%'},
+    ]
+  },
+  {
+    key:'automotive', label:'Automotive',
+    subtitle:'Car parts, accessories, tools and care products.',
+    count:140,
+    subcats:['All','Car Accessories','Tools','Car Care','Navigation'],
+    items:[
+      {name:'Halfords Essentials Car Jump Starter',tag:'Tools',summary:'Portable lithium jump starter for petrol and diesel engines up to 6L. Also charges phones.',price:49.99,was:89.99,save:'44%'},
+      {name:'Garmin DriveSmart 66 Sat Nav',tag:'Navigation',summary:'6-inch GPS navigator with traffic alerts, speed camera warnings and Bluetooth.',price:119.99,was:199.99,save:'40%'},
+      {name:'Autoglym Super Resin Polish',tag:'Car Care',summary:'All-in-one cleaner and polish that restores colour and deep shine in one step.',price:14.99,was:24.99,save:'40%'},
+      {name:'Ring RESC10 Car Escape Tool',tag:'Car Accessories',summary:'Seatbelt cutter and window breaker in a compact case. Essential safety kit.',price:9.99,was:19.99,save:'50%'},
+      {name:'Nextbase 622GW Dash Cam',tag:'Car Accessories',summary:'4K recording, Alexa built-in, Emergency SOS and what3words location sharing.',price:149.99,was:249.99,save:'40%'},
+      {name:'Halfords Anti-Freeze 5L Ready Mixed',tag:'Car Care',summary:'Ready-to-use antifreeze and coolant suitable for all makes. Protects to -36C.',price:9.99,was:17.99,save:'44%'},
+      {name:'BlackVue DR900X-2CH Dash Cam',tag:'Car Accessories',summary:'4K front plus Full HD rear, Wi-Fi cloud connectivity and parking mode.',price:299.99,was:449.99,save:'33%'},
+      {name:'Draper 100-Piece Socket Set',tag:'Tools',summary:'Metric and imperial sockets in a blow-moulded carry case. Workshop essentials.',price:39.99,was:69.99,save:'43%'},
+      {name:'Armor All Interior Care Kit',tag:'Car Care',summary:'Protectant, glass cleaner and upholstery cleaner in one complete interior kit.',price:12.99,was:22.99,save:'43%'},
+      {name:'TomTom Go Classic 6-inch',tag:'Navigation',summary:'Lifetime maps of Europe, speed camera alerts and hands-free calling.',price:89.99,was:149.99,save:'40%'},
+    ]
+  },
+  {
+    key:'books', label:'Books and Media',
+    subtitle:"Bestsellers, textbooks, music and entertainment.",
+    count:210,
+    subcats:['All','Fiction','Non-Fiction',"Children's Books",'Stationery'],
+    items:[
+      {name:'Atomic Habits — James Clear',tag:'Non-Fiction',summary:'The no.1 guide to building good habits. Over 15 million copies sold worldwide.',price:9.99,was:18.99,save:'47%'},
+      {name:'Harry Potter Complete Box Set',tag:"Children's Books",summary:'All 7 books in a beautiful illustrated slipcase. The perfect gift for any age.',price:39.99,was:79.99,save:'50%'},
+      {name:'The Body — Bill Bryson',tag:'Non-Fiction',summary:'A brilliantly entertaining tour of the human body by the world\'s most beloved popular science writer.',price:8.99,was:14.99,save:'40%'},
+      {name:'Fourth Wing — Rebecca Yarros',tag:'Fiction',summary:'The romantasy phenomenon. Dragons, war college and enemies-to-lovers at its best.',price:10.99,was:18.99,save:'42%'},
+      {name:'Leuchtturm1917 A5 Notebook',tag:'Stationery',summary:'Hardcover dot-grid notebook with numbered pages and index. The bullet journalist\'s choice.',price:14.99,was:24.99,save:'40%'},
+      {name:'Thinking Fast and Slow — Kahneman',tag:'Non-Fiction',summary:'Nobel laureate explores the two systems of thinking that shape our judgements.',price:8.99,was:14.99,save:'40%'},
+      {name:'The Thursday Murder Club',tag:'Fiction',summary:'Four retirement village residents meet to solve cold cases — then a real murder happens.',price:7.99,was:12.99,save:'38%'},
+      {name:'Stabilo Boss Highlighters x10',tag:'Stationery',summary:'The original fluorescent highlighter in a 10-colour wallet set. Non-smear, non-bleed.',price:8.99,was:15.99,save:'44%'},
+      {name:'The Alchemist — Paulo Coelho',tag:'Fiction',summary:"The beloved fable about a young shepherd's journey to find treasure and himself.",price:6.99,was:12.99,save:'46%'},
+      {name:'Gruffalo Board Book Collection',tag:"Children's Books",summary:'Five Julia Donaldson board books including The Gruffalo and Zog. Perfect for 0-3.',price:14.99,was:27.99,save:'46%'},
+    ]
+  },
+  {
+    key:'baby', label:'Baby and Kids',
     subtitle:'Everything for newborns, babies and toddlers — from nappies to nursery.',
-    count:119,
-    subcats:['All','Nappies & Wipes','Feeding','Travel','Nursery','Clothes'],
+    count:130,
+    subcats:['All','Nappies and Wipes','Feeding','Travel','Nursery','Clothing'],
     items:[
-      {name:'Pampers Premium Protection Size 4',tag:'Nappies & Wipes',emoji:'🍼',summary:'Up to 12 hours of dryness with Extra Sleep Layer. Dermatologically tested for sensitive skin.',price:12.99,was:22.99,save:'43%'},
-      {name:'Chicco Trio Pram System',tag:'Travel',emoji:'🛒',summary:'Modular 3-in-1 system: carrycot, car seat and pushchair in one. Grows with your baby from birth.',price:399.99,was:699.99,save:'43%'},
-      {name:'Tommee Tippee Bottle Starter Set',tag:'Feeding',emoji:'🍼',summary:'Anti-colic bottles with breast-like teat that mimics natural feeding. Easier switching between breast and bottle.',price:19.99,was:34.99,save:'43%'},
-      {name:'BabyBjörn Bouncer Bliss',tag:'Nursery',emoji:'👶',summary:'Ergonomic bouncer with natural movement that responds to your baby\'s own kicks and movements.',price:169.99,was:249.99,save:'32%'},
-      {name:'Angelcare AC517 Baby Monitor',tag:'Nursery',emoji:'📷',summary:'Movement sensor pad, video monitor with night vision and two-way talk. Complete peace of mind.',price:149.99,was:229.99,save:'35%'},
-      {name:'Graco Blossom 4-in-1 Highchair',tag:'Feeding',emoji:'🪑',summary:'Converts from infant high chair to toddler booster seat. Adjustable footrest and 6 height positions.',price:89.99,was:149.99,save:'40%'},
-      {name:'Huggies Pure Baby Wipes x12',tag:'Nappies & Wipes',emoji:'✨',summary:'99% pure water wipes, gentle on sensitive skin. The number one wipe recommended by UK midwives.',price:11.99,was:22.99,save:'48%'},
-      {name:'Sleepyhead Grand Pod',tag:'Nursery',emoji:'🛏️',summary:'Portable baby lounger with soft fill and washable cover. Helps babies feel secure and snug.',price:149.99,was:224.99,save:'33%'},
-      {name:'Sophie la Girafe Teether',tag:'Nursery',emoji:'🦒',summary:'Natural rubber teether with multiple parts to soothe sore gums. A global bestseller since 1961.',price:14.99,was:24.99,save:'40%'},
-      {name:'Next Organic Cotton Baby Grows 5pk',tag:'Clothes',emoji:'👕',summary:'GOTS certified organic cotton bodysuits, soft and kind to newborn skin. Available 0-18 months.',price:14.99,was:24.99,save:'40%'},
-    ]
-  },
-  {
-    key:'food', label:'Food & Grocery', icon:'🛒', badge:'trending',
-    subtitle:'Everyday staples, premium brands and bulk buys — all cheaper than the supermarket.',
-    count:88,
-    subcats:['All','Coffee & Tea','Snacks','Health Foods','Bulk Buys'],
-    items:[
-      {name:'Nespresso Vertuo Pop Bundle',tag:'Coffee & Tea',emoji:'☕',summary:'Next-gen Vertuo machine with 10 capsule welcome pack. Barista-quality coffee at the touch of a button.',price:59.99,was:109.99,save:'45%'},
-      {name:'Myprotein Impact Whey 5kg',tag:'Health Foods',emoji:'💪',summary:'Premium whey protein concentrate, 21g protein per serving, 60+ flavours. Best value per gram.',price:44.99,was:84.99,save:'47%'},
-      {name:'Cadbury Celebrations Box 240g',tag:'Snacks',emoji:'🍫',summary:'Mixed box of Roses and Heroes — Roses, Twirl, Creme Egg and more. The sharing tin of choice.',price:4.99,was:9.99,save:'50%'},
-      {name:'Twinings Everyday Tea x200',tag:'Coffee & Tea',emoji:'🍵',summary:'Classic British brew, bold and refreshing. Value pack saves you restocking every other week.',price:5.49,was:9.99,save:'45%'},
-      {name:'Nature Valley Oat & Honey x30',tag:'Snacks',emoji:'🌾',summary:'Crunchy granola bars made with whole grain oats. High fibre, no artificial flavours.',price:7.99,was:13.99,save:'43%'},
-      {name:'Grenade Carb Killa Bar x12',tag:'Health Foods',emoji:'🍫',summary:'High protein, low sugar chocolate bars that taste indulgent. 20g protein per bar.',price:19.99,was:35.99,save:'44%'},
-      {name:'Lavazza Crema e Gusto 1kg',tag:'Coffee & Tea',emoji:'☕',summary:'Rich, full-bodied Italian espresso blend. Perfect for Moka pots and espresso machines.',price:12.99,was:22.99,save:'43%'},
-      {name:'Heinz Beanz x24 Cans',tag:'Bulk Buys',emoji:'🥫',summary:'The original baked beans in tomato sauce. Buying in bulk cuts cost by nearly half per can.',price:11.99,was:21.99,save:'45%'},
-      {name:'Holland & Barrett Omega 3 x120',tag:'Health Foods',emoji:'💊',summary:'1000mg fish oil capsules for heart and brain health. Enteric coated to prevent fishy aftertaste.',price:9.99,was:18.99,save:'47%'},
-      {name:'Tony\'s Chocolonely Mixed 4pk',tag:'Snacks',emoji:'🍫',summary:'Fairtrade chocolate in four flavours — milk, dark, caramel and white. 180g bars.',price:12.99,was:23.96,save:'46%'},
-    ]
-  },
-  {
-    key:'books', label:'Books & Stationery', icon:'📚', badge:null,
-    subtitle:'Bestsellers, textbooks, notebooks and supplies — always cheaper than the high street.',
-    count:95,
-    subcats:['All','Fiction','Non-Fiction','Stationery','Children\'s Books'],
-    items:[
-      {name:'Atomic Habits — James Clear',tag:'Non-Fiction',emoji:'📖',summary:'The no.1 guide to building good habits and breaking bad ones. Over 15 million copies sold worldwide.',price:9.99,was:18.99,save:'47%'},
-      {name:'Harry Potter Complete Box Set',tag:'Children\'s Books',emoji:'⚡',summary:'All 7 books in a beautiful illustrated slipcase. The perfect gift for any age.',price:39.99,was:79.99,save:'50%'},
-      {name:'The Body — Bill Bryson',tag:'Non-Fiction',emoji:'🔬',summary:'A brilliantly entertaining tour of the human body by the world\'s most beloved popular science writer.',price:8.99,was:14.99,save:'40%'},
-      {name:'Fourth Wing — Rebecca Yarros',tag:'Fiction',emoji:'🐉',summary:'The romantasy phenomenon. Dragons, war college, and enemies-to-lovers done at its absolute best.',price:10.99,was:18.99,save:'42%'},
-      {name:'Leuchtturm1917 A5 Notebook',tag:'Stationery',emoji:'📓',summary:'Hardcover dot-grid notebook with numbered pages and index. The bullet journalist\'s notebook of choice.',price:14.99,was:24.99,save:'40%'},
-      {name:'Thinking Fast and Slow — Kahneman',tag:'Non-Fiction',emoji:'🧠',summary:'Nobel laureate explores the two systems of thinking that shape our judgements and decisions.',price:8.99,was:14.99,save:'40%'},
-      {name:'The Thursday Murder Club',tag:'Fiction',emoji:'🔍',summary:'Four residents of a retirement village meet to solve cold cases — then a real murder happens.',price:7.99,was:12.99,save:'38%'},
-      {name:'Stabilo Boss Highlighters x10',tag:'Stationery',emoji:'🖊️',summary:'The original fluorescent highlighter in a 10-colour wallet set. Non-smear, non-bleed.',price:8.99,was:15.99,save:'44%'},
-      {name:'The Alchemist — Paulo Coelho',tag:'Fiction',emoji:'⭐',summary:'The beloved fable about a young shepherd\'s journey to find treasure — and himself.',price:6.99,was:12.99,save:'46%'},
-      {name:'Gruffalo Board Book Collection',tag:'Children\'s Books',emoji:'🐭',summary:'Five Julia Donaldson board books including The Gruffalo, Zog and Tiddler. Perfect for 0-3.',price:14.99,was:27.99,save:'46%'},
+      {name:'Pampers Premium Protection Size 4',tag:'Nappies and Wipes',summary:'Up to 12 hours of dryness with Extra Sleep Layer. Dermatologically tested.',price:12.99,was:22.99,save:'43%'},
+      {name:'Chicco Trio Pram System',tag:'Travel',summary:'Modular 3-in-1 system: carrycot, car seat and pushchair in one.',price:399.99,was:699.99,save:'43%'},
+      {name:'Tommee Tippee Bottle Starter Set',tag:'Feeding',summary:'Anti-colic bottles with breast-like teat that mimics natural feeding.',price:19.99,was:34.99,save:'43%'},
+      {name:'BabyBjorn Bouncer Bliss',tag:'Nursery',summary:'Ergonomic bouncer with natural movement that responds to your baby\'s own kicks.',price:169.99,was:249.99,save:'32%'},
+      {name:'Angelcare AC517 Baby Monitor',tag:'Nursery',summary:'Movement sensor pad, video monitor with night vision and two-way talk.',price:149.99,was:229.99,save:'35%'},
+      {name:'Graco Blossom 4-in-1 Highchair',tag:'Feeding',summary:'Converts from infant high chair to toddler booster seat. 6 height positions.',price:89.99,was:149.99,save:'40%'},
+      {name:'Huggies Pure Baby Wipes x12',tag:'Nappies and Wipes',summary:'99% pure water wipes, gentle on sensitive skin. Recommended by UK midwives.',price:11.99,was:22.99,save:'48%'},
+      {name:'Sleepyhead Grand Pod',tag:'Nursery',summary:'Portable baby lounger with soft fill and washable cover. Helps babies feel secure.',price:149.99,was:224.99,save:'33%'},
+      {name:'Sophie la Girafe Teether',tag:'Nursery',summary:'Natural rubber teether to soothe sore gums. A global bestseller since 1961.',price:14.99,was:24.99,save:'40%'},
+      {name:'Next Organic Cotton Baby Grows 5pk',tag:'Clothing',summary:'GOTS certified organic cotton bodysuits, soft and kind to newborn skin.',price:14.99,was:24.99,save:'40%'},
     ]
   },
 ];
@@ -1693,15 +1720,24 @@ function renderCatStrip(){
 }
 
 function renderCatsBrowse(){
-  const grid=document.getElementById('catsBrowseGrid');
-  if(!grid)return;
+  const container=document.getElementById('catsBrowseRows');
+  if(!container)return;
   const seed=getDailySeed();
-  const shuffled=seededShuffle(BROWSE_CATS,seed);
-  grid.innerHTML=shuffled.map(c=>`
-    <div class="cat-card ${c.badge||''}" onclick="openCategory('${c.key}')">
-      <span class="cat-card-icon">${c.icon}</span>
-      <span class="cat-card-name">${c.label}</span>
-      <span class="cat-card-count">${c.count}+ items</span>
+  container.innerHTML=BROWSE_CATS.map(c=>`
+    <div class="cat-row">
+      <div class="cat-row-header">
+        <span class="cat-row-title">${c.label}</span>
+        <span class="cat-row-seeall" onclick="openCategory('${c.key}')">See all ${c.count}+ items</span>
+      </div>
+      <div class="cat-row-scroll">
+        ${seededShuffle(c.items,seed+c.key.charCodeAt(0)).map(item=>`
+          <div class="cat-scroll-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
+            <div class="cat-scroll-tag">${item.tag}</div>
+            <div class="cat-scroll-name">${item.name}</div>
+            <div class="cat-scroll-price">${fmt(item.price)}</div>
+            <span class="cat-scroll-save">Save ${item.save}</span>
+          </div>`).join('')}
+      </div>
     </div>`).join('');
 }
 
@@ -1711,7 +1747,7 @@ function openCategory(key){
   const seed=getDailySeed();
   // Shuffle items daily so order feels fresh
   const items=seededShuffle(cat.items,seed+cat.key.charCodeAt(0));
-  document.getElementById('catpageIcon').textContent=cat.icon;
+  document.getElementById('catpageIcon').textContent='';
   document.getElementById('catpageTitle').textContent=cat.label;
   document.getElementById('catpageSubtitle').textContent=cat.subtitle;
   document.getElementById('catpageCount').textContent=`${cat.count}+ items`;
@@ -1737,7 +1773,7 @@ function renderCatItems(items,sub){
   const filtered=sub==='All'?items:items.filter(i=>i.tag===sub);
   document.getElementById('catpageGrid').innerHTML=filtered.length?filtered.map(item=>`
     <div class="item-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
-      <div class="item-card-img">${item.emoji}</div>
+      <div class="item-card-img" style="font-size:.85rem;font-weight:700;color:var(--muted);">${item.tag}</div>
       <div class="item-card-body">
         <div class="item-card-tag">${item.tag}</div>
         <div class="item-card-name">${item.name}</div>
@@ -1786,7 +1822,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(savedTheme){
     html.setAttribute('data-theme', savedTheme);
     const themeBtn = document.getElementById('themeBtn');
-    if(themeBtn) themeBtn.textContent = savedTheme==='dark' ? '☀️ Light' : '🌙 Dark';
+    if(themeBtn) themeBtn.textContent = savedTheme==='dark' ? 'Light' : 'Dark';
   }
 
   // ── REGION — drives retailer selection and default currency ──
