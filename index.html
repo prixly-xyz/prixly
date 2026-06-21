@@ -45,7 +45,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 .nav-links a:hover,.nav-links a.active{color:var(--accent);}
 .theme-toggle{background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:.3rem .75rem;font-size:.8rem;cursor:pointer;color:var(--muted);transition:all .2s;}
 .theme-toggle:hover{color:var(--text);border-color:var(--accent);}
-.nav-cta{background:var(--accent);color:#fff;padding:.4rem 1.1rem;border-radius:20px;font-size:.85rem;font-weight:600;text-decoration:none;transition:background .2s;cursor:pointer;}
+.nav-cta{background:var(--accent);color:#fff;padding:.4rem 1.1rem;border-radius:20px;font-size:.85rem;font-weight:600;text-decoration:none;transition:background .2s;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .nav-cta:hover{background:var(--accent-dark);}
 
 /* DEAL BANNER */
@@ -426,6 +426,30 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 footer{background:var(--surface);border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:.8rem;}
 footer a{color:var(--accent);text-decoration:none;}
 
+/* ── SIGN UP PAGE ── */
+.signup-page{min-height:calc(100vh - 60px - 46px);display:flex;align-items:center;justify-content:center;padding:2rem;}
+.signup-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:2.5rem 2rem;max-width:460px;width:100%;box-shadow:var(--shadow);text-align:center;}
+.signup-card h1{font-size:1.8rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.5rem;}
+.signup-card h1 span{color:var(--accent);}
+.signup-card p{font-size:.92rem;color:var(--muted);line-height:1.6;margin-bottom:1.75rem;}
+.signup-benefits{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.75rem;text-align:left;}
+.signup-benefit{display:flex;align-items:center;gap:.75rem;font-size:.88rem;color:var(--muted);}
+.signup-benefit-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.signup-form{display:flex;flex-direction:column;gap:.75rem;}
+.signup-input{border:1px solid var(--border2);border-radius:var(--radius-sm);padding:.65rem 1rem;font-size:.95rem;background:var(--bg2);color:var(--text);outline:none;transition:border-color .2s;width:100%;}
+.signup-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,204,113,0.1);}
+.signup-input::placeholder{color:var(--muted2);}
+.signup-submit{background:var(--accent);color:#fff;border:none;padding:.75rem;border-radius:var(--radius-sm);font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s;width:100%;}
+.signup-submit:hover{background:var(--accent-dark);}
+.signup-success{display:none;flex-direction:column;align-items:center;gap:.75rem;padding:.5rem 0;}
+.signup-success-icon{width:52px;height:52px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;}
+.signup-success-icon svg{color:var(--accent);}
+.signup-success h2{font-size:1.2rem;font-weight:800;}
+.signup-success p{font-size:.88rem;color:var(--muted);}
+.signup-back{margin-top:.5rem;font-size:.82rem;color:var(--muted);cursor:pointer;text-decoration:underline;}
+.signup-back:hover{color:var(--accent);}
+.signup-legal{font-size:.72rem;color:var(--muted2);margin-top:.75rem;line-height:1.5;}
+
 /* Cursor control — I-beam only on actual inputs */
 *{cursor:default !important;}
 a,button,[onclick],
@@ -496,7 +520,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       </div>
     </div>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
-    <a class="nav-cta" onclick="showPage('alerts')" id="nav-signup">Sign up free</a>
+    <a class="nav-cta" onclick="showPage('signup')" id="nav-signup">Sign up free</a>
   </div>
 </nav>
 
@@ -790,6 +814,37 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <!-- ══════════════════════════════════════════ -->
 <!--  PRICE ALERTS PAGE                         -->
 <!-- ══════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════ -->
+<!--  SIGN UP PAGE                              -->
+<!-- ══════════════════════════════════════════ -->
+<div id="page-signup" class="page">
+  <div class="signup-page">
+    <div class="signup-card">
+      <h1>Get <span>price alerts</span><br>straight to your inbox.</h1>
+      <p>Sign up once and Prixly will email you the moment any item you're watching drops below your target price — no app, no account dashboard, no noise.</p>
+      <div class="signup-benefits">
+        <div class="signup-benefit"><div class="signup-benefit-dot"></div>Instant email when prices drop</div>
+        <div class="signup-benefit"><div class="signup-benefit-dot"></div>Set your own target price per item</div>
+        <div class="signup-benefit"><div class="signup-benefit-dot"></div>Free forever — no card required</div>
+        <div class="signup-benefit"><div class="signup-benefit-dot"></div>Unsubscribe any time, one click</div>
+      </div>
+      <div class="signup-form" id="signupForm">
+        <input class="signup-input" type="email" id="signupEmail" placeholder="Enter your email address" />
+        <button class="signup-submit" onclick="handleSignup()">Create free account</button>
+        <p class="signup-legal">By signing up you agree to our <a href="#" style="color:var(--accent);">Privacy Policy</a>. We never share your email with third parties.</p>
+      </div>
+      <div class="signup-success" id="signupSuccess">
+        <div class="signup-success-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>You're on the list.</h2>
+        <p>We'll email you at <strong id="signupEmailConfirm"></strong> the moment a watched item drops below your target price.</p>
+        <span class="signup-back" onclick="showPage('home')">Back to search</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="page-alerts" class="page">
   <div class="pa-hero">
     <h1 data-i18n="pa_title">Price Alerts</h1>
@@ -1824,6 +1879,7 @@ function showPage(id) {
   if(id==='alerts') renderAlerts();
   if(id==='deals') renderDeals();
   if(id==='categories') renderCatsBrowse();
+  if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; document.getElementById('signupEmail').value=''; }
 }
 
 // Init strip and localisation on load
@@ -2394,6 +2450,20 @@ function drawChart(){
   const base=currentResults[0].price;
   const data=[base*1.35,base*1.28,base*1.18,base*1.22,base*1.08,base].map(v=>parseFloat(v.toFixed(2)));
   chartInstance=new Chart(ctx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{data,borderColor:ac,borderWidth:2,pointBackgroundColor:ac,pointRadius:4,pointHoverRadius:6,fill:true,backgroundColor:isDark?'rgba(46,204,113,0.06)':'rgba(26,158,80,0.06)',tension:.35}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y/CURRENCIES[activeCurrency].rate)}}},scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:11}}},y:{grid:{color:gc},ticks:{color:lc,font:{size:11},callback:v=>fmt(v/CURRENCIES[activeCurrency].rate)},min:Math.floor(Math.min(...data)*.92),max:Math.ceil(Math.max(...data)*1.05)}}}});
+}
+function handleSignup(){
+  const email=document.getElementById('signupEmail').value.trim();
+  if(!email||!email.includes('@')){
+    document.getElementById('signupEmail').style.borderColor='#e74c3c';
+    document.getElementById('signupEmail').focus();
+    return;
+  }
+  document.getElementById('signupEmail').style.borderColor='';
+  document.getElementById('signupEmailConfirm').textContent=email;
+  document.getElementById('signupForm').style.display='none';
+  document.getElementById('signupSuccess').style.display='flex';
+  // Store email locally for now — backend to be wired up later
+  try{ const saved=JSON.parse(localStorage.getItem('prixly_signups')||'[]'); saved.push({email,date:new Date().toISOString()}); localStorage.setItem('prixly_signups',JSON.stringify(saved)); }catch(e){}
 }
 function submitAlert(){
   const e=document.getElementById('alertEmail').value.trim(),p=document.getElementById('alertPrice').value.trim();
