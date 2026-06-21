@@ -67,22 +67,25 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 .hero p{font-size:1.05rem;color:var(--muted);line-height:1.65;margin-bottom:2rem;}
 .search-container{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border2);box-shadow:var(--shadow);overflow:hidden;max-width:640px;margin:0 auto 1rem;transition:border-color .2s,box-shadow .2s;}
 .search-container:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,204,113,0.12);}
-.search-tabs{display:flex;border-bottom:1px solid var(--border);}
-.search-tab{flex:1;padding:.65rem;background:none;border:none;cursor:pointer;font-size:.83rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;}
-.search-tab.active{color:var(--accent);background:var(--accent-dim);font-weight:600;}
-.search-tab:hover:not(.active){background:var(--bg2);}
 .search-row{display:flex;align-items:center;padding:.45rem;gap:.45rem;}
 .search-input{flex:1;border:none;outline:none;font-size:1rem;padding:.6rem .8rem;background:none;color:var(--text);}
 .search-input::placeholder{color:var(--muted2);}
-.search-url-hint{font-size:.72rem;color:var(--muted);text-align:center;padding:0 .75rem .6rem;}
+.attach-btn{background:none;border:none;cursor:pointer;color:var(--muted);display:flex;align-items:center;padding:.4rem .5rem;border-radius:var(--radius-xs);transition:color .2s,background .2s;flex-shrink:0;}
+.attach-btn:hover{color:var(--accent);background:var(--accent-dim);}
+.search-how-row{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.1rem .75rem .65rem;flex-wrap:wrap;}
+.search-how-item{font-size:.73rem;color:var(--muted);}
+.search-how-sep{font-size:.73rem;color:var(--muted2);}
 .search-btn{background:var(--accent);color:#fff;border:none;padding:.65rem 1.4rem;border-radius:var(--radius-sm);font-size:.92rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;white-space:nowrap;}
 .search-btn:hover{background:var(--accent-dark);}
 .search-btn:active{transform:scale(.97);}
-.drop-zone{margin:0;padding:2rem;border:2px dashed var(--border2);border-radius:var(--radius-sm);text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2);}
-.drop-zone:hover,.drop-zone.dragover{border-color:var(--accent);background:var(--accent-dim);}
-.drop-zone p{color:var(--muted);font-size:.88rem;margin-top:.4rem;}
-.drop-zone .drop-icon{font-size:2rem;}
-.drop-zone input[type="file"]{display:none;}
+/* drag-over highlight on unified search */
+#unifiedSearch.dragover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,204,113,0.18);}
+
+/* ── CATEGORIES PAGE ── */
+.catsbrowse-hero{padding:2.5rem 2rem 1.2rem;max-width:900px;margin:0 auto;}
+.catsbrowse-hero h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.35rem;}
+.catsbrowse-hero p{font-size:.92rem;color:var(--muted);}
+.catsbrowse-grid{max-width:900px;margin:0 auto;padding:0 2rem 4rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:flex-start;}
 
 /* CURRENCY SELECTOR */
 .currency-row{display:flex;align-items:center;justify-content:flex-end;max-width:640px;margin:0 auto .4rem;gap:.5rem;}
@@ -437,21 +440,12 @@ footer a{color:var(--accent);text-decoration:none;}
     <li><a onclick="showPage('hiw')" id="nav-hiw" data-i18n="nav_hiw">How it works</a></li>
     <li><a onclick="showPage('alerts')" id="nav-alerts" data-i18n="nav_alerts">Price alerts</a></li>
     <li><a onclick="showPage('deals')" id="nav-deals" data-i18n="nav_deals">Deals</a></li>
+    <li><a onclick="showPage('categories')" id="nav-categories">Categories</a></li>
     <li><a onclick="showPage('about')" id="nav-about" data-i18n="nav_about">About</a></li>
   </ul>
   <div class="nav-right">
-    <div class="nav-selector-group" title="Region — changes nearby stores and currency">
-      <span class="nav-selector-icon">📍</span>
-      <div class="cselect" id="regionSelectWrap">
-        <button class="cselect-btn" onclick="cSelectToggle('regionSelectWrap')">
-          <span class="cselect-val" id="regionSelectVal"></span>
-          <span class="cselect-arrow">▾</span>
-        </button>
-        <div class="cselect-list" id="regionSelectList"></div>
-      </div>
-    </div>
     <div class="nav-selector-group" title="Language — changes the site language">
-      <span class="nav-selector-icon">🌐</span>
+      <span class="nav-selector-icon" style="font-size:.8rem;opacity:.65;padding-left:.2rem;">Lang</span>
       <div class="cselect" id="langSelectWrap">
         <button class="cselect-btn" onclick="cSelectToggle('langSelectWrap')">
           <span class="cselect-val" id="langSelectVal"></span>
@@ -460,13 +454,13 @@ footer a{color:var(--accent);text-decoration:none;}
         <div class="cselect-list" id="langSelectList"></div>
       </div>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
     <a class="nav-cta" onclick="showPage('alerts')" id="nav-signup">Sign up free</a>
   </div>
 </nav>
 
 <div class="deal-banner">
-  <span class="deal-label">🔥 Deal of the day</span>
+  <span class="deal-label">Deal of the day</span>
   <span class="deal-text"><strong>Sony WH-1000XM5 Headphones</strong> — found 34% cheaper than RRP</span>
   <span class="deal-cta" onclick="showPage('home');setTimeout(()=>quickSearch('Sony WH-1000XM5 Headphones'),100)">See the deal →</span>
   <span class="deal-timer" id="dealTimer">Expires in 08:42:17</span>
@@ -491,38 +485,31 @@ footer a{color:var(--accent);text-decoration:none;}
         <div class="cselect-list" id="currencySelectList"></div>
       </div>
     </div>
-    <div class="search-container">
-      <div class="search-tabs">
-        <button class="search-tab active" onclick="switchTab('text',this)" data-i18n="tab_text">🔤 Search by name</button>
-        <button class="search-tab" onclick="switchTab('image',this)" data-i18n="tab_image">📷 Search by image</button>
+    <!-- UNIFIED SEARCH BAR -->
+    <div class="search-container" id="unifiedSearch" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <div class="search-row">
+        <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Attach image, screenshot or PDF">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        </button>
+        <input class="search-input" type="text" id="searchInput" placeholder="Search by name, e.g. iPhone 15, Nike Air Max..." onkeydown="if(event.key==='Enter') doSearch()"/>
+        <button class="search-btn" onclick="doSearch()" data-i18n="search_btn">Search</button>
       </div>
-      <div id="textSearch">
-        <div class="search-row">
-          <input class="search-input" type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="e.g. iPhone 15, Nike Air Max, LEGO Technic..." onkeydown="if(event.key==='Enter') doSearch()"/>
-          <button class="search-btn" onclick="doSearch()" data-i18n="search_btn">Search</button>
-        </div>
-        <p class="search-url-hint" data-i18n="url_hint">💡 Tip: you can also paste a product link instead of typing a name</p>
+      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+      <div class="search-how-row">
+        <span class="search-how-item">Type a name</span>
+        <span class="search-how-sep">·</span>
+        <span class="search-how-item">Paste a URL</span>
+        <span class="search-how-sep">·</span>
+        <span class="search-how-item">Upload a photo</span>
+        <span class="search-how-sep">·</span>
+        <span class="search-how-item">Drop a screenshot</span>
       </div>
-      <div id="imageSearch" style="padding:.75rem;display:none;">
-        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-          <div class="drop-icon">📁</div>
-          <p><strong data-i18n="drop_title">Drop an image here</strong> <span data-i18n="drop_sub">or click to upload</span></p>
-          <p style="font-size:.73rem;margin-top:.3rem;" data-i18n="drop_formats">JPG, PNG, WEBP supported</p>
-          <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(event)">
-        </div>
-      </div>
-    </div>
-    <!-- CATEGORY BROWSE STRIP -->
-    <div class="cat-browse-wrap" id="catBrowseWrap">
-      <p class="cat-browse-label">Browse by category</p>
-      <div class="cat-browse-strip" id="catBrowseStrip"></div>
-      <div class="cat-updated" id="catUpdated"></div>
     </div>
     <div class="trust-strip">
-      <div class="trust-item">✅ <span data-i18n="trust_1">No sign-up needed</span></div>
-      <div class="trust-item">🔒 <span data-i18n="trust_2">We never sell your data</span></div>
-      <div class="trust-item">⚡ <span data-i18n="trust_3">Results in under 3s</span></div>
-      <div class="trust-item">🛒 <span data-i18n="trust_4">50+ retailers searched</span></div>
+      <div class="trust-item"><span data-i18n="trust_1">No sign-up needed</span></div>
+      <div class="trust-item"><span data-i18n="trust_2">We never sell your data</span></div>
+      <div class="trust-item"><span data-i18n="trust_3">Results in under 3s</span></div>
+      <div class="trust-item"><span data-i18n="trust_4">50+ retailers searched</span></div>
     </div>
   </section>
   <div class="recently-viewed" id="recentlyViewed">
@@ -557,7 +544,7 @@ footer a{color:var(--accent);text-decoration:none;}
     <div id="resultsList"></div>
     <div class="price-history">
       <div class="price-history-header">
-        <h3>📈 Price history — last 6 months</h3>
+        <h3>Price history — last 6 months</h3>
         <div class="history-stats" id="historyStats"></div>
       </div>
       <div class="chart-wrap"><canvas id="priceChart" height="120"></canvas></div>
@@ -565,21 +552,21 @@ footer a{color:var(--accent);text-decoration:none;}
     </div>
     <div class="reviews-section" id="reviewsSection" style="display:none;">
       <div class="reviews-header">
-        <h3>💬 Customer reviews</h3>
+        <h3>Customer reviews</h3>
         <div class="reviews-summary" id="reviewsSummary"></div>
       </div>
       <div id="reviewsBody"></div>
     </div>
 
     <div class="alert-box">
-      <h3>🔔 Set a price alert</h3>
+      <h3>Set a price alert</h3>
       <p>We'll email you the moment this item drops below your target price.</p>
       <div class="alert-form" id="alertForm">
         <input class="alert-input" type="email" id="alertEmail" placeholder="your@email.com"/>
         <input class="alert-input alert-price-input" type="number" id="alertPrice" placeholder="Target £" step="0.01" min="0"/>
         <button class="alert-submit" onclick="submitAlert()">Notify me</button>
       </div>
-      <div class="alert-success" id="alertSuccess">✅ Done! We'll email you when the price drops below your target.</div>
+      <div class="alert-success" id="alertSuccess">Done! We'll email you when the price drops below your target.</div>
     </div>
   </section>
 </main>
@@ -606,6 +593,17 @@ footer a{color:var(--accent);text-decoration:none;}
 </div>
 
 <!-- ══════════════════════════════════════════ -->
+<!--  CATEGORIES PAGE                           -->
+<!-- ══════════════════════════════════════════ -->
+<div id="page-categories" class="page">
+  <div class="catsbrowse-hero">
+    <h1>Categories</h1>
+    <p>Browse all product categories — click any to explore the best deals inside.</p>
+  </div>
+  <div class="catsbrowse-grid" id="catsBrowseGrid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
 <!--  HOW IT WORKS PAGE                         -->
 <!-- ══════════════════════════════════════════ -->
 <div id="page-hiw" class="page">
@@ -618,13 +616,13 @@ footer a{color:var(--accent);text-decoration:none;}
 
     <div class="hiw-step">
       <div class="hiw-step-visual">
-        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.3rem;" data-i18n="mock_search_bar">🔍 Search bar</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.3rem;" data-i18n="mock_search_bar">Search bar</div>
         <div class="mock-search">
           <span class="mock-typing" id="hiw-typing">Sony WH-1000XM5<span class="mock-cursor"></span></span>
           <button class="mock-search-btn" data-i18n="search_btn">Search</button>
         </div>
-        <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem;" data-i18n="mock_or_drop">Or drop an image...</div>
-        <div style="border:1.5px dashed var(--border2);border-radius:var(--radius-sm);padding:.75rem;text-align:center;font-size:.75rem;color:var(--muted);background:var(--bg2);" data-i18n="mock_dragdrop">📁 Drag & drop any product photo</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem;" data-i18n="mock_or_drop">Or attach an image...</div>
+        <div style="border:1.5px dashed var(--border2);border-radius:var(--radius-sm);padding:.75rem;text-align:center;font-size:.75rem;color:var(--muted);background:var(--bg2);" data-i18n="mock_dragdrop">Drag &amp; drop any product photo</div>
       </div>
       <div class="hiw-step-info">
         <div class="hiw-step-num" data-i18n="step1_num">Step 01</div>
@@ -637,8 +635,8 @@ footer a{color:var(--accent);text-decoration:none;}
 
     <div class="hiw-step">
       <div class="hiw-step-visual">
-        <div class="mock-detecting"><div class="mini-spin"></div><span data-i18n="mock_category_detected">Category detected: 💻 Electronics (94% match)</span></div>
-        <div style="font-size:.72rem;color:var(--muted);margin:.4rem 0 .3rem;" data-i18n="mock_searching_priority">Searching top retailers by priority:</div>
+        <div class="mock-detecting"><div class="mini-spin"></div><span data-i18n="mock_category_detected">Category detected: Electronics (94% match)</span></div>
+        <div style="font-size:.72rem;color:var(--muted);margin:.4rem 0 .3rem;">Searching top retailers by priority:</div>
         <div class="mock-retailers">
           <span class="mock-retailer-tag top">★ Amazon</span>
           <span class="mock-retailer-tag top">★ Currys</span>
@@ -664,7 +662,7 @@ footer a{color:var(--accent);text-decoration:none;}
           <div class="mock-retailer-dot" style="background:#FF9900;color:#131921;">AMZ</div>
           <div class="mock-result-info">
             <div class="mock-result-name">Sony WH-1000XM5 — Amazon</div>
-            <div class="mock-result-ship" data-i18n="mock_ship_nextday">⚡ Free next-day delivery</div>
+            <div class="mock-result-ship" data-i18n="mock_ship_nextday">Free next-day delivery</div>
           </div>
           <div>
             <div class="mock-result-price">£189.99</div>
@@ -699,7 +697,7 @@ footer a{color:var(--accent);text-decoration:none;}
 
     <div class="hiw-step">
       <div class="hiw-step-visual">
-        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;" data-i18n="mock_price_history_header">📈 Price over last 6 months</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;" data-i18n="mock_price_history_header">Price over last 6 months</div>
         <div style="display:flex;justify-content:space-between;font-size:.7rem;margin-bottom:.3rem;">
           <span style="color:var(--accent);">£189.99 <span data-i18n="mock_now">now</span></span>
           <span style="color:#e74c3c;">£259.99 <span data-i18n="mock_peak">peak</span></span>
@@ -713,7 +711,7 @@ footer a{color:var(--accent);text-decoration:none;}
           <div style="flex:1;background:#aca;border-radius:2px;height:50%;opacity:.8;"></div>
           <div style="flex:1;background:var(--accent);border-radius:2px;height:38%;"></div>
         </div>
-        <div style="font-size:.68rem;color:var(--muted);margin-top:.3rem;" data-i18n="mock_price_insight">💡 Price has dropped 27% since January</div>
+        <div style="font-size:.68rem;color:var(--muted);margin-top:.3rem;" data-i18n="mock_price_insight">Price has dropped 27% since January</div>
       </div>
       <div class="hiw-step-info">
         <div class="hiw-step-num" data-i18n="step4_num">Step 04</div>
@@ -727,7 +725,7 @@ footer a{color:var(--accent);text-decoration:none;}
     <div class="hiw-step">
       <div class="hiw-step-visual">
         <div class="mock-alert-box">
-          <div class="mock-alert-label" data-i18n="mock_set_alert">🔔 Set a price alert</div>
+          <div class="mock-alert-label" data-i18n="mock_set_alert">Set a price alert</div>
           <div class="mock-alert-row">
             <input class="mock-alert-input" data-i18n-placeholder="alert_email" placeholder="your@email.com" readonly/>
             <input class="mock-alert-input" data-i18n-placeholder="mock_target_ph" placeholder="Target £" style="width:80px;flex:unset;" readonly/>
@@ -735,7 +733,7 @@ footer a{color:var(--accent);text-decoration:none;}
           </div>
         </div>
         <div style="margin-top:.75rem;background:var(--accent-dim);border:1px solid rgba(46,204,113,0.2);border-radius:var(--radius-sm);padding:.5rem .75rem;font-size:.75rem;color:var(--accent);">
-          <span data-i18n="mock_alert_confirm">✅ Alert set! We'll email you when Sony WH-1000XM5 drops below</span> <strong>£180</strong>
+          <span data-i18n="mock_alert_confirm">Alert set! We'll email you when Sony WH-1000XM5 drops below</span> <strong>£180</strong>
         </div>
       </div>
       <div class="hiw-step-info">
@@ -753,7 +751,7 @@ footer a{color:var(--accent);text-decoration:none;}
 <!-- ══════════════════════════════════════════ -->
 <div id="page-alerts" class="page">
   <div class="pa-hero">
-    <h1 data-i18n="pa_title">🔔 Price Alerts</h1>
+    <h1 data-i18n="pa_title">Price Alerts</h1>
     <p data-i18n="pa_subtitle">Items you're watching — we'll tell you the moment the price drops.</p>
   </div>
   <div class="pa-content" id="paContent"></div>
@@ -764,7 +762,7 @@ footer a{color:var(--accent);text-decoration:none;}
 <!-- ══════════════════════════════════════════ -->
 <div id="page-deals" class="page">
   <div class="deals-hero">
-    <h1 data-i18n="deals_title">🔥 Today's Best Deals</h1>
+    <h1 data-i18n="deals_title">Today's Best Deals</h1>
     <p data-i18n="deals_p">The biggest price drops right now across every category — updated daily.</p>
   </div>
   <div class="deals-filters" id="dealsFilters">
@@ -785,7 +783,7 @@ footer a{color:var(--accent);text-decoration:none;}
 <!-- ══════════════════════════════════════════ -->
 <div id="page-about" class="page">
   <div class="about-hero">
-    <span class="big-bird">🐦</span>
+    <span class="big-bird" style="font-size:4rem;display:block;margin-bottom:1rem;">P</span>
     <h1 data-i18n="about_h1">We exist so you can<br><span>spend less, live more.</span></h1>
     <p class="tagline" data-i18n="about_tagline">"The smartest shopper isn't the one who buys the most — it's the one who pays the least."</p>
     <p data-i18n="about_intro">Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don't have to, finding the best price on everything from headphones to nappies in seconds.</p>
@@ -812,28 +810,24 @@ footer a{color:var(--accent);text-decoration:none;}
   <div class="about-values">
     <h2 data-i18n="about_values_header">What makes us different</h2>
     <div class="about-value">
-      <div class="about-value-icon">🧠</div>
       <div class="about-value-text">
         <h3 data-i18n="value1_title">Smart category detection</h3>
         <p data-i18n="value1_desc">Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you're looking for.</p>
       </div>
     </div>
     <div class="about-value">
-      <div class="about-value-icon">📈</div>
       <div class="about-value-text">
         <h3 data-i18n="value2_title">Price history you can trust</h3>
         <p data-i18n="value2_desc">We show you whether today's "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.</p>
       </div>
     </div>
     <div class="about-value">
-      <div class="about-value-icon">🔔</div>
       <div class="about-value-text">
         <h3 data-i18n="value3_title">Alerts that actually fire</h3>
         <p data-i18n="value3_desc">Set your target price and forget about it. We'll email you the moment something drops, so you never miss a deal you actually wanted.</p>
       </div>
     </div>
     <div class="about-value">
-      <div class="about-value-icon">🔒</div>
       <div class="about-value-text">
         <h3 data-i18n="value4_title">No data selling, ever</h3>
         <p data-i18n="value4_desc">We don't sell your data. We don't track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that's it.</p>
@@ -1695,17 +1689,20 @@ function seededShuffle(arr,seed){
 }
 
 function renderCatStrip(){
+  // catBrowseStrip no longer on home page — no-op kept for safety
+}
+
+function renderCatsBrowse(){
+  const grid=document.getElementById('catsBrowseGrid');
+  if(!grid)return;
   const seed=getDailySeed();
-  const strip=document.getElementById('catBrowseStrip');
-  if(!strip)return;
-  strip.innerHTML=BROWSE_CATS.map(c=>`
+  const shuffled=seededShuffle(BROWSE_CATS,seed);
+  grid.innerHTML=shuffled.map(c=>`
     <div class="cat-card ${c.badge||''}" onclick="openCategory('${c.key}')">
       <span class="cat-card-icon">${c.icon}</span>
       <span class="cat-card-name">${c.label}</span>
       <span class="cat-card-count">${c.count}+ items</span>
     </div>`).join('');
-  const now=new Date();
-  document.getElementById('catUpdated').textContent=`Updated today at ${now.getHours().toString().padStart(2,'0')}:00`;
 }
 
 function openCategory(key){
@@ -1776,6 +1773,7 @@ function showPage(id) {
   if(id==='hiw') initHiwObserver();
   if(id==='alerts') renderAlerts();
   if(id==='deals') renderDeals();
+  if(id==='categories') renderCatsBrowse();
 }
 
 // Init strip and localisation on load
@@ -1795,7 +1793,6 @@ window.addEventListener('DOMContentLoaded',()=>{
   let savedRegion = null;
   try{ savedRegion = localStorage.getItem('prixly_region'); }catch(e){}
   activeRegion = savedRegion || detectUserRegion();
-  buildRegionSelector();
 
   // ── LANGUAGE — check saved preference first, then browser locale ──
   let savedLang = null;
@@ -1818,13 +1815,34 @@ window.addEventListener('DOMContentLoaded',()=>{
   setLanguage(activeLang);
 });
 
+// ── SEARCH PLACEHOLDER ROTATION ──
+const SEARCH_PLACEHOLDERS = [
+  'Search by name, e.g. iPhone 15, Nike Air Max...',
+  'Paste a product URL...',
+  'Upload an image, screenshot or PDF...',
+  'Sony WH-1000XM5 Headphones',
+  'Apple AirPods Pro',
+  'LEGO Technic Set',
+  'Nike Air Max 270',
+  'Samsung Galaxy S24',
+  'Dyson V15 Vacuum',
+  'Nintendo Switch OLED',
+];
+let _phIdx=0;
+setInterval(()=>{
+  const inp=document.getElementById('searchInput');
+  if(!inp||document.activeElement===inp)return;
+  _phIdx=(_phIdx+1)%SEARCH_PLACEHOLDERS.length;
+  inp.placeholder=SEARCH_PLACEHOLDERS[_phIdx];
+},3000);
+
 // ── THEME ──
 const html = document.documentElement;
 function toggleTheme(){
   const isDark=html.getAttribute('data-theme')==='dark';
   const newTheme=isDark?'light':'dark';
   html.setAttribute('data-theme',newTheme);
-  document.getElementById('themeBtn').textContent=isDark?'🌙 Dark':'☀️ Light';
+  document.getElementById('themeBtn').textContent=isDark?'Dark':'Light';
   try{ localStorage.setItem('prixly_theme', newTheme); }catch(e){}
   if(chartInstance){chartInstance.destroy();chartInstance=null;}
   if(document.getElementById('resultsSection').classList.contains('visible')) drawChart();
@@ -2069,12 +2087,6 @@ function generateResults(query,catKey){
 // ── SEARCH STATE ──
 let currentResults=[],detectedCat=null,manualCategory=null,recentSearches=[],chartInstance=null;
 
-function switchTab(tab,btn){
-  document.querySelectorAll('.search-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('textSearch').style.display=tab==='text'?'block':'none';
-  document.getElementById('imageSearch').style.display=tab==='image'?'block':'none';
-}
 function setManualCategory(cat,chip){
   manualCategory=cat==='all'?null:cat;
   document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
@@ -2082,7 +2094,6 @@ function setManualCategory(cat,chip){
 }
 function quickSearch(query){
   document.getElementById('searchInput').value=query;
-  switchTab('text',document.querySelectorAll('.search-tab')[0]);
   doSearch();
 }
 
@@ -2129,7 +2140,7 @@ async function resolveURL(url){
   // Show detection state in search input area
   const input=document.getElementById('searchInput');
   input.value='';
-  input.placeholder='🔗 ...';
+  input.placeholder='Reading URL...';
 
   // First try fast slug extraction
   const fromSlug=extractProductFromURL(url);
@@ -2188,7 +2199,7 @@ async function doSearch(){
 function addRecent(query){
   recentSearches=[query,...recentSearches.filter(q=>q!==query)].slice(0,6);
   document.getElementById('recentlyViewed').classList.add('visible');
-  document.getElementById('recentBar').innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${q.replace(/'/g,"\\'")}')"><span class="recent-icon">🕐</span>${q}</span>`).join('');
+  document.getElementById('recentBar').innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${q.replace(/'/g,"\\'")}')"><span class="recent-icon">&#8635;</span>${q}</span>`).join('');
 }
 function runSearch(query){
   addRecent(query);
@@ -2197,8 +2208,6 @@ function runSearch(query){
   const cat=CATEGORIES[detection.key];
   const retailers=getRetailersForRegion(detection.key,activeRegion);
   // Safely hide elements that may or may not exist
-  const browsWrap=document.getElementById('catBrowseWrap');
-  if(browsWrap) browsWrap.style.display='none';
   const revSec=document.getElementById('reviewsSection');
   if(revSec) revSec.style.display='none';
   document.getElementById('resultsSection').classList.remove('visible');
@@ -2207,7 +2216,7 @@ function runSearch(query){
   document.getElementById('alertForm').style.display='flex';
   document.getElementById('alertSuccess').style.display='none';
   if(chartInstance){chartInstance.destroy();chartInstance=null;}
-  document.getElementById('loadingCategory').innerHTML=`Detected category: <span>${cat.icon} ${cat.label}</span> — searching ${retailers.length} retailers near you...`;
+  document.getElementById('loadingCategory').innerHTML=`Detected category: <span>${cat.label}</span> — searching ${retailers.length} retailers near you...`;
   document.getElementById('scanningSites').innerHTML=retailers.slice(0,9).map((r,i)=>`<span class="scan-chip ${i<3?'top-priority':''}">${r.name}</span>`).join('');
   window.scrollTo({top:document.getElementById('loadingState').offsetTop-80,behavior:'smooth'});
   setTimeout(()=>showResults(query,detection.key,detection),2200);
@@ -2217,7 +2226,7 @@ function showResults(query,catKey,detection){
   const cat=CATEGORIES[catKey];
   const retailers=getRetailersForRegion(catKey,activeRegion);
   currentResults=generateResults(query,catKey);
-  document.getElementById('catIcon').textContent=cat.icon;
+  document.getElementById('catIcon').textContent='';
   document.getElementById('catName').textContent=cat.label;
   document.getElementById('catConfidence').textContent=detection.auto?`${detection.confidence}% match`:'manually selected';
   document.getElementById('retailerPriority').innerHTML=`<span style="color:var(--muted);font-size:.75rem;">Searching ${retailers.length} retailers for your region (${activeRegion}):</span>`+retailers.map((r,i)=>`<span class="priority-tag ${i<3?'top':''}">${i<3?'★ ':''}${r.name}</span>`).join('');
@@ -2225,7 +2234,7 @@ function showResults(query,catKey,detection){
   renderResults(currentResults);
   const bp=currentResults[0].price;
   document.getElementById('historyStats').innerHTML=`<div class="history-stat good"><div class="stat-val">${fmt(bp)}</div><div class="stat-label">Best now</div></div><div class="history-stat bad"><div class="stat-val">${fmt(bp*1.35)}</div><div class="stat-label">Highest</div></div><div class="history-stat good"><div class="stat-val">${fmt(bp*.92)}</div><div class="stat-label">Lowest ever</div></div><div class="history-stat"><div class="stat-val">↓26%</div><div class="stat-label">vs peak</div></div>`;
-  document.getElementById('historyInsight').innerHTML=`💡 ${cat.priceInsight}`;
+  document.getElementById('historyInsight').innerHTML=cat.priceInsight;
   document.getElementById('resultsSection').classList.add('visible');
   setTimeout(drawChart,100);
   // Fetch real reviews via Claude API
@@ -2313,7 +2322,7 @@ Make reviews feel authentic — vary the rating (mix of 5★, 4★, 3★), writi
         </div>
         <div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.3rem;">${r.title}</div>
         <div class="review-text">${r.text}</div>
-        ${r.verified?'<div class="review-verified">✅ Verified purchase</div>':''}
+        ${r.verified?'<div class="review-verified">Verified purchase</div>':''}
       </div>`;
     }).join('')}</div>`;
 
@@ -2342,18 +2351,17 @@ function submitAlert(){
   document.getElementById('alertForm').style.display='none';
   document.getElementById('alertSuccess').style.display='flex';
 }
-function handleDragOver(e){e.preventDefault();document.getElementById('dropZone').classList.add('dragover');}
-function handleDragLeave(){document.getElementById('dropZone').classList.remove('dragover');}
-function handleDrop(e){e.preventDefault();document.getElementById('dropZone').classList.remove('dragover');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))processImageFile(f);}
+function handleDragOver(e){e.preventDefault();document.getElementById('unifiedSearch').classList.add('dragover');}
+function handleDragLeave(e){if(!e.currentTarget.contains(e.relatedTarget))document.getElementById('unifiedSearch').classList.remove('dragover');}
+function handleDrop(e){e.preventDefault();document.getElementById('unifiedSearch').classList.remove('dragover');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))processImageFile(f);}
 function handleFileSelect(e){if(e.target.files[0])processImageFile(e.target.files[0]);}
 
 async function processImageFile(f){
-  // Show analysing state immediately
-  const dz=document.getElementById('dropZone');
-  dz.innerHTML=`<div class="drop-icon">🔍</div><p><strong>${f.name}</strong></p><p style="font-size:.73rem;margin-top:.3rem;color:var(--accent);">Analysing image with AI — identifying product...</p>`;
+  const input=document.getElementById('searchInput');
+  input.value='';
+  input.placeholder='Analysing image — identifying product...';
 
   try{
-    // Convert image to base64
     const base64=await new Promise((res,rej)=>{
       const reader=new FileReader();
       reader.onload=()=>res(reader.result.split(',')[1]);
@@ -2361,10 +2369,8 @@ async function processImageFile(f){
       reader.readAsDataURL(f);
     });
 
-    // Determine media type
     const mediaType=f.type||'image/jpeg';
 
-    // Send to Claude Vision to identify the product
     const response=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -2374,14 +2380,8 @@ async function processImageFile(f){
         messages:[{
           role:'user',
           content:[
-            {
-              type:'image',
-              source:{type:'base64',media_type:mediaType,data:base64}
-            },
-            {
-              type:'text',
-              text:`Look at this image and identify the specific product shown. Return ONLY a short product search query (3-6 words max) that would find this exact item on a shopping site. Examples: "Sony WH-1000XM5 headphones", "Nike Air Max 90 trainers", "LEGO Technic set", "iPhone 15 Pro case". If it is not a product, return the closest shoppable item it resembles. Return ONLY the search query, nothing else, no punctuation at the end.`
-            }
+            {type:'image',source:{type:'base64',media_type:mediaType,data:base64}},
+            {type:'text',text:`Look at this image and identify the specific product shown. Return ONLY a short product search query (3-6 words max) that would find this exact item on a shopping site. Examples: "Sony WH-1000XM5 headphones", "Nike Air Max 90 trainers", "LEGO Technic set", "iPhone 15 Pro case". If it is not a product, return the closest shoppable item it resembles. Return ONLY the search query, nothing else, no punctuation at the end.`}
           ]
         }]
       })
@@ -2391,22 +2391,22 @@ async function processImageFile(f){
     const productQuery=data.content.map(c=>c.text||'').join('').trim();
 
     if(!productQuery){
-      dz.innerHTML=`<div class="drop-icon">❌</div><p>Couldn't identify a product in this image.</p><p style="font-size:.73rem;margin-top:.3rem;">Try a clearer photo or use text search.</p>`;
+      input.placeholder='Could not identify a product — try a clearer photo or type the name.';
+      setTimeout(()=>{input.placeholder='Search by name, e.g. iPhone 15, Nike Air Max...';},3500);
       return;
     }
-
-    // Show what was found before searching
-    dz.innerHTML=`<div class="drop-icon">✅</div><p>Found: <strong style="color:var(--accent);">${productQuery}</strong></p><p style="font-size:.73rem;margin-top:.3rem;">Searching for best price...</p>`;
 
     // Switch to home page and fire search
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.getElementById('page-home').classList.add('active');
-    document.getElementById('searchInput').value=productQuery;
+    input.value=productQuery;
+    input.placeholder='Search by name, e.g. iPhone 15, Nike Air Max...';
 
-    setTimeout(()=>runSearch(productQuery),600);
+    setTimeout(()=>runSearch(productQuery),400);
 
   }catch(err){
-    dz.innerHTML=`<div class="drop-icon">❌</div><p>Image analysis failed.</p><p style="font-size:.73rem;margin-top:.3rem;">Please try again or use text search.</p>`;
+    input.placeholder='Image analysis failed — please try again or type the name.';
+    setTimeout(()=>{input.placeholder='Search by name, e.g. iPhone 15, Nike Air Max...';},3500);
     console.error('Image analysis error:',err);
   }
 }
@@ -2565,7 +2565,7 @@ function renderDeals(){
   let html2='';
   for(const[label,items]of Object.entries(grouped)){
     const catKey=Object.keys(CATEGORIES).find(k=>CATEGORIES[k].label===label)||'electronics';
-    html2+=`<div class="deals-section-head"><h2>${CATEGORIES[catKey]?.icon||''} ${label}</h2></div>`;
+    html2+=`<div class="deals-section-head"><h2>${label}</h2></div>`;
     html2+=`<div class="deals-grid">${items.map(d=>`
       <div class="deal-card" onclick="showPage('home');setTimeout(()=>quickSearch('${d.name.replace(/'/g,"\\'")}'),100)">
         <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><span class="deal-card-discount">-${d.discount}</span></div>
