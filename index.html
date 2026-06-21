@@ -424,6 +424,18 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 footer{background:var(--surface);border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:.8rem;}
 footer a{color:var(--accent);text-decoration:none;}
 
+/* Prevent I-beam text cursor on non-interactive content */
+body{cursor:default;}
+h1,h2,h3,h4,h5,h6,p,span,li,ul,section,main,div{cursor:default;}
+a,button,[onclick],
+.logo,.nav-cta,.theme-toggle,.filter-chip,.cat-card,.result-card,.result-cta,
+.popular-tag,.recent-chip,.cat-scroll-card,.cat-row-seeall,.item-card,.item-card-btn,
+.deal-card,.deal-card-btn,.deal-cta,.pa-btn,.pa-btn-ghost,
+.suggested-card,.catpage-back,.catpage-chip,.cselect-btn,.cselect-opt,
+.attach-btn,.search-btn,.alert-submit,.mock-search-btn,.mock-alert-btn{cursor:pointer;}
+input[type="text"],input[type="email"],input[type="number"],textarea{cursor:text;}
+select,.sort-select{cursor:pointer;}
+
 @media(max-width:640px){
   .result-card{flex-wrap:wrap;gap:.75rem}
   .result-price-block{text-align:left}
