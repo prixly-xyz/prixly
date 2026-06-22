@@ -36,7 +36,7 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;}
 
 /* NAV */
-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:200;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:200;flex-wrap:nowrap;}
 .logo{display:flex;align-items:center;gap:10px;font-size:1.35rem;font-weight:800;color:var(--accent);text-decoration:none;letter-spacing:-.02em;cursor:pointer;flex:1;}
 .logo svg{width:28px;height:28px;}
 .nav-right{display:flex;align-items:center;gap:1rem;justify-content:flex-end;flex:1;}
@@ -95,8 +95,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 .cat-row-title{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;color:var(--text);}
 .cat-row-seeall{font-size:.8rem;color:var(--accent);cursor:pointer;text-decoration:none;white-space:nowrap;}
 .cat-row-seeall:hover{text-decoration:underline;}
-.cat-row-scroll{display:flex;gap:.75rem;overflow-x:auto;padding:0 2rem .75rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.cat-row-scroll{display:flex;gap:.75rem;overflow-x:auto;padding:0 0 .75rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .cat-row-scroll::-webkit-scrollbar{display:none;}
+.cat-row-scroll::before,.cat-row-scroll::after{content:'';flex-shrink:0;width:2rem;}
 .cat-scroll-card{flex:0 0 200px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:all .2s;scroll-snap-align:start;display:flex;flex-direction:column;gap:.35rem;}
 .cat-scroll-card:hover{border-color:var(--accent);box-shadow:var(--shadow);transform:translateY(-2px);}
 .cat-scroll-tag{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;}
@@ -551,9 +552,15 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   .currency-row{justify-content:flex-start;}
   .trust-strip{gap:1rem;padding:1rem;}
   .trust-item{font-size:.75rem;}
-  .nav-right{gap:.5rem;}
-  .nav-cta{padding:.35rem .75rem;font-size:.8rem;}
+  /* Nav: two-row layout on mobile */
+  nav{height:auto;flex-wrap:wrap;padding:.5rem 1rem;gap:.35rem;}
+  .logo{flex:unset;width:100%;justify-content:center;}
+  .nav-right{flex:unset;width:100%;justify-content:center;gap:.6rem;padding-bottom:.4rem;}
+  .nav-selector-group{flex-shrink:0;}
+  .nav-cta{padding:.35rem .9rem;font-size:.8rem;}
   .cselect-btn{font-size:.75rem;}
+  /* Deals: remove extra top margin on first section heading */
+  .deals-content .deals-section-head:first-child{margin-top:0;}
   .result-cta{width:100%;text-align:center;}
   .catpage-grid{grid-template-columns:1fr 1fr;padding:0 1rem 3rem;}
   .deals-grid{grid-template-columns:1fr 1fr;}
