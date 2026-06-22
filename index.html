@@ -448,6 +448,25 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2r
 footer{background:var(--surface);border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:.8rem;}
 footer a{color:var(--accent);text-decoration:none;}
 
+/* ── LEGAL PAGES (Privacy · Terms · Data) ── */
+.legal-page{max-width:800px;margin:0 auto;padding:3rem 2rem 5rem;}
+.legal-page h1{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.5rem;}
+.legal-page .legal-meta{font-size:.82rem;color:var(--muted);margin-bottom:2.5rem;border-bottom:1px solid var(--border);padding-bottom:1.25rem;}
+.legal-page h2{font-size:1.05rem;font-weight:800;margin:2rem 0 .6rem;letter-spacing:-.01em;color:var(--text);}
+.legal-page h3{font-size:.92rem;font-weight:700;margin:1.2rem 0 .4rem;color:var(--text);}
+.legal-page p{font-size:.9rem;color:var(--muted);line-height:1.75;margin-bottom:.75rem;}
+.legal-page ul{padding-left:1.3rem;margin-bottom:.75rem;}
+.legal-page ul li{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:.3rem;}
+.legal-page a{color:var(--accent);}
+.legal-highlight{background:var(--accent-dim);border-left:3px solid var(--accent);border-radius:0 var(--radius-xs) var(--radius-xs) 0;padding:.9rem 1.1rem;margin:1.25rem 0;font-size:.88rem;color:var(--text);line-height:1.65;}
+.legal-table{width:100%;border-collapse:collapse;margin:1rem 0 1.5rem;font-size:.84rem;}
+.legal-table th{text-align:left;padding:.6rem .75rem;background:var(--surface2);color:var(--text);font-weight:700;border:1px solid var(--border2);}
+.legal-table td{padding:.6rem .75rem;border:1px solid var(--border2);color:var(--muted);vertical-align:top;line-height:1.55;}
+.legal-table tr:nth-child(even) td{background:var(--bg2);}
+.legal-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.83rem;color:var(--muted);cursor:pointer;margin-bottom:2rem;transition:color .2s;}
+.legal-back:hover{color:var(--accent);}
+.legal-section-divider{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+
 /* ── SIGN UP PAGE ── */
 .signup-page{min-height:calc(100vh - 60px - 46px);display:flex;align-items:center;justify-content:center;padding:2rem;}
 .signup-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:2.5rem 2rem;max-width:460px;width:100%;box-shadow:var(--shadow);text-align:center;}
@@ -856,7 +875,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <div class="signup-form" id="signupForm">
         <input class="signup-input" type="email" id="signupEmail" placeholder="Enter your email address" />
         <button class="signup-submit" onclick="handleSignup()">Create free account</button>
-        <p class="signup-legal">By signing up you agree to our <a href="#" style="color:var(--accent);">Privacy Policy</a>. We never share your email with third parties.</p>
+        <p class="signup-legal">By signing up you agree to our <a href="#" onclick="showPage('privacy')" style="color:var(--accent);">Privacy Policy</a>. We never share your email with third parties.</p>
       </div>
       <div class="signup-success" id="signupSuccess">
         <div class="signup-success-icon">
@@ -962,8 +981,387 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════ -->
+<!--  PRIVACY POLICY PAGE                      -->
+<!-- ══════════════════════════════════════════ -->
+<div id="page-privacy" class="page">
+<div class="legal-page">
+  <span class="legal-back" onclick="history.go(-1)||showPage('home')">← Back</span>
+  <h1>Privacy Policy</h1>
+  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a></p>
+
+  <div class="legal-highlight">
+    Prixly is a price comparison service. We show you prices from third-party retailers and redirect you to their websites to complete any purchase. We are <strong>not</strong> a retailer and we <strong>do not</strong> process, store, or have any visibility into your payment information or order details.
+  </div>
+
+  <h2>1. Who We Are</h2>
+  <p>Prixly ("we", "us", "our") operates the price comparison service available at prixly.xyz. For any privacy-related questions, contact us at <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>.</p>
+
+  <h2>2. What Data We Collect</h2>
+
+  <h3>2.1 Data You Provide Directly</h3>
+  <ul>
+    <li><strong>Search queries</strong> — the text you type into the search bar (e.g. "iPhone 15 Pro", "Nike Air Max 90"). This is used solely to retrieve and display price results.</li>
+    <li><strong>Product URLs</strong> — if you paste a product link into the search bar, that URL is processed to identify the product. It is transmitted to Anthropic's API where slug parsing alone is insufficient.</li>
+    <li><strong>Images and screenshots</strong> — if you upload or drop an image to use our visual search feature, that image is sent to Anthropic's Claude Vision API to extract a product description. Images are not stored by Prixly at any point.</li>
+    <li><strong>Email address (optional)</strong> — if you sign up for price alerts, we collect the email address you provide in order to send you alert notifications. This is strictly opt-in. We will not use your email for marketing unless you separately consent to that.</li>
+    <li><strong>Target price for alerts (optional)</strong> — the price threshold you set when creating an alert. Stored only to trigger notifications at the right time.</li>
+  </ul>
+
+  <h3>2.2 Data Collected Automatically</h3>
+  <ul>
+    <li><strong>Browser timezone and locale</strong> — read from your browser at page load to auto-detect your region and suggest an appropriate currency. This is not transmitted to our servers; it is processed client-side in your browser only.</li>
+    <li><strong>Language preference</strong> — detected from your browser's language settings and saved to your browser's localStorage so the site remembers your preference on your next visit.</li>
+    <li><strong>Region and currency preference</strong> — if you manually select a region or currency, that preference is saved to your browser's localStorage.</li>
+    <li><strong>Recent searches</strong> — the last six search terms you enter are saved to your browser's localStorage to populate the "recent searches" shortcut row. This data never leaves your device.</li>
+  </ul>
+
+  <h3>2.3 What We Do Not Collect</h3>
+  <ul>
+    <li>Payment card details, bank information, or any financial data — all purchases happen on the retailer's website, not ours.</li>
+    <li>Purchase history or order confirmations — once you click through to a retailer, we have no visibility into what you do there.</li>
+    <li>Tracking cookies or cross-site advertising identifiers — we do not use any advertising or behavioural tracking cookies.</li>
+    <li>Precise geolocation — we never request GPS or precise location access.</li>
+  </ul>
+  <p>If Prixly introduces user accounts in the future, this policy will be updated before launch to cover any additional data collected at registration (such as name or saved preferences). You will be notified of material changes.</p>
+
+  <h2>3. How We Use Your Data</h2>
+  <ul>
+    <li>To return price comparison results for your search query.</li>
+    <li>To detect the most relevant product category and retailer list for your query.</li>
+    <li>To send price-drop alert emails to users who have opted in.</li>
+    <li>To display the service in your preferred language and currency.</li>
+    <li>To improve the accuracy and performance of our service.</li>
+  </ul>
+  <p>We do not use your data for advertising profiling, and we do not sell your data to any third party under any circumstances.</p>
+
+  <h2>4. Third-Party Data Processors</h2>
+  <p>We share data with the following processors only to the extent necessary to operate the service:</p>
+  <ul>
+    <li><strong>Anthropic, Inc.</strong> — search queries, product URLs, and uploaded images may be sent to the Anthropic Claude API to power image recognition and product identification. Anthropic processes this data under its own privacy policy and data processing agreement. Data transferred to Anthropic may be processed outside of the European Economic Area; Anthropic maintains Standard Contractual Clauses to cover such transfers.</li>
+    <li><strong>Future retailer and pricing APIs</strong> — Prixly may in the future integrate with third-party retailer APIs (for example, to retrieve live pricing data). Where this occurs, search queries may be transmitted to those providers solely to retrieve pricing results. Any new processors of this nature will be listed here before the integration goes live.</li>
+  </ul>
+  <p>We do not share your data with advertisers, data brokers, or any other parties not listed above.</p>
+
+  <h2>5. Retailer Websites</h2>
+  <p>When you click a price result on Prixly, you are taken to the retailer's own website. From that point, the retailer's privacy policy governs how your data is handled. We have no control over, and accept no responsibility for, the privacy practices of any retailer website linked from Prixly. We encourage you to read the privacy policy of any website you visit before making a purchase.</p>
+
+  <h2>6. Cookies and Local Storage</h2>
+  <p>Prixly does not use tracking or advertising cookies. The only browser storage we use is <strong>localStorage</strong> — a client-side mechanism that stores data on your device only and is never transmitted to our servers. Items stored include your language preference, currency/region preference, and recent search terms. You can clear localStorage at any time through your browser settings.</p>
+
+  <h2>7. Data Retention</h2>
+  <ul>
+    <li><strong>Search queries and images</strong> — not retained by Prixly. Transmitted to Anthropic's API in real time and discarded immediately after the response is received.</li>
+    <li><strong>Email and alert preferences</strong> — retained for as long as your price alert is active. Deleted promptly upon unsubscribe or alert cancellation.</li>
+    <li><strong>localStorage data</strong> — stored on your device indefinitely until you clear your browser storage. Prixly cannot access or delete this remotely.</li>
+  </ul>
+
+  <h2>8. Your Rights</h2>
+  <p>Depending on your location, you may have the following rights regarding personal data we hold:</p>
+  <ul>
+    <li><strong>Access</strong> — request a copy of the personal data we hold about you.</li>
+    <li><strong>Rectification</strong> — request correction of inaccurate data.</li>
+    <li><strong>Erasure</strong> — request deletion of your personal data ("right to be forgotten").</li>
+    <li><strong>Restriction</strong> — request that we limit how we process your data.</li>
+    <li><strong>Portability</strong> — receive your data in a portable format.</li>
+    <li><strong>Objection</strong> — object to processing based on legitimate interest.</li>
+    <li><strong>Withdraw consent</strong> — where processing is based on consent (e.g. email alerts), you may withdraw at any time by unsubscribing or contacting us.</li>
+  </ul>
+  <p>To exercise any of these rights, email <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>. We will respond within 30 days.</p>
+
+  <h2>9. Children</h2>
+  <p>Prixly is not directed at children under the age of 13. We do not knowingly collect personal data from children. If you believe a child has submitted personal data to us, please contact us and we will delete it promptly.</p>
+
+  <h2>10. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. The "Last updated" date at the top of this page will reflect any changes. Where changes are material, we will take reasonable steps to notify users (for example, via an in-app notice). Continued use of Prixly after changes are posted constitutes acceptance of the updated policy.</p>
+
+  <hr class="legal-section-divider">
+  <p style="font-size:.82rem;">Questions? Email <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('terms')">Terms of Use</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('data')">Data &amp; Compliance</span></p>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  TERMS OF USE PAGE                        -->
+<!-- ══════════════════════════════════════════ -->
+<div id="page-terms" class="page">
+<div class="legal-page">
+  <span class="legal-back" onclick="history.go(-1)||showPage('home')">← Back</span>
+  <h1>Terms of Use</h1>
+  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:legal@prixly.xyz">legal@prixly.xyz</a></p>
+
+  <div class="legal-highlight">
+    <strong>Important:</strong> Prixly is a price comparison tool only. We do not sell, stock, ship, or fulfil any products. All purchases are made directly with independent third-party retailers on their own websites. By using Prixly, you acknowledge and agree to these Terms of Use in full.
+  </div>
+
+  <h2>1. About Prixly</h2>
+  <p>Prixly is an online price comparison service that aggregates and displays product prices from multiple third-party retailers. Our service enables users to identify competitive prices across a wide range of retailers and, where interested, to navigate to those retailers' websites to make a purchase.</p>
+  <p>Prixly does not act as a seller, agent, intermediary, or representative of any retailer. We are not involved in, and accept no responsibility for, any transaction that takes place between a user and a retailer.</p>
+
+  <h2>2. Nature of the Service — Price Comparison Only</h2>
+  <p>Prixly provides information about prices and availability as a guide only. When you click a result on Prixly, you are leaving our service and entering the third-party retailer's website. At that point:</p>
+  <ul>
+    <li>All sales, contracts, and transactions are solely between you and the retailer.</li>
+    <li>The retailer's own terms and conditions apply to your purchase.</li>
+    <li>Prixly is not a party to any purchase, agreement, or contract you enter into with a retailer.</li>
+    <li>Any dispute arising from a purchase — including but not limited to delivery failures, damaged goods, refunds, returns, or fraudulent listings — is a matter between you and the retailer. Prixly has no authority or ability to intervene.</li>
+  </ul>
+
+  <h2>3. Price Accuracy and Availability</h2>
+  <p>Prices displayed on Prixly are sourced from third-party retailers and are provided for informational purposes only. We make no guarantee that:</p>
+  <ul>
+    <li>Prices shown are accurate, complete, or current at the time you view them.</li>
+    <li>The product is in stock or available at the retailer.</li>
+    <li>The price shown on Prixly matches the price you will see at checkout on the retailer's website (prices may differ due to personalised pricing, region, promotions, delivery costs, or timing).</li>
+    <li>Any "was" price, discount percentage, or saving figure shown is accurate or verifiable.</li>
+  </ul>
+  <p>Always verify the current price and availability directly on the retailer's website before making any purchasing decision. Prixly accepts no liability for any loss suffered as a result of relying on prices displayed on this service.</p>
+
+  <h2>4. Limitation of Liability</h2>
+  <p>To the fullest extent permitted by applicable law, Prixly and its operators, directors, employees, and agents shall not be liable for:</p>
+  <ul>
+    <li>Any loss or damage arising from your reliance on price information displayed on Prixly.</li>
+    <li>Any failed, disputed, or fraudulent transaction with a retailer.</li>
+    <li>Any loss of profit, revenue, data, goodwill, or business opportunity.</li>
+    <li>Any indirect, incidental, special, or consequential loss or damage of any kind.</li>
+    <li>The conduct, acts, or omissions of any third-party retailer whose website you access via a Prixly link.</li>
+    <li>Any error, inaccuracy, or omission in price or product information.</li>
+    <li>Any interruption, suspension, or termination of the Prixly service.</li>
+    <li>Any unauthorised access to or alteration of your data resulting from a security breach beyond our reasonable control.</li>
+  </ul>
+  <p>Where liability cannot be excluded by law, our total aggregate liability to you in respect of any claim shall not exceed £100 (one hundred pounds sterling) or the equivalent in your local currency.</p>
+
+  <h2>5. No Endorsement of Retailers</h2>
+  <p>The appearance of a retailer on Prixly does not constitute an endorsement, recommendation, or guarantee of that retailer. Prixly does not vet, audit, or verify the legitimacy, reliability, or quality of any retailer listed. You are responsible for conducting your own due diligence before purchasing from any retailer.</p>
+
+  <h2>6. Affiliate Links and Commercial Relationships</h2>
+  <p>Prixly may participate in affiliate programmes with retailers. This means that when you click a price result and subsequently make a purchase, Prixly may receive a small commission from the retailer at no additional cost to you. Affiliate relationships do not influence the ordering or ranking of prices — results are displayed on a price basis. The existence of an affiliate relationship does not mean Prixly endorses the retailer or guarantees the transaction.</p>
+
+  <h2>7. Acceptable Use</h2>
+  <p>By using Prixly, you agree not to:</p>
+  <ul>
+    <li>Use automated tools, bots, scrapers, or scripts to access or extract data from Prixly without our prior written consent.</li>
+    <li>Attempt to reverse-engineer, disassemble, or otherwise extract proprietary data or algorithms from the service.</li>
+    <li>Use the service for any unlawful purpose or in violation of any applicable laws or regulations.</li>
+    <li>Attempt to interfere with, disrupt, or overload the service or its infrastructure.</li>
+    <li>Impersonate any person or entity or misrepresent your affiliation with any person or entity.</li>
+    <li>Reproduce, redistribute, or commercially exploit any content from Prixly without prior written permission.</li>
+  </ul>
+  <p>We reserve the right to suspend or block access to any user or automated system that violates these rules.</p>
+
+  <h2>8. Intellectual Property</h2>
+  <p>All content on Prixly — including but not limited to the Prixly name, logo, interface design, source code, copy, and trade dress — is the intellectual property of Prixly and is protected by applicable copyright, trade mark, and other intellectual property laws. You may not reproduce, distribute, modify, or create derivative works from any part of Prixly without our express written permission.</p>
+  <p>Product names, brand names, and retailer names displayed in search results are the property of their respective owners and are used for identification and comparison purposes only. Their appearance on Prixly does not imply any affiliation with or endorsement by those brands or retailers.</p>
+
+  <h2>9. Third-Party Websites</h2>
+  <p>Prixly contains links to third-party retailer websites. These links are provided for your convenience. We have no control over the content, availability, or privacy practices of those websites, and we accept no responsibility for them. Accessing any third-party website via Prixly is entirely at your own risk.</p>
+
+  <h2>10. Service Availability</h2>
+  <p>We do not guarantee that Prixly will be available at all times or free from errors, interruptions, or delays. We reserve the right to modify, suspend, or discontinue the service at any time without notice and without liability to you.</p>
+
+  <h2>11. Governing Law and Jurisdiction</h2>
+  <p>These Terms of Use are governed by and construed in accordance with the laws of England and Wales. Any dispute arising out of or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts of England and Wales, unless mandatory consumer protection laws in your country of residence provide otherwise.</p>
+
+  <h2>12. Changes to These Terms</h2>
+  <p>We reserve the right to update or modify these Terms of Use at any time. The "Last updated" date at the top of this page will reflect any changes. Continued use of Prixly after updated terms are posted constitutes your acceptance of those terms. If you do not agree to the updated terms, you should stop using the service.</p>
+
+  <h2>13. Severability</h2>
+  <p>If any provision of these Terms is found to be unlawful, void, or unenforceable, that provision shall be deemed severable and shall not affect the validity and enforceability of the remaining provisions.</p>
+
+  <hr class="legal-section-divider">
+  <p style="font-size:.82rem;">Questions? Email <a href="mailto:legal@prixly.xyz">legal@prixly.xyz</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('privacy')">Privacy Policy</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('data')">Data &amp; Compliance</span></p>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  DATA & COMPLIANCE PAGE                   -->
+<!-- ══════════════════════════════════════════ -->
+<div id="page-data" class="page">
+<div class="legal-page">
+  <span class="legal-back" onclick="history.go(-1)||showPage('home')">← Back</span>
+  <h1>Data &amp; Compliance</h1>
+  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a></p>
+
+  <div class="legal-highlight">
+    This page sets out exactly what personal data Prixly collects, why it is collected, the legal basis for processing it, how long it is kept, and how you can control or delete it. It is written to comply with the UK GDPR, EU GDPR, and the California Consumer Privacy Act (CCPA).
+  </div>
+
+  <h2>1. Data Controller</h2>
+  <p>The data controller for personal data collected through Prixly is:</p>
+  <p><strong>Prixly</strong><br>
+  Email: <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a><br>
+  Website: prixly.xyz</p>
+
+  <h2>2. Full Data Inventory</h2>
+  <p>The table below covers every category of personal data Prixly collects or processes, the reason it is collected, the legal basis under UK/EU GDPR, and how long it is retained.</p>
+
+  <table class="legal-table">
+    <thead>
+      <tr>
+        <th>Data Type</th>
+        <th>What It Is</th>
+        <th>Why We Collect It</th>
+        <th>Legal Basis (UK/EU GDPR)</th>
+        <th>Retention Period</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Search query text</td>
+        <td>The words or phrases you type into the search bar</td>
+        <td>To retrieve and display matching price results from retailers</td>
+        <td>Legitimate interest (service operation)</td>
+        <td>Session only — not stored by Prixly after the result is returned. Last 6 queries saved to your device's localStorage only.</td>
+      </tr>
+      <tr>
+        <td>Product URLs</td>
+        <td>A retailer product link you paste into the search bar</td>
+        <td>To identify the product and run a price comparison</td>
+        <td>Legitimate interest (service operation)</td>
+        <td>Not retained. Processed in real time and discarded.</td>
+      </tr>
+      <tr>
+        <td>Uploaded images / screenshots</td>
+        <td>An image file you upload or drop onto the search interface</td>
+        <td>To identify the product shown in the image using AI vision (Anthropic API) and run a price comparison</td>
+        <td>Consent (you initiate the upload)</td>
+        <td>Not retained by Prixly. Transmitted to Anthropic API and immediately discarded after the product description is returned.</td>
+      </tr>
+      <tr>
+        <td>Email address</td>
+        <td>Email you provide when signing up for price alerts</td>
+        <td>To send you a notification when a tracked product drops to your target price</td>
+        <td>Consent (explicit opt-in)</td>
+        <td>Retained until you cancel your alert or unsubscribe. Deleted promptly on request.</td>
+      </tr>
+      <tr>
+        <td>Price alert target</td>
+        <td>The price threshold you set for an alert</td>
+        <td>To know when to trigger your notification</td>
+        <td>Consent (part of the same opt-in as your email)</td>
+        <td>Retained until you cancel the alert. Deleted alongside your email on unsubscribe.</td>
+      </tr>
+      <tr>
+        <td>Language preference</td>
+        <td>Your chosen display language (or browser-detected language)</td>
+        <td>To show the site in your preferred language</td>
+        <td>Legitimate interest (personalisation)</td>
+        <td>Stored in your browser's localStorage indefinitely. Never transmitted to Prixly's servers. You can clear it via your browser at any time.</td>
+      </tr>
+      <tr>
+        <td>Region &amp; currency preference</td>
+        <td>Your chosen region (e.g. GB, US) and currency (e.g. GBP, USD)</td>
+        <td>To show you prices in your local currency and relevant regional retailers</td>
+        <td>Legitimate interest (personalisation)</td>
+        <td>Stored in your browser's localStorage indefinitely. Never transmitted to Prixly's servers.</td>
+      </tr>
+      <tr>
+        <td>Browser timezone &amp; locale</td>
+        <td>Your browser's reported timezone (e.g. Europe/London) and locale (e.g. en-GB)</td>
+        <td>To auto-detect your region and currency on first visit, so you don't need to configure it manually</td>
+        <td>Legitimate interest (service operation)</td>
+        <td>Read once at page load, processed client-side only. Never transmitted to or stored by Prixly.</td>
+      </tr>
+      <tr>
+        <td>Recent search history</td>
+        <td>Your last 6 search terms</td>
+        <td>To display convenient shortcut chips below the search bar for repeat searches</td>
+        <td>Legitimate interest (UX improvement)</td>
+        <td>Stored in your browser's localStorage only. Never transmitted to Prixly. You can clear it via your browser at any time.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Data We Do Not Collect</h2>
+  <ul>
+    <li>Payment card details or any financial information — all transactions happen on the retailer's website.</li>
+    <li>Purchase history, order confirmations, or receipts.</li>
+    <li>Full name, address, or phone number (unless voluntarily included in a search query — we recommend you do not do this).</li>
+    <li>Tracking cookies, advertising IDs, or cross-site behavioural profiles.</li>
+    <li>Device fingerprints or persistent unique identifiers.</li>
+    <li>GPS or precise geolocation data.</li>
+  </ul>
+
+  <h2>4. Cookies</h2>
+  <p>Prixly does not use cookies of any kind — not session cookies, not tracking cookies, not analytics cookies, and not advertising cookies. The only browser-side storage we use is <strong>localStorage</strong>, which stores data on your own device and is never transmitted to any server. It is not a cookie and is not subject to cookie consent rules, but we disclose it here for full transparency.</p>
+
+  <h2>5. Third-Party Data Processors</h2>
+  <p>We engage the following third-party processors who may receive personal data as part of operating the service:</p>
+  <table class="legal-table">
+    <thead>
+      <tr>
+        <th>Processor</th>
+        <th>Purpose</th>
+        <th>Data Shared</th>
+        <th>Location</th>
+        <th>Safeguards</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Anthropic, Inc.</td>
+        <td>AI-powered image recognition; product identification from URLs; generating product review summaries</td>
+        <td>Search queries, product URLs, uploaded images</td>
+        <td>USA (may process outside EEA)</td>
+        <td>Anthropic's Data Processing Agreement; Standard Contractual Clauses for EEA transfers</td>
+      </tr>
+      <tr>
+        <td>Future retailer / pricing APIs <em>(planned)</em></td>
+        <td>Retrieving live pricing data from retailer APIs</td>
+        <td>Search query text only</td>
+        <td>Varies by provider</td>
+        <td>Data Processing Agreements will be established before integration. This table will be updated with specific providers before go-live.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>We do not share personal data with advertisers, data brokers, marketing platforms, or any other third party not listed above.</p>
+
+  <h2>6. Legal Bases for Processing (UK/EU GDPR)</h2>
+  <ul>
+    <li><strong>Legitimate interest (Article 6(1)(f))</strong> — used for processing search queries, URLs, timezone/locale, and preferences, where the processing is necessary to provide the core service and would be reasonably expected by users. We have conducted a legitimate interest assessment and concluded that these interests are not overridden by the rights of data subjects.</li>
+    <li><strong>Consent (Article 6(1)(a))</strong> — used for email alert sign-up and image uploads, where you are taking an active voluntary action. You may withdraw consent at any time.</li>
+  </ul>
+
+  <h2>7. California Consumer Privacy Act (CCPA) Disclosures</h2>
+  <p>For California residents: Prixly does not sell personal information. We do not share personal information for cross-context behavioural advertising. You have the right to know what personal information we collect, to request deletion, and to opt out of any sale (though no sale occurs). To exercise your rights, contact <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>.</p>
+
+  <h2>8. Data Retention Summary</h2>
+  <ul>
+    <li><strong>Search data and images</strong> — not retained by Prixly. Real-time only.</li>
+    <li><strong>Email and alert data</strong> — kept only while the alert is active; deleted on unsubscribe or on request.</li>
+    <li><strong>localStorage data</strong> — lives on your device; Prixly cannot access or delete it remotely. Clear via your browser settings.</li>
+    <li><strong>Future server-side data</strong> — any new categories of data stored on our servers will be added to this page before collection begins, along with the retention period.</li>
+  </ul>
+
+  <h2>9. Your Rights</h2>
+  <p>Under UK GDPR, EU GDPR, and equivalent laws, you have the right to:</p>
+  <ul>
+    <li><strong>Access</strong> — obtain a copy of the personal data we hold about you.</li>
+    <li><strong>Rectification</strong> — have inaccurate data corrected.</li>
+    <li><strong>Erasure</strong> — have your data deleted ("right to be forgotten") where we have no overriding legal basis to retain it.</li>
+    <li><strong>Restriction</strong> — restrict how we process your data while a dispute is resolved.</li>
+    <li><strong>Portability</strong> — receive your data in a structured, machine-readable format.</li>
+    <li><strong>Objection</strong> — object to processing carried out on the basis of legitimate interest.</li>
+    <li><strong>Withdraw consent</strong> — withdraw consent at any time for consent-based processing (this will not affect the lawfulness of processing before withdrawal).</li>
+    <li><strong>Lodge a complaint</strong> — complain to your national data protection authority. For UK users, this is the <a href="https://ico.org.uk" target="_blank" rel="noopener">Information Commissioner's Office (ICO)</a>. For EU users, contact your local supervisory authority.</li>
+  </ul>
+  <p>To exercise any right, email <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>. We will respond within 30 days (or sooner where required by law).</p>
+
+  <h2>10. Security</h2>
+  <p>We take reasonable and appropriate technical and organisational measures to protect any personal data we process. Given that Prixly stores minimal data and processes most data transiently, the principal security risk relates to API communications with Anthropic. These are conducted over encrypted HTTPS connections. We do not store API responses beyond what is needed to render your search results.</p>
+
+  <h2>11. Children</h2>
+  <p>Prixly is not directed at children under 13. We do not knowingly collect personal data from children under 13. If you are a parent or guardian and believe your child has submitted personal data to Prixly, please contact us at <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a> and we will delete it promptly.</p>
+
+  <h2>12. Updates to This Page</h2>
+  <p>This Data &amp; Compliance page will be updated whenever we introduce new data collection, a new data processor, or a change in retention periods. The "Last updated" date at the top will reflect any changes. We will not introduce new data collection without first updating this page.</p>
+
+  <hr class="legal-section-divider">
+  <p style="font-size:.82rem;">Questions? Email <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('privacy')">Privacy Policy</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('terms')">Terms of Use</span></p>
+</div>
+</div>
+
 <footer>
-  <p>© 2025 Prixly · <a href="#" onclick="showPage('about')" data-i18n="nav_about">About</a> · <a href="#" data-i18n="footer_privacy">Privacy</a> · <a href="#" data-i18n="footer_terms">Terms</a> · <a href="#" onclick="showPage('hiw')" data-i18n="footer_hiw">How it works</a></p>
+  <p>© 2025 Prixly · <a href="#" onclick="showPage('about')" data-i18n="nav_about">About</a> · <a href="#" onclick="showPage('privacy')">Privacy Policy</a> · <a href="#" onclick="showPage('terms')">Terms of Use</a> · <a href="#" onclick="showPage('data')">Data &amp; Compliance</a> · <a href="#" onclick="showPage('hiw')" data-i18n="footer_hiw">How it works</a></p>
   <p style="margin-top:.4rem;font-size:.73rem;color:var(--muted2);" data-i18n="footer_disclaimer">Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases — at no extra cost to you.</p>
 </footer>
 
