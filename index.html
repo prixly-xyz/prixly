@@ -503,7 +503,37 @@ a,button,[onclick],
 input[type="text"],input[type="email"],input[type="number"],textarea,
 .search-input,.alert-input,.mock-alert-input,.mock-search-input{cursor:text !important;}
 
+/* ── MOBILE BOTTOM NAV ── */
+.mobile-bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  z-index:300;
+  padding:0 0 env(safe-area-inset-bottom,0);
+}
+.mobile-bottom-nav ul{
+  display:flex;list-style:none;margin:0;padding:0;
+}
+.mobile-bottom-nav li{
+  flex:1;
+}
+.mobile-bottom-nav a{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:.55rem .25rem .45rem;
+  font-size:.62rem;font-weight:600;color:var(--muted);
+  text-decoration:none;cursor:pointer;
+  transition:color .18s;
+  letter-spacing:.01em;
+  line-height:1.2;
+  text-align:center;
+}
+.mobile-bottom-nav a svg{width:20px;height:20px;flex-shrink:0;}
+.mobile-bottom-nav a.active,.mobile-bottom-nav a:hover{color:var(--accent);}
+
 @media(max-width:640px){
+  .mobile-bottom-nav{display:block;}
+  body{padding-bottom:calc(62px + env(safe-area-inset-bottom,0));}
   .result-card{flex-wrap:wrap;gap:.75rem}
   .result-price-block{text-align:left}
   nav{padding:0 .75rem}
@@ -1422,6 +1452,35 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <p style="font-size:.82rem;">Questions? Email <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('privacy')">Privacy Policy</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('terms')">Terms of Use</span></p>
 </div>
 </div>
+
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+  <ul>
+    <li><a onclick="showPage('home')" id="mob-nav-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+      Home
+    </a></li>
+    <li><a onclick="showPage('hiw')" id="mob-nav-hiw">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      How it works
+    </a></li>
+    <li><a onclick="showPage('alerts')" id="mob-nav-alerts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Alerts
+    </a></li>
+    <li><a onclick="showPage('deals')" id="mob-nav-deals">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Deals
+    </a></li>
+    <li><a onclick="showPage('categories')" id="mob-nav-categories">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Categories
+    </a></li>
+    <li><a onclick="showPage('about')" id="mob-nav-about">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      About
+    </a></li>
+  </ul>
+</nav>
 
 <footer>
   <p>© 2025 Prixly · <a href="#" onclick="showPage('about')" data-i18n="nav_about">About</a> · <a href="#" onclick="showPage('privacy')">Privacy Policy</a> · <a href="#" onclick="showPage('terms')">Terms of Use</a> · <a href="#" onclick="showPage('data')">Data &amp; Compliance</a> · <a href="#" onclick="showPage('hiw')" data-i18n="footer_hiw">How it works</a></p>
@@ -2369,6 +2428,9 @@ function showPage(id) {
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
   const navEl = document.getElementById('nav-'+id);
   if(navEl) navEl.classList.add('active');
+  document.querySelectorAll('.mobile-bottom-nav a').forEach(a=>a.classList.remove('active'));
+  const mobNavEl = document.getElementById('mob-nav-'+id);
+  if(mobNavEl) mobNavEl.classList.add('active');
   if(id!=='category') window.scrollTo({top:0,behavior:'smooth'});
   else window.scrollTo({top:0,behavior:'instant'});
   if(id==='hiw') initHiwObserver();
