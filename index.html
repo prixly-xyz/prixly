@@ -2475,8 +2475,7 @@ function showPage(id) {
   document.querySelectorAll('.mobile-bottom-nav a').forEach(a=>a.classList.remove('active'));
   const mobNavEl = document.getElementById('mob-nav-'+id);
   if(mobNavEl) mobNavEl.classList.add('active');
-  if(id!=='category') window.scrollTo({top:0,behavior:'smooth'});
-  else window.scrollTo({top:0,behavior:'instant'});
+  window.scrollTo({top:0,behavior:'instant'});
   if(id==='hiw') initHiwObserver();
   if(id==='alerts') renderAlerts();
   if(id==='deals') renderDeals();
