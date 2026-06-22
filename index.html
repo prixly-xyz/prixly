@@ -923,7 +923,12 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <!-- ══════════════════════════════════════════ -->
 <div id="page-about" class="page">
   <div class="about-hero">
-    <span class="big-bird" style="font-size:4rem;display:block;margin-bottom:1rem;">P</span>
+    <span style="display:block;margin-bottom:1rem;">
+      <svg width="56" height="56" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;">
+        <path d="M6 22 C6 22 10 8 20 6 L22 4 L20 8 C24 7 26 10 24 14 C22 18 16 20 10 19 L8 26 Z" fill="var(--accent)" opacity="0.9"/>
+        <circle cx="21" cy="6" r="1.5" fill="var(--accent)"/>
+      </svg>
+    </span>
     <h1 data-i18n="about_h1">We exist so you can<br><span>spend less, live more.</span></h1>
     <p class="tagline" data-i18n="about_tagline">"The smartest shopper isn't the one who buys the most — it's the one who pays the least."</p>
     <p data-i18n="about_intro">Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don't have to, finding the best price on everything from headphones to nappies in seconds.</p>
@@ -933,7 +938,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <div class="about-stat"><div class="about-stat-val">50+</div><div class="about-stat-label" data-i18n="about_stat1">Retailers searched</div></div>
     <div class="about-stat"><div class="about-stat-val">8</div><div class="about-stat-label" data-i18n="about_stat2">Product categories</div></div>
     <div class="about-stat"><div class="about-stat-val">3s</div><div class="about-stat-label" data-i18n="about_stat3">Average search time</div></div>
-    <div class="about-stat"><div class="about-stat-val">£0</div><div class="about-stat-label" data-i18n="about_stat4">Cost to use</div></div>
+    <div class="about-stat"><div class="about-stat-val" id="about-cost-stat">£0</div><div class="about-stat-label" data-i18n="about_stat4">Cost to use</div></div>
   </div>
 
   <div class="about-slogans">
@@ -988,14 +993,14 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <div class="legal-page">
   <span class="legal-back" onclick="history.go(-1)||showPage('home')">← Back</span>
   <h1>Privacy Policy</h1>
-  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a></p>
+  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a></p>
 
   <div class="legal-highlight">
     Prixly is a price comparison service. We show you prices from third-party retailers and redirect you to their websites to complete any purchase. We are <strong>not</strong> a retailer and we <strong>do not</strong> process, store, or have any visibility into your payment information or order details.
   </div>
 
   <h2>1. Who We Are</h2>
-  <p>Prixly ("we", "us", "our") operates the price comparison service available at prixly.xyz. For any privacy-related questions, contact us at <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>.</p>
+  <p>Prixly ("we", "us", "our") operates the price comparison service available at prixly.xyz. For any privacy-related questions, contact us at <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>.</p>
 
   <h2>2. What Data We Collect</h2>
 
@@ -1067,7 +1072,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li><strong>Objection</strong> — object to processing based on legitimate interest.</li>
     <li><strong>Withdraw consent</strong> — where processing is based on consent (e.g. email alerts), you may withdraw at any time by unsubscribing or contacting us.</li>
   </ul>
-  <p>To exercise any of these rights, email <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>. We will respond within 30 days.</p>
+  <p>To exercise any of these rights, email <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>. We will respond within 30 days.</p>
 
   <h2>9. Children</h2>
   <p>Prixly is not directed at children under the age of 13. We do not knowingly collect personal data from children. If you believe a child has submitted personal data to us, please contact us and we will delete it promptly.</p>
@@ -1076,7 +1081,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <p>We may update this Privacy Policy from time to time. The "Last updated" date at the top of this page will reflect any changes. Where changes are material, we will take reasonable steps to notify users (for example, via an in-app notice). Continued use of Prixly after changes are posted constitutes acceptance of the updated policy.</p>
 
   <hr class="legal-section-divider">
-  <p style="font-size:.82rem;">Questions? Email <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('terms')">Terms of Use</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('data')">Data &amp; Compliance</span></p>
+  <p style="font-size:.82rem;">Questions? Email <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('terms')">Terms of Use</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('data')">Data &amp; Compliance</span></p>
 </div>
 </div>
 
@@ -1087,7 +1092,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <div class="legal-page">
   <span class="legal-back" onclick="history.go(-1)||showPage('home')">← Back</span>
   <h1>Terms of Use</h1>
-  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:legal@prixly.xyz">legal@prixly.xyz</a></p>
+  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:legal.prixly.xyz@gmail.com">legal.prixly.xyz@gmail.com</a></p>
 
   <div class="legal-highlight">
     <strong>Important:</strong> Prixly is a price comparison tool only. We do not sell, stock, ship, or fulfil any products. All purchases are made directly with independent third-party retailers on their own websites. By using Prixly, you acknowledge and agree to these Terms of Use in full.
@@ -1168,7 +1173,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <p>If any provision of these Terms is found to be unlawful, void, or unenforceable, that provision shall be deemed severable and shall not affect the validity and enforceability of the remaining provisions.</p>
 
   <hr class="legal-section-divider">
-  <p style="font-size:.82rem;">Questions? Email <a href="mailto:legal@prixly.xyz">legal@prixly.xyz</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('privacy')">Privacy Policy</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('data')">Data &amp; Compliance</span></p>
+  <p style="font-size:.82rem;">Questions? Email <a href="mailto:legal.prixly.xyz@gmail.com">legal.prixly.xyz@gmail.com</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('privacy')">Privacy Policy</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('data')">Data &amp; Compliance</span></p>
 </div>
 </div>
 
@@ -1179,7 +1184,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <div class="legal-page">
   <span class="legal-back" onclick="history.go(-1)||showPage('home')">← Back</span>
   <h1>Data &amp; Compliance</h1>
-  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a></p>
+  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a></p>
 
   <div class="legal-highlight">
     This page sets out exactly what personal data Prixly collects, why it is collected, the legal basis for processing it, how long it is kept, and how you can control or delete it. It is written to comply with the UK GDPR, EU GDPR, and the California Consumer Privacy Act (CCPA).
@@ -1188,7 +1193,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <h2>1. Data Controller</h2>
   <p>The data controller for personal data collected through Prixly is:</p>
   <p><strong>Prixly</strong><br>
-  Email: <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a><br>
+  Email: <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a><br>
   Website: prixly.xyz</p>
 
   <h2>2. Full Data Inventory</h2>
@@ -1322,7 +1327,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   </ul>
 
   <h2>7. California Consumer Privacy Act (CCPA) Disclosures</h2>
-  <p>For California residents: Prixly does not sell personal information. We do not share personal information for cross-context behavioural advertising. You have the right to know what personal information we collect, to request deletion, and to opt out of any sale (though no sale occurs). To exercise your rights, contact <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>.</p>
+  <p>For California residents: Prixly does not sell personal information. We do not share personal information for cross-context behavioural advertising. You have the right to know what personal information we collect, to request deletion, and to opt out of any sale (though no sale occurs). To exercise your rights, contact <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>.</p>
 
   <h2>8. Data Retention Summary</h2>
   <ul>
@@ -1344,13 +1349,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li><strong>Withdraw consent</strong> — withdraw consent at any time for consent-based processing (this will not affect the lawfulness of processing before withdrawal).</li>
     <li><strong>Lodge a complaint</strong> — complain to your national data protection authority. For UK users, this is the <a href="https://ico.org.uk" target="_blank" rel="noopener">Information Commissioner's Office (ICO)</a>. For EU users, contact your local supervisory authority.</li>
   </ul>
-  <p>To exercise any right, email <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>. We will respond within 30 days (or sooner where required by law).</p>
+  <p>To exercise any right, email <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>. We will respond within 30 days (or sooner where required by law).</p>
 
   <h2>10. Security</h2>
   <p>We take reasonable and appropriate technical and organisational measures to protect any personal data we process. Given that Prixly stores minimal data and processes most data transiently, the principal security risk relates to API communications with Anthropic. These are conducted over encrypted HTTPS connections. We do not store API responses beyond what is needed to render your search results.</p>
 
   <h2>11. Children</h2>
-  <p>Prixly is not directed at children under 13. We do not knowingly collect personal data from children under 13. If you are a parent or guardian and believe your child has submitted personal data to Prixly, please contact us at <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a> and we will delete it promptly.</p>
+  <p>Prixly is not directed at children under 13. We do not knowingly collect personal data from children under 13. If you are a parent or guardian and believe your child has submitted personal data to Prixly, please contact us at <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> and we will delete it promptly.</p>
 
   <h2>12. International Users</h2>
   <p>Prixly is a worldwide service. In addition to the UK GDPR, EU GDPR, and CCPA rights described above, users in the following countries have specific rights and protections under their national laws. In all cases, we commit to providing rights <strong>at least equivalent to GDPR standards</strong> to every user globally, regardless of location. The country-specific sections below describe where local law goes further or differs meaningfully.</p>
@@ -1362,13 +1367,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li><strong>Your rights under LGPD (Article 18):</strong> confirmation of the existence of processing; access to your data; correction of incomplete or inaccurate data; anonymisation, blocking, or deletion of unnecessary data; data portability; deletion of data processed with consent; information about public and private entities with whom we share data; information about the possibility of withholding consent and its consequences; and revocation of consent.</li>
     <li><strong>Cross-border transfers:</strong> Data sent to Anthropic's API (based in the USA) constitutes an international transfer under LGPD Article 33. This transfer is carried out under contractual clauses that provide a level of protection equivalent to that required by Brazilian law, consistent with Anthropic's Data Processing Agreement.</li>
     <li><strong>National Data Protection Authority (ANPD):</strong> Brazilian users may lodge a complaint with the Autoridade Nacional de Proteção de Dados at <a href="https://www.gov.br/anpd" target="_blank" rel="noopener">gov.br/anpd</a>.</li>
-    <li><strong>Data Protection Officer:</strong> Prixly does not currently have a formal DPO registered with the ANPD. As the service scales to Brazilian users, we will appoint one and update this page. In the interim, all data requests should be directed to <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>.</li>
+    <li><strong>Data Protection Officer:</strong> Prixly does not currently have a formal DPO registered with the ANPD. As the service scales to Brazilian users, we will appoint one and update this page. In the interim, all data requests should be directed to <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>.</li>
   </ul>
 
   <h3>12.2 Canada — PIPEDA and Quebec Law 25</h3>
   <p>Canada's federal <em>Personal Information Protection and Electronic Documents Act</em> (PIPEDA) applies to Prixly's collection and use of personal data from Canadian users in the course of commercial activity. Quebec users are additionally protected by <em>Law 25</em> (Act to Modernize Privacy Sector Enterprises, in force September 2023), which is the strictest provincial privacy law in Canada.</p>
   <ul>
-    <li><strong>Accountability:</strong> Prixly is accountable for all personal data in its possession, including data transferred to Anthropic for processing. We have designated <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a> as the point of contact for all Canadian privacy matters.</li>
+    <li><strong>Accountability:</strong> Prixly is accountable for all personal data in its possession, including data transferred to Anthropic for processing. We have designated <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> as the point of contact for all Canadian privacy matters.</li>
     <li><strong>Identifying purpose:</strong> The purpose for which personal data is collected is identified at or before the time of collection (see Section 2 of this page).</li>
     <li><strong>Consent:</strong> We obtain meaningful consent for data collection. For data collected automatically (e.g. browser locale), consent is implied by use of the service; for email sign-up and image uploads, consent is express.</li>
     <li><strong>Cross-border transfers (Quebec Law 25 — Article 17):</strong> Before transferring personal data outside Quebec, we are required to conduct a Privacy Impact Assessment (PIA). A PIA has been carried out for the transfer of search queries and images to Anthropic (USA). The assessment concluded that the transfer is justified given Anthropic's contractual safeguards. The PIA is available on request to Quebec residents.</li>
@@ -1384,7 +1389,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li><strong>Anonymity (APP 2):</strong> Where lawful and practicable, Australian users may interact with Prixly anonymously. Searching for prices does not require you to identify yourself. Only price alert sign-up requires an email address.</li>
     <li><strong>Collection notice (APP 5):</strong> At the time of collecting personal information, we notify you of: our identity and contact details; the purposes of collection; any third parties to whom we disclose information; and your rights of access and correction. This page constitutes that notice.</li>
     <li><strong>Cross-border disclosures (APP 8):</strong> Before disclosing personal information to an overseas recipient (Anthropic, USA), we have taken reasonable steps to ensure the recipient does not breach the APPs in relation to that information. Anthropic's DPA and Standard Contractual Clauses provide these assurances. Australian users should be aware that overseas recipients may not be subject to Australian privacy law, and Prixly may not be accountable under the Privacy Act for any breach by that overseas recipient — however, we contractually require Anthropic to handle data to a standard consistent with Australian law.</li>
-    <li><strong>Your rights:</strong> Australian users have the right to access personal information we hold about them (APP 12) and to request correction of inaccurate, out-of-date, or incomplete information (APP 13). Requests should be sent to <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a>. We will respond within 30 days.</li>
+    <li><strong>Your rights:</strong> Australian users have the right to access personal information we hold about them (APP 12) and to request correction of inaccurate, out-of-date, or incomplete information (APP 13). Requests should be sent to <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>. We will respond within 30 days.</li>
     <li><strong>Complaints:</strong> If you are not satisfied with our response to a privacy complaint, you may refer the matter to the <a href="https://www.oaic.gov.au" target="_blank" rel="noopener">Office of the Australian Information Commissioner (OAIC)</a>.</li>
     <li><strong>Sensitive information:</strong> Prixly does not intentionally collect sensitive information as defined under the Privacy Act (including health, racial, political, or religious information). If you include such information in a search query, it is processed transiently and not retained.</li>
   </ul>
@@ -1400,7 +1405,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <ul>
         <li>Right to access information about personal data processed (Section 11).</li>
         <li>Right to correction and erasure of personal data (Section 12).</li>
-        <li>Right to grievance redressal (Section 13) — contact <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a> for any grievance; we will respond within 30 days.</li>
+        <li>Right to grievance redressal (Section 13) — contact <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> for any grievance; we will respond within 30 days.</li>
         <li>Right to nominate another person to exercise your rights in the event of death or incapacity (Section 14).</li>
       </ul>
     </li>
@@ -1414,7 +1419,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <p>This Data &amp; Compliance page will be updated whenever we introduce new data collection, a new data processor, a change in retention periods, or when relevant laws change in any jurisdiction we serve. The "Last updated" date at the top will reflect any changes. We will not introduce new data collection without first updating this page.</p>
 
   <hr class="legal-section-divider">
-  <p style="font-size:.82rem;">Questions? Email <a href="mailto:privacy@prixly.xyz">privacy@prixly.xyz</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('privacy')">Privacy Policy</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('terms')">Terms of Use</span></p>
+  <p style="font-size:.82rem;">Questions? Email <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('privacy')">Privacy Policy</span> &nbsp;·&nbsp; <span style="cursor:pointer;color:var(--accent);" onclick="showPage('terms')">Terms of Use</span></p>
 </div>
 </div>
 
@@ -2006,6 +2011,7 @@ function buildLangSelector(){
 
 function buildCurrencySelector(){
   cSelectBuild('currencySelectList','currencySelectVal', CURRENCY_OPTS, activeCurrency, setCurrency);
+  _updateAboutCostStat(activeCurrency);
 }
 
 function t(key){ return (TRANSLATIONS[activeLang]||TRANSLATIONS.en)[key] || key; }
@@ -2037,11 +2043,19 @@ function _updateCurrencyDisplay(code){
   document.querySelectorAll('#currencySelectList .cselect-opt').forEach(o=>o.classList.toggle('csel',o.dataset.code===code));
 }
 
+function _updateAboutCostStat(code){
+  const el=document.getElementById('about-cost-stat');
+  if(!el) return;
+  const c=CURRENCIES[code]||CURRENCIES['GBP'];
+  el.textContent=c.symbol+'0';
+}
+
 function setCurrency(code){
   activeCurrency=code;
   window._currencyManuallySet=true;
   try{ localStorage.setItem('prixly_currency', code); }catch(e){}
   _updateCurrencyDisplay(code);
+  _updateAboutCostStat(code);
   if(currentResults.length) renderResults(currentResults);
   const alertsActive=document.getElementById('page-alerts').classList.contains('active');
   const dealsActive=document.getElementById('page-deals').classList.contains('active');
@@ -2053,6 +2067,7 @@ function setCurrency(code){
 function setCurrencyAuto(code){
   activeCurrency=code;
   _updateCurrencyDisplay(code);
+  _updateAboutCostStat(code);
   if(currentResults.length) renderResults(currentResults);
 }
 
