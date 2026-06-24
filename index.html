@@ -548,6 +548,61 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .mob-settings-label{font-size:.9rem;font-weight:600;color:var(--text);}
 .mob-settings-cta{display:block;background:var(--accent);color:#fff;text-align:center;padding:.7rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:700;margin-top:1rem;cursor:pointer;}
 
+/* ── WISHLIST STAR ── */
+.wishlist-btn{position:absolute;top:7px;right:7px;background:none;border:none;padding:5px;border-radius:50%;color:var(--muted2);transition:color .18s,background .15s;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;cursor:pointer;}
+.wishlist-btn:hover{color:#f5a623;background:rgba(245,166,35,.12);}
+.wishlist-btn.wishlisted{color:#f5a623;}
+.wishlist-btn svg{width:15px;height:15px;display:block;}
+.item-card,.deal-card,.suggested-card,.cat-scroll-card{position:relative;}
+.result-card{position:relative;}
+
+/* ── LOGIN PAGE ── */
+.login-page{min-height:calc(100vh - 60px - 46px);display:flex;align-items:center;justify-content:center;padding:2rem;}
+.login-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:2.5rem 2rem;max-width:420px;width:100%;box-shadow:var(--shadow);text-align:center;}
+.login-card h1{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.4rem;}
+.login-card h1 span{color:var(--accent);}
+.login-card>p{font-size:.88rem;color:var(--muted);margin-bottom:1.5rem;}
+.login-form{display:flex;flex-direction:column;gap:.65rem;text-align:left;}
+.login-label{font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+.login-error{font-size:.82rem;color:#e74c3c;text-align:center;padding:.4rem;display:none;}
+.login-switch{margin-top:1rem;font-size:.83rem;color:var(--muted);}
+.login-switch a{color:var(--accent);cursor:pointer;text-decoration:underline;}
+
+/* ── ACCOUNT / ALERTS DASHBOARD ── */
+.acct-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:3rem 2rem;text-align:center;gap:1rem;}
+.acct-gate h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;}
+.acct-gate p{color:var(--muted);font-size:.92rem;max-width:420px;line-height:1.6;}
+.acct-gate-btns{display:flex;gap:.75rem;margin-top:.5rem;flex-wrap:wrap;justify-content:center;}
+.acct-gate-btn{background:var(--accent);color:#fff;border:none;padding:.7rem 1.5rem;border-radius:var(--radius-sm);font-size:.9rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.acct-gate-btn:hover{opacity:.88;}
+.acct-gate-btn.ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border2);}
+.acct-welcome{background:var(--surface);border-bottom:1px solid var(--border);padding:1.75rem 2rem 1.5rem;}
+.acct-welcome-inner{max-width:900px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.acct-welcome-name{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.2rem;}
+.acct-welcome-email{font-size:.82rem;color:var(--muted);}
+.acct-logout{font-size:.82rem;color:var(--accent);cursor:pointer;border:1px solid var(--accent);background:none;padding:.3rem .8rem;border-radius:var(--radius-xs);font-weight:600;white-space:nowrap;}
+.acct-logout:hover{background:var(--accent);color:#fff;}
+.wishlist-section{max-width:900px;margin:1.5rem auto 0;padding:0 2rem;}
+.wishlist-section-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.75rem;}
+.wishlist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;}
+.wishlist-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;position:relative;transition:all .2s;}
+.wishlist-card:hover{border-color:var(--accent);box-shadow:var(--shadow);}
+.wishlist-card-name{font-size:.88rem;font-weight:700;margin-bottom:.25rem;line-height:1.3;padding-right:1.5rem;}
+.wishlist-card-retailer{font-size:.75rem;color:var(--muted);margin-bottom:.4rem;}
+.wishlist-card-price{font-size:1rem;font-weight:800;color:var(--accent);}
+.wishlist-card-remove{position:absolute;top:7px;right:7px;background:none;border:none;padding:4px;border-radius:50%;color:var(--muted2);cursor:pointer;font-size:1rem;line-height:1;transition:color .15s;}
+.wishlist-card-remove:hover{color:#e74c3c;}
+.wishlist-empty{text-align:center;padding:2rem;color:var(--muted);font-size:.88rem;line-height:1.6;background:var(--surface2);border-radius:var(--radius);border:1px dashed var(--border2);}
+
+/* ── NAV USER STATE ── */
+.nav-user-chip{display:flex;align-items:center;gap:.45rem;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:.3rem .75rem;font-size:.82rem;font-weight:600;cursor:pointer;color:var(--text);transition:all .2s;text-decoration:none;}
+.nav-user-chip:hover{border-color:var(--accent);}
+.nav-user-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+
+/* ── AI DISCLOSURE ── */
+.ai-disclosure{max-width:700px;margin:2.5rem auto 0;padding:1.5rem 2rem;border-top:1px solid var(--border);text-align:center;}
+.ai-disclosure p{font-size:.8rem;color:var(--muted2);line-height:1.7;}
+
 @media(max-width:640px){
   .mobile-bottom-nav{display:block;}
   body{padding-bottom:calc(62px + env(safe-area-inset-bottom,0));}
@@ -613,6 +668,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     </div>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
     <a class="nav-cta" onclick="showPage('signup')" id="nav-signup">Sign up free</a>
+    <a class="nav-user-chip" onclick="showPage('alerts')" id="nav-user" style="display:none;"><span class="nav-user-dot"></span><span id="nav-user-name"></span></a>
   </div>
 </nav>
 
@@ -663,10 +719,10 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       </div>
     </div>
     <div class="trust-strip">
-      <div class="trust-item"><span data-i18n="trust_1">No sign-up needed</span></div>
       <div class="trust-item"><span data-i18n="trust_2">We never sell your data</span></div>
       <div class="trust-item"><span data-i18n="trust_3">Results in under 3s</span></div>
       <div class="trust-item"><span data-i18n="trust_4">50+ retailers searched</span></div>
+      <div class="trust-item"><span>Free to create an account</span></div>
     </div>
   </section>
   <div class="recently-viewed" id="recentlyViewed">
@@ -787,7 +843,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <div class="hiw-step-info">
         <div class="hiw-step-num" data-i18n="step1_num">Step 01</div>
         <h2 data-i18n="step1_title">Tell us what you're looking for</h2>
-        <p data-i18n="step1_desc">Type the name of any product — as specific or as vague as you like — or simply drop a photo of it. Prixly accepts both. No account needed, no sign-up required.</p>
+        <p data-i18n="step1_desc">Type the name of any product — as specific or as vague as you like — or simply drop a photo of it. Prixly accepts both. Searching is always free — create an account to save items and track price drops.</p>
       </div>
     </div>
 
@@ -915,35 +971,84 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <div id="page-signup" class="page">
   <div class="signup-page">
     <div class="signup-card">
-      <h1>Get <span>price alerts</span><br>straight to your inbox.</h1>
-      <p>Sign up once and Prixly will email you the moment any item you're watching drops below your target price — no app, no account dashboard, no noise.</p>
+      <h1>Create your <span>free account.</span></h1>
+      <p>Wishlist items, track price drops, and get notified the moment something you're watching gets cheaper.</p>
       <div class="signup-benefits">
-        <div class="signup-benefit"><div class="signup-benefit-dot"></div>Instant email when prices drop</div>
+        <div class="signup-benefit"><div class="signup-benefit-dot"></div>Wishlist any product with one click</div>
+        <div class="signup-benefit"><div class="signup-benefit-dot"></div>Instant alert when prices drop</div>
         <div class="signup-benefit"><div class="signup-benefit-dot"></div>Set your own target price per item</div>
         <div class="signup-benefit"><div class="signup-benefit-dot"></div>Free forever — no card required</div>
-        <div class="signup-benefit"><div class="signup-benefit-dot"></div>Unsubscribe any time, one click</div>
       </div>
       <div class="signup-form" id="signupForm">
-        <input class="signup-input" type="email" id="signupEmail" placeholder="Enter your email address" />
+        <input class="signup-input" type="text" id="signupName" placeholder="Your name" autocomplete="name" />
+        <input class="signup-input" type="email" id="signupEmail" placeholder="Email address" autocomplete="email" />
+        <input class="signup-input" type="password" id="signupPassword" placeholder="Create a password" autocomplete="new-password" />
+        <div id="signupError" style="font-size:.82rem;color:#e74c3c;display:none;"></div>
         <button class="signup-submit" onclick="handleSignup()">Create free account</button>
-        <p class="signup-legal">By signing up you agree to our <a href="#" onclick="showPage('privacy')" style="color:var(--accent);">Privacy Policy</a>. We never share your email with third parties.</p>
+        <p class="signup-legal">By signing up you agree to our <a href="#" onclick="showPage('privacy')" style="color:var(--accent);">Privacy Policy</a> and <a href="#" onclick="showPage('terms')" style="color:var(--accent);">Terms of Use</a>. We never share your data with third parties.</p>
+        <p class="signup-legal" style="margin-top:.25rem;">Already have an account? <a onclick="showPage('login')" style="color:var(--accent);cursor:pointer;text-decoration:underline;">Sign in →</a></p>
       </div>
       <div class="signup-success" id="signupSuccess">
         <div class="signup-success-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <h2>You're on the list.</h2>
-        <p>We'll email you at <strong id="signupEmailConfirm"></strong> the moment a watched item drops below your target price.</p>
-        <span class="signup-back" onclick="showPage('home')">Back to search</span>
+        <h2>Welcome to Prixly.</h2>
+        <p>Your account is ready. Start wishlisting items and we'll alert you when prices drop.</p>
+        <span class="signup-back" onclick="showPage('alerts')">Go to my wishlist →</span>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════ -->
+<!--  LOGIN PAGE                                -->
+<!-- ══════════════════════════════════════════ -->
+<div id="page-login" class="page">
+  <div class="login-page">
+    <div class="login-card">
+      <h1>Welcome back to <span>Prixly.</span></h1>
+      <p>Sign in to access your wishlist and price alerts.</p>
+      <div class="login-form">
+        <span class="login-label">Email</span>
+        <input class="signup-input" type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" />
+        <span class="login-label">Password</span>
+        <input class="signup-input" type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" />
+        <div class="login-error" id="loginError"></div>
+        <button class="signup-submit" onclick="handleLogin()">Sign in</button>
+      </div>
+      <p class="login-switch">Don't have an account? <a onclick="showPage('signup')">Create one free →</a></p>
+    </div>
+  </div>
+</div>
+
 <div id="page-alerts" class="page">
-  <div class="pa-hero">
-    <h1 data-i18n="pa_title">Price Alerts</h1>
-    <p data-i18n="pa_subtitle">Items you're watching — we'll tell you the moment the price drops.</p>
+  <div id="alertsGate" class="acct-gate" style="display:none;">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <h2>Your wishlist &amp; price alerts</h2>
+    <p>Create a free account to wishlist items and get notified the moment a price drops below your target.</p>
+    <div class="acct-gate-btns">
+      <button class="acct-gate-btn" onclick="showPage('signup')">Create free account</button>
+      <button class="acct-gate-btn ghost" onclick="showPage('login')">Sign in</button>
+    </div>
+  </div>
+  <div id="alertsDashboard" style="display:none;">
+    <div class="acct-welcome">
+      <div class="acct-welcome-inner">
+        <div>
+          <div class="acct-welcome-name" id="acctWelcomeName"></div>
+          <div class="acct-welcome-email" id="acctWelcomeEmail"></div>
+        </div>
+        <button class="acct-logout" onclick="handleLogout()">Log out</button>
+      </div>
+    </div>
+    <div class="wishlist-section">
+      <div class="wishlist-section-title">My Wishlist</div>
+      <div id="wishlistGrid" class="wishlist-grid"></div>
+    </div>
+    <div class="pa-hero" style="padding-top:2rem;">
+      <h1 data-i18n="pa_title" style="font-size:1.4rem;">Price Alerts</h1>
+      <p data-i18n="pa_subtitle">Items you're watching — we'll tell you the moment the price drops.</p>
+    </div>
   </div>
   <div class="pa-content" id="paContent"></div>
 </div>
@@ -1035,6 +1140,10 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <h2 data-i18n="about_mission_header">The goal</h2>
     <p data-i18n="about_mission_text">To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it's sold online, Prixly should find it cheaper. That's the mission. Simple as that.</p>
   </div>
+
+  <div class="ai-disclosure">
+    <p><strong>A note on AI:</strong> Prixly was designed and built with the assistance of generative AI tools, including large language models used for development, design iteration, and content generation. AI is also used within the product itself — to identify products from images and URLs, and to surface relevant review summaries. We believe in being transparent about this. If you have questions, reach out at <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>.</p>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════ -->
@@ -1060,6 +1169,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li><strong>Search queries</strong> — the text you type into the search bar (e.g. "iPhone 15 Pro", "Nike Air Max 90"). This is used solely to retrieve and display price results.</li>
     <li><strong>Product URLs</strong> — if you paste a product link into the search bar, that URL is processed to identify the product. It is transmitted to Anthropic's API where slug parsing alone is insufficient.</li>
     <li><strong>Images and screenshots</strong> — if you upload or drop an image to use our visual search feature, that image is sent to Anthropic's Claude Vision API to extract a product description. Images are not stored by Prixly at any point.</li>
+    <li><strong>Account registration data</strong> — if you create a Prixly account, we collect your name, email address, and a password you choose. Your password is stored in hashed form and never in plain text. This data is used solely to authenticate you and personalise your experience.</li>
+    <li><strong>Wishlist items</strong> — products you save to your wishlist are stored against your account. This data is used to display your wishlist and to trigger price-drop notifications when a watched item falls below your target price.</li>
     <li><strong>Email address (optional)</strong> — if you sign up for price alerts, we collect the email address you provide in order to send you alert notifications. This is strictly opt-in. We will not use your email for marketing unless you separately consent to that.</li>
     <li><strong>Target price for alerts (optional)</strong> — the price threshold you set when creating an alert. Stored only to trigger notifications at the right time.</li>
   </ul>
@@ -1079,17 +1190,24 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li>Tracking cookies or cross-site advertising identifiers — we do not use any advertising or behavioural tracking cookies.</li>
     <li>Precise geolocation — we never request GPS or precise location access.</li>
   </ul>
-  <p>If Prixly introduces user accounts in the future, this policy will be updated before launch to cover any additional data collected at registration (such as name or saved preferences). You will be notified of material changes.</p>
-
   <h2>3. How We Use Your Data</h2>
   <ul>
     <li>To return price comparison results for your search query.</li>
     <li>To detect the most relevant product category and retailer list for your query.</li>
+    <li>To authenticate you and maintain your account session.</li>
+    <li>To display and manage your personal wishlist.</li>
     <li>To send price-drop alert emails to users who have opted in.</li>
     <li>To display the service in your preferred language and currency.</li>
     <li>To improve the accuracy and performance of our service.</li>
   </ul>
   <p>We do not use your data for advertising profiling, and we do not sell your data to any third party under any circumstances.</p>
+
+  <h2>3a. Use of Artificial Intelligence</h2>
+  <p>Prixly uses AI in two ways:</p>
+  <ul>
+    <li><strong>Product development:</strong> Prixly was designed and built with assistance from generative AI tools, including large language models. This relates to how the product was created, not how your data is used.</li>
+    <li><strong>In-product AI features:</strong> When you use image search or paste a product URL, that content is sent to the Anthropic Claude API to identify the product. When you view search results, Claude may generate a sample review summary. These calls are made solely to improve your search experience. No identifying personal data from your account is sent to AI systems.</li>
+  </ul>
 
   <h2>4. Third-Party Data Processors</h2>
   <p>We share data with the following processors only to the extent necessary to operate the service:</p>
@@ -1143,7 +1261,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <div class="legal-page">
   <span class="legal-back" onclick="history.go(-1)||showPage('home')">← Back</span>
   <h1>Terms of Use</h1>
-  <p class="legal-meta">Last updated: 22 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:legal.prixly.xyz@gmail.com">legal.prixly.xyz@gmail.com</a></p>
+  <p class="legal-meta">Last updated: 24 June 2025 &nbsp;·&nbsp; Effective immediately &nbsp;·&nbsp; Contact: <a href="mailto:legal.prixly.xyz@gmail.com">legal.prixly.xyz@gmail.com</a></p>
 
   <div class="legal-highlight">
     <strong>Important:</strong> Prixly is a price comparison tool only. We do not sell, stock, ship, or fulfil any products. All purchases are made directly with independent third-party retailers on their own websites. By using Prixly, you acknowledge and agree to these Terms of Use in full.
@@ -1152,6 +1270,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <h2>1. About Prixly</h2>
   <p>Prixly is an online price comparison service that aggregates and displays product prices from multiple third-party retailers. Our service enables users to identify competitive prices across a wide range of retailers and, where interested, to navigate to those retailers' websites to make a purchase.</p>
   <p>Prixly does not act as a seller, agent, intermediary, or representative of any retailer. We are not involved in, and accept no responsibility for, any transaction that takes place between a user and a retailer.</p>
+
+  <h2>1a. User Accounts</h2>
+  <p>Prixly offers optional user accounts. By creating an account, you agree to provide accurate, current, and complete information at registration and to keep it up to date. You are responsible for maintaining the confidentiality of your login credentials. You must not share your account with others or permit any third party to access it on your behalf. Prixly reserves the right to suspend or terminate accounts that violate these Terms.</p>
+  <p>Certain features — including the wishlist and price alert tracking — require a registered account. Account data (name, email, wishlist items) is stored in accordance with our <span onclick="showPage('privacy')" style="color:var(--accent);cursor:pointer;">Privacy Policy</span>.</p>
+
+  <h2>1b. Use of Artificial Intelligence</h2>
+  <p>Prixly uses artificial intelligence in the development and operation of this service. Generative AI tools were used in the creation of Prixly's design and code. Within the product, AI is used to identify products from images or URLs, and to generate sample review content. By using these features, you consent to the transmission of the relevant inputs (images or URLs) to our AI processing partner, Anthropic, Inc., as described in our Privacy Policy.</p>
 
   <h2>2. Nature of the Service — Price Comparison Only</h2>
   <p>Prixly provides information about prices and availability as a guide only. When you click a result on Prixly, you are leaving our service and entering the third-party retailer's website. At that point:</p>
@@ -1297,6 +1422,27 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
         <td>Retained until you cancel the alert. Deleted alongside your email on unsubscribe.</td>
       </tr>
       <tr>
+        <td>Account name &amp; email</td>
+        <td>The name and email address you provide when creating a Prixly account</td>
+        <td>To authenticate you, personalise your experience ("Welcome, [name]"), and send price-drop notifications</td>
+        <td>Contract (account registration)</td>
+        <td>Retained for the lifetime of your account. Deleted within 30 days of account deletion request.</td>
+      </tr>
+      <tr>
+        <td>Password (hashed)</td>
+        <td>A hashed (non-reversible) representation of your chosen password</td>
+        <td>To verify your identity at login. Your plain-text password is never stored.</td>
+        <td>Contract (account security)</td>
+        <td>Retained for the lifetime of your account. Deleted on account deletion.</td>
+      </tr>
+      <tr>
+        <td>Wishlist items</td>
+        <td>Products you star/save within Prixly, including product name, retailer, and price at time of saving</td>
+        <td>To display your personal wishlist and to monitor for price drops on saved items</td>
+        <td>Contract (account feature)</td>
+        <td>Retained until you remove the item or delete your account.</td>
+      </tr>
+      <tr>
         <td>Language preference</td>
         <td>Your chosen display language (or browser-detected language)</td>
         <td>To show the site in your preferred language</td>
@@ -1331,7 +1477,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <ul>
     <li>Payment card details or any financial information — all transactions happen on the retailer's website.</li>
     <li>Purchase history, order confirmations, or receipts.</li>
-    <li>Full name, address, or phone number (unless voluntarily included in a search query — we recommend you do not do this).</li>
+    <li>Full postal address, phone number, or any other contact details beyond email and name provided at registration.</li>
     <li>Tracking cookies, advertising IDs, or cross-site behavioural profiles.</li>
     <li>Device fingerprints or persistent unique identifiers.</li>
     <li>GPS or precise geolocation data.</li>
@@ -1493,7 +1639,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <span class="mob-settings-label">Appearance</span>
       <button class="theme-toggle" onclick="toggleTheme()" id="mobThemeBtn">Light</button>
     </div>
-    <a class="mob-settings-cta" onclick="closeMobSettings();showPage('signup')">Sign up free</a>
+    <div id="mobSignupBtn"><a class="mob-settings-cta" onclick="closeMobSettings();showPage('signup')">Sign up free</a></div>
+    <div id="mobUserBtn" style="display:none;"><a class="mob-settings-cta" style="background:var(--surface2);color:var(--text);border:1px solid var(--border2);" onclick="closeMobSettings();showPage('alerts')" id="mobUserName">My Account</a></div>
   </div>
 </div>
 
@@ -1559,7 +1706,7 @@ const TRANSLATIONS = {
     about_h1:'We exist so you can<br><span>spend less, live more.</span>',
     footer_privacy:'Privacy', footer_terms:'Terms', footer_hiw:'How it works',
     hiw_title:'How Prixly works',
-    hiw_eyebrow:'Simple. Fast. Transparent.', hiw_intro:'From search to saving — here\'s exactly what happens when you use Prixly to find a cheaper price.', step1_num:'Step 01', step1_title:'Tell us what you\'re looking for', step1_desc:'Type the name of any product — as specific or as vague as you like — or simply drop a photo of it. Prixly accepts both. No account needed, no sign-up required.', step2_num:'Step 02', step2_title:'The algorithm detects your category', step2_desc:'Prixly\'s engine analyses your search and instantly identifies which category it belongs to — Electronics, Fashion, Gaming, and more. It then selects the most relevant retailers for that category and prioritises them, so you get results from the right places first.', step3_num:'Step 03', step3_title:'Results ranked cheapest first', step3_desc:'Every retailer\'s price is pulled, compared, and ranked from lowest to highest. The best deal gets highlighted at the top. You can also sort by rating, shipping speed, or Prixly score — a combined rating we calculate for each listing.', step4_num:'Step 04', step4_title:'See the price history', step4_desc:'Every result comes with a 6-month price history chart so you can see if today\'s price is actually a good deal — or if you\'re better off waiting. Prixly also tells you the best time of year to buy that type of product.', step5_num:'Step 05', step5_title:'Set an alert and never miss a drop', step5_desc:'Not ready to buy yet? Set a target price and your email, and Prixly will notify you the moment the item drops below it. You can manage all your alerts in the Price Alerts section.', mock_search_bar:'🔍 Search bar', mock_or_drop:'Or drop an image...', mock_dragdrop:'📁 Drag & drop any product photo', mock_category_detected:'Category detected: 💻 Electronics (94% match)', mock_searching_priority:'Searching top retailers by priority:', mock_ship_nextday:'⚡ Free next-day delivery', mock_ship_free:'Free delivery', mock_ship_shipping:'Free shipping', mock_price_history_header:'📈 Price over last 6 months', mock_now:'now', mock_peak:'peak', mock_lowest:'lowest', mock_price_insight:'💡 Price has dropped 27% since January', mock_set_alert:'🔔 Set a price alert', mock_target_ph:'Target', mock_alert_confirm:'✅ Alert set! We\'ll email you when Sony WH-1000XM5 drops below', pa_title:'🔔 Price Alerts', pa_subtitle:'Items you\'re watching — we\'ll tell you the moment the price drops.', pa_dropped_header:'🔥 Price dropped — act now', pa_watching_header:'⏳ Still watching', pa_suggested_header:'✨ You might also like', pa_via:'via', pa_your_target:'Your target:', pa_was:'was', pa_below_target:'✅ Below your target', pa_target_label:'Target:', pa_away:'away', pa_view_deal:'View deal', pa_remove:'Remove', pa_search_now:'Search now', pa_save:'Save', deals_filter_all:'All deals', deals_filter_electronics:'Electronics', deals_filter_gaming:'Gaming', deals_filter_fashion:'Fashion', deals_filter_home:'Home', deals_filter_sports:'Sports', deals_filter_toys:'Toys', deals_filter_baby:'Baby', deal_view:'View →', about_tagline:'"The smartest shopper isn\'t the one who buys the most — it\'s the one who pays the least."', about_intro:'Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don\'t have to, finding the best price on everything from headphones to nappies in seconds.', about_stat1:'Retailers searched', about_stat2:'Product categories', about_stat3:'Average search time', about_stat4:'Cost to use', about_slogans_header:'What we stand for', slogan1:'Your money. Your <span>choice.</span>', slogan2:'Same product. <span>Better price.</span>', slogan3:'Search once. <span>Save everywhere.</span>', slogan4:'No tricks. No markup. Just <span>the truth.</span>', slogan5:'Built for <span>real people,</span> not retailers.', about_values_header:'What makes us different', value1_title:'Smart category detection', value1_desc:'Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you\'re looking for.', value2_title:'Price history you can trust', value2_desc:'We show you whether today\'s "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.', value3_title:'Alerts that actually fire', value3_desc:'Set your target price and forget about it. We\'ll email you the moment something drops, so you never miss a deal you actually wanted.', value4_title:'No data selling, ever', value4_desc:'We don\'t sell your data. We don\'t track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that\'s it.', about_mission_header:'The goal', about_mission_text:'To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it\'s sold online, Prixly should find it cheaper. That\'s the mission. Simple as that.', footer_disclaimer:'Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases — at no extra cost to you.',
+    hiw_eyebrow:'Simple. Fast. Transparent.', hiw_intro:'From search to saving — here\'s exactly what happens when you use Prixly to find a cheaper price.', step1_num:'Step 01', step1_title:'Tell us what you\'re looking for', step1_desc:'Type the name of any product — as specific or as vague as you like — or simply drop a photo of it. Prixly accepts both. Searching is always free — create an account to save items and track price drops.', step2_num:'Step 02', step2_title:'The algorithm detects your category', step2_desc:'Prixly\'s engine analyses your search and instantly identifies which category it belongs to — Electronics, Fashion, Gaming, and more. It then selects the most relevant retailers for that category and prioritises them, so you get results from the right places first.', step3_num:'Step 03', step3_title:'Results ranked cheapest first', step3_desc:'Every retailer\'s price is pulled, compared, and ranked from lowest to highest. The best deal gets highlighted at the top. You can also sort by rating, shipping speed, or Prixly score — a combined rating we calculate for each listing.', step4_num:'Step 04', step4_title:'See the price history', step4_desc:'Every result comes with a 6-month price history chart so you can see if today\'s price is actually a good deal — or if you\'re better off waiting. Prixly also tells you the best time of year to buy that type of product.', step5_num:'Step 05', step5_title:'Set an alert and never miss a drop', step5_desc:'Not ready to buy yet? Set a target price and your email, and Prixly will notify you the moment the item drops below it. You can manage all your alerts in the Price Alerts section.', mock_search_bar:'🔍 Search bar', mock_or_drop:'Or drop an image...', mock_dragdrop:'📁 Drag & drop any product photo', mock_category_detected:'Category detected: 💻 Electronics (94% match)', mock_searching_priority:'Searching top retailers by priority:', mock_ship_nextday:'⚡ Free next-day delivery', mock_ship_free:'Free delivery', mock_ship_shipping:'Free shipping', mock_price_history_header:'📈 Price over last 6 months', mock_now:'now', mock_peak:'peak', mock_lowest:'lowest', mock_price_insight:'💡 Price has dropped 27% since January', mock_set_alert:'🔔 Set a price alert', mock_target_ph:'Target', mock_alert_confirm:'✅ Alert set! We\'ll email you when Sony WH-1000XM5 drops below', pa_title:'🔔 Price Alerts', pa_subtitle:'Items you\'re watching — we\'ll tell you the moment the price drops.', pa_dropped_header:'🔥 Price dropped — act now', pa_watching_header:'⏳ Still watching', pa_suggested_header:'✨ You might also like', pa_via:'via', pa_your_target:'Your target:', pa_was:'was', pa_below_target:'✅ Below your target', pa_target_label:'Target:', pa_away:'away', pa_view_deal:'View deal', pa_remove:'Remove', pa_search_now:'Search now', pa_save:'Save', deals_filter_all:'All deals', deals_filter_electronics:'Electronics', deals_filter_gaming:'Gaming', deals_filter_fashion:'Fashion', deals_filter_home:'Home', deals_filter_sports:'Sports', deals_filter_toys:'Toys', deals_filter_baby:'Baby', deal_view:'View →', about_tagline:'"The smartest shopper isn\'t the one who buys the most — it\'s the one who pays the least."', about_intro:'Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don\'t have to, finding the best price on everything from headphones to nappies in seconds.', about_stat1:'Retailers searched', about_stat2:'Product categories', about_stat3:'Average search time', about_stat4:'Cost to use', about_slogans_header:'What we stand for', slogan1:'Your money. Your <span>choice.</span>', slogan2:'Same product. <span>Better price.</span>', slogan3:'Search once. <span>Save everywhere.</span>', slogan4:'No tricks. No markup. Just <span>the truth.</span>', slogan5:'Built for <span>real people,</span> not retailers.', about_values_header:'What makes us different', value1_title:'Smart category detection', value1_desc:'Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you\'re looking for.', value2_title:'Price history you can trust', value2_desc:'We show you whether today\'s "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.', value3_title:'Alerts that actually fire', value3_desc:'Set your target price and forget about it. We\'ll email you the moment something drops, so you never miss a deal you actually wanted.', value4_title:'No data selling, ever', value4_desc:'We don\'t sell your data. We don\'t track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that\'s it.', about_mission_header:'The goal', about_mission_text:'To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it\'s sold online, Prixly should find it cheaper. That\'s the mission. Simple as that.', footer_disclaimer:'Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases — at no extra cost to you.',
   },
   fr: {
     _name:'🇫🇷 Français', _dir:'ltr', _currency:'EUR',
@@ -2427,11 +2574,13 @@ function showPage(id) {
   if(id==='alerts') renderAlerts();
   if(id==='deals') renderDeals();
   if(id==='categories') renderCatsBrowse();
-  if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; document.getElementById('signupEmail').value=''; }
+  if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; ['signupName','signupEmail','signupPassword'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.style.borderColor='';}}); const err=document.getElementById('signupError');if(err)err.style.display='none'; }
+  if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; const em=document.getElementById('loginEmail');if(em)em.value=''; const pw=document.getElementById('loginPassword');if(pw)pw.value=''; }
 }
 
 // Init strip and localisation on load
 window.addEventListener('DOMContentLoaded',()=>{
+  updateNavState();
   renderCatStrip();
 
   // ── THEME — restore saved choice, default stays dark if nothing saved ──
@@ -2949,14 +3098,17 @@ function showResults(query,catKey,detection,cached){
 function renderResults(results){
   document.getElementById('resultsCount').textContent=results.length;
   document.getElementById('resultsQuery').textContent='"'+(results[0]?.name||'')+'"';
-  document.getElementById('resultsList').innerHTML=results.map(r=>`
-    <a class="result-card ${r.best?'best-deal':''}" href="#" onclick="return false;">
+  document.getElementById('resultsList').innerHTML=results.map(r=>{
+    const witem={id:wishlistItemId(r.name,r.retailer),name:r.name,retailer:r.retailer,price:r.price,logoClass:r.logoClass,category:detectedCat?.key||'general'};
+    return`<a class="result-card ${r.best?'best-deal':''}" href="#" onclick="return false;">
+      ${wishlistStarHTML(witem)}
       <div class="relevance-bar"><div class="relevance-label">Match</div><div class="relevance-track"><div class="relevance-fill" style="width:${r.relevance}%"></div></div><div style="font-size:.65rem;color:var(--muted);margin-top:2px;text-align:center;">${r.relevance}%</div></div>
       <div class="retailer-logo ${r.logoClass}">${r.retailer}</div>
       <div class="result-info"><div class="result-name">${r.name} — ${r.retailer}</div><div class="result-meta"><span class="stars">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5-Math.round(r.rating))}</span><span>${r.rating} (${r.reviews.toLocaleString()} reviews)</span><span class="prixly-score">P ${r.score.toFixed(1)}</span><span>${r.shipping}</span></div></div>
       <div class="result-price-block">${r.was?`<div class="result-price-was">${fmt(r.was)}</div>`:''}<div class="result-price">${fmt(r.price)}</div>${r.best?`<div style="margin-top:4px"><span class="best-badge">${t('best_price')}</span></div>`:''}</div>
       <a class="result-cta" href="#" onclick="return false;">${t('view_deal')}</a>
-    </a>`).join('');
+    </a>`;
+  }).join('');
 }
 async function fetchReviews(query){
   const sec=document.getElementById('reviewsSection');
@@ -3050,19 +3202,163 @@ function drawChart(){
   const data=[base*1.35,base*1.28,base*1.18,base*1.22,base*1.08,base].map(v=>parseFloat(v.toFixed(2)));
   chartInstance=new Chart(ctx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{data,borderColor:ac,borderWidth:2,pointBackgroundColor:ac,pointRadius:4,pointHoverRadius:6,fill:true,backgroundColor:isDark?'rgba(46,204,113,0.06)':'rgba(26,158,80,0.06)',tension:.35}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y/CURRENCIES[activeCurrency].rate)}}},scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:11}}},y:{grid:{color:gc},ticks:{color:lc,font:{size:11},callback:v=>fmt(v/CURRENCIES[activeCurrency].rate)},min:Math.floor(Math.min(...data)*.92),max:Math.ceil(Math.max(...data)*1.05)}}}});
 }
-function handleSignup(){
-  const email=document.getElementById('signupEmail').value.trim();
-  if(!email||!email.includes('@')){
-    document.getElementById('signupEmail').style.borderColor='#e74c3c';
-    document.getElementById('signupEmail').focus();
+// ── AUTH & WISHLIST ──
+const prixlyAuth={
+  _uk:'prixly_users',_sk:'prixly_session',
+  getUsers(){try{return JSON.parse(localStorage.getItem(this._uk)||'[]');}catch(e){return[];}},
+  saveUsers(u){localStorage.setItem(this._uk,JSON.stringify(u));},
+  getSession(){try{return JSON.parse(localStorage.getItem(this._sk)||'null');}catch(e){return null;}},
+  saveSession(u){localStorage.setItem(this._sk,JSON.stringify(u));},
+  clearSession(){localStorage.removeItem(this._sk);},
+  isLoggedIn(){return!!this.getSession();},
+  getCurrentUser(){return this.getSession();},
+  register(name,email,password){
+    const users=this.getUsers();
+    if(users.find(u=>u.email===email.toLowerCase()))return{error:'An account with this email already exists.'};
+    const user={name:name.trim(),email:email.toLowerCase(),password,created:Date.now()};
+    users.push(user);
+    this.saveUsers(users);
+    this.saveSession({name:user.name,email:user.email});
+    return{success:true};
+  },
+  login(email,password){
+    const users=this.getUsers();
+    const user=users.find(u=>u.email===email.toLowerCase()&&u.password===password);
+    if(!user)return{error:'Incorrect email or password.'};
+    this.saveSession({name:user.name,email:user.email});
+    return{success:true};
+  },
+  logout(){this.clearSession();}
+};
+
+const prixlyWishlist={
+  _key(email){return'prixly_wl_'+email.replace(/[^a-z0-9]/gi,'_');},
+  getAll(email){try{return JSON.parse(localStorage.getItem(this._key(email))||'[]');}catch(e){return[];}},
+  save(email,items){localStorage.setItem(this._key(email),JSON.stringify(items));},
+  has(email,id){return this.getAll(email).some(i=>i.id===id);},
+  add(email,item){const items=this.getAll(email);if(!items.find(i=>i.id===item.id)){items.unshift({...item,timestamp:Date.now()});this.save(email,items);}},
+  remove(email,id){this.save(email,this.getAll(email).filter(i=>i.id!==id));},
+  toggle(email,item){if(this.has(email,item.id)){this.remove(email,item.id);return false;}else{this.add(email,item);return true;}}
+};
+
+function wishlistItemId(name,retailer){
+  const s=(name+'|'+(retailer||'')).toLowerCase();
+  let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;
+  return Math.abs(h).toString(36);
+}
+
+const _wlRegistry={};
+function wishlistStarHTML(item){
+  _wlRegistry[item.id]=item;
+  const user=prixlyAuth.getCurrentUser();
+  const on=user?prixlyWishlist.has(user.email,item.id):false;
+  return`<button class="wishlist-btn${on?' wishlisted':''}" id="wbtn-${item.id}" onclick="toggleWishlistBtn(event,'${item.id}')" title="${on?'Remove from Wishlist':'Wishlist this item'}" aria-label="Wishlist">
+    <svg viewBox="0 0 24 24" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+  </button>`;
+}
+function toggleWishlistBtn(e,id){
+  e.preventDefault();e.stopPropagation();
+  const user=prixlyAuth.getCurrentUser();
+  if(!user){showPage('login');return;}
+  const item=_wlRegistry[id];
+  if(!item)return;
+  const added=prixlyWishlist.toggle(user.email,item);
+  const btn=document.getElementById('wbtn-'+id);
+  if(btn){
+    btn.classList.toggle('wishlisted',added);
+    btn.title=added?'Remove from Wishlist':'Wishlist this item';
+    btn.querySelector('svg').setAttribute('fill',added?'currentColor':'none');
+  }
+  // refresh wishlist grid if on alerts page
+  if(document.getElementById('alertsDashboard')&&document.getElementById('alertsDashboard').style.display!=='none'){
+    renderWishlistGrid(user.email);
+  }
+}
+
+function updateNavState(){
+  const user=prixlyAuth.getCurrentUser();
+  const signupBtn=document.getElementById('nav-signup');
+  const userChip=document.getElementById('nav-user');
+  const userNameEl=document.getElementById('nav-user-name');
+  const mobSignup=document.getElementById('mobSignupBtn');
+  const mobUser=document.getElementById('mobUserBtn');
+  const mobUserName=document.getElementById('mobUserName');
+  if(user){
+    if(signupBtn)signupBtn.style.display='none';
+    if(userChip)userChip.style.display='flex';
+    if(userNameEl)userNameEl.textContent=user.name.split(' ')[0];
+    if(mobSignup)mobSignup.style.display='none';
+    if(mobUser)mobUser.style.display='block';
+    if(mobUserName)mobUserName.textContent='Hi, '+user.name.split(' ')[0];
+  }else{
+    if(signupBtn)signupBtn.style.display='';
+    if(userChip)userChip.style.display='none';
+    if(mobSignup)mobSignup.style.display='block';
+    if(mobUser)mobUser.style.display='none';
+  }
+}
+
+function renderWishlistGrid(email){
+  const grid=document.getElementById('wishlistGrid');
+  if(!grid)return;
+  const items=prixlyWishlist.getAll(email);
+  if(!items.length){
+    grid.innerHTML='<div class="wishlist-empty">No wishlisted items yet.<br>Hit the ★ star on any product to save it here.</div>';
     return;
   }
-  document.getElementById('signupEmail').style.borderColor='';
-  document.getElementById('signupEmailConfirm').textContent=email;
+  grid.innerHTML=items.map(i=>`
+    <div class="wishlist-card">
+      <button class="wishlist-card-remove" onclick="removeFromWishlist('${i.id}')" title="Remove">✕</button>
+      <div class="wishlist-card-name">${i.name}</div>
+      ${i.retailer?`<div class="wishlist-card-retailer">via ${i.retailer}</div>`:''}
+      ${i.price?`<div class="wishlist-card-price">${fmt(i.price)}</div>`:''}
+    </div>`).join('');
+}
+function removeFromWishlist(id){
+  const user=prixlyAuth.getCurrentUser();
+  if(!user)return;
+  prixlyWishlist.remove(user.email,id);
+  renderWishlistGrid(user.email);
+  // update any visible star buttons
+  const btn=document.getElementById('wbtn-'+id);
+  if(btn){btn.classList.remove('wishlisted');btn.title='Wishlist this item';btn.querySelector('svg').setAttribute('fill','none');}
+}
+
+function handleSignup(){
+  const nameEl=document.getElementById('signupName');
+  const emailEl=document.getElementById('signupEmail');
+  const passEl=document.getElementById('signupPassword');
+  const errEl=document.getElementById('signupError');
+  const name=nameEl.value.trim(),email=emailEl.value.trim(),password=passEl.value;
+  errEl.style.display='none';
+  if(!name){nameEl.style.borderColor='#e74c3c';nameEl.focus();return;}
+  if(!email||!email.includes('@')){emailEl.style.borderColor='#e74c3c';emailEl.focus();return;}
+  if(password.length<6){passEl.style.borderColor='#e74c3c';errEl.textContent='Password must be at least 6 characters.';errEl.style.display='block';passEl.focus();return;}
+  nameEl.style.borderColor='';emailEl.style.borderColor='';passEl.style.borderColor='';
+  const result=prixlyAuth.register(name,email,password);
+  if(result.error){errEl.textContent=result.error;errEl.style.display='block';return;}
+  updateNavState();
   document.getElementById('signupForm').style.display='none';
   document.getElementById('signupSuccess').style.display='flex';
-  // Store email locally for now — backend to be wired up later
-  try{ const saved=JSON.parse(localStorage.getItem('prixly_signups')||'[]'); saved.push({email,date:new Date().toISOString()}); localStorage.setItem('prixly_signups',JSON.stringify(saved)); }catch(e){}
+}
+
+function handleLogin(){
+  const emailEl=document.getElementById('loginEmail');
+  const passEl=document.getElementById('loginPassword');
+  const errEl=document.getElementById('loginError');
+  const email=emailEl.value.trim(),password=passEl.value;
+  errEl.style.display='none';
+  if(!email||!password){errEl.textContent='Please enter your email and password.';errEl.style.display='block';return;}
+  const result=prixlyAuth.login(email,password);
+  if(result.error){errEl.textContent=result.error;errEl.style.display='block';return;}
+  updateNavState();
+  showPage('alerts');
+}
+
+function handleLogout(){
+  prixlyAuth.logout();
+  updateNavState();
+  showPage('home');
 }
 function submitAlert(){
   const e=document.getElementById('alertEmail').value.trim(),p=document.getElementById('alertPrice').value.trim();
@@ -3154,6 +3450,21 @@ const SUGGESTED_ITEMS=[
   {name:'Xbox Series S Controller',cat:'Gaming',price:44.99,save:'18%'},{name:'Shark DuoClean Vacuum',cat:'Electronics',price:219.99,save:'35%'},
 ];
 function renderAlerts(){
+  const user=prixlyAuth.getCurrentUser();
+  const gate=document.getElementById('alertsGate');
+  const dashboard=document.getElementById('alertsDashboard');
+  if(!user){
+    gate.style.display='flex';
+    dashboard.style.display='none';
+    document.getElementById('paContent').innerHTML='';
+    return;
+  }
+  gate.style.display='none';
+  dashboard.style.display='block';
+  document.getElementById('acctWelcomeName').textContent='Welcome back, '+user.name.split(' ')[0]+'!';
+  document.getElementById('acctWelcomeEmail').textContent=user.email;
+  renderWishlistGrid(user.email);
+
   const dropped=ALERT_ITEMS.filter(i=>i.dropped);
   const watching=ALERT_ITEMS.filter(i=>!i.dropped);
   let html2='';
@@ -3196,13 +3507,16 @@ function renderAlerts(){
       </div>`).join('');
   }
   html2+=`<div class="pa-section-title" style="margin-top:2rem;">${t('pa_suggested_header')}</div>
-    <div class="suggested-grid">${SUGGESTED_ITEMS.map(i=>`
-      <div class="suggested-card" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">
+    <div class="suggested-grid">${SUGGESTED_ITEMS.map(i=>{
+      const id=wishlistItemId(i.name,'');
+      _wlRegistry[id]={id,name:i.name,retailer:'',price:i.price,category:i.cat};
+      return`<div class="suggested-card" style="position:relative;" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">
+        ${wishlistStarHTML({id,name:i.name,retailer:'',price:i.price,category:i.cat})}
         <div class="suggested-cat">${i.cat}</div>
         <div class="suggested-name">${i.name}</div>
         <div class="suggested-price">${fmt(i.price)}</div>
         <span class="suggested-save">${t('pa_save')} ${i.save}</span>
-      </div>`).join('')}</div>`;
+      </div>`;}).join('')}</div>`;
   document.getElementById('paContent').innerHTML=html2;
 }
 
@@ -3285,14 +3599,16 @@ function renderDeals(){
   for(const[label,items]of Object.entries(grouped)){
     const catKey=Object.keys(CATEGORIES).find(k=>CATEGORIES[k].label===label)||'electronics';
     html2+=`<div class="deals-section-head"><h2>${label}</h2></div>`;
-    html2+=`<div class="deals-grid">${items.map(d=>`
-      <div class="deal-card" onclick="showPage('home');setTimeout(()=>quickSearch('${d.name.replace(/'/g,"\\'")}'),100)">
+    html2+=`<div class="deals-grid">${items.map(d=>{
+      const witem={id:wishlistItemId(d.name,d.retailer),name:d.name,retailer:d.retailer,price:d.price,category:d.cat};
+      return`<div class="deal-card" onclick="showPage('home');setTimeout(()=>quickSearch('${d.name.replace(/'/g,"\\'")}'),100)">
+        ${wishlistStarHTML(witem)}
         <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><span class="deal-card-discount">-${d.discount}</span></div>
         <div class="deal-card-name">${d.name}</div>
         <div class="deal-card-retailer">${t('pa_via')} ${d.retailer}</div>
         <div class="deal-card-prices"><span class="deal-card-price">${fmt(d.price)}</span><span class="deal-card-was">${fmt(d.was)}</span></div>
         <div class="deal-card-footer"><span class="deal-card-shipping">${d.shipping}</span><button class="deal-card-btn">${t('deal_view')}</button></div>
-      </div>`).join('')}</div>`;
+      </div>`;}).join('')}</div>`;
   }
   document.getElementById('dealsContent').innerHTML=html2;
 }
