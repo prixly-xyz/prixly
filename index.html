@@ -717,7 +717,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <!-- UNIFIED SEARCH BAR -->
     <div class="search-container" id="unifiedSearch" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
       <div class="search-row">
-        <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Image search — coming soon (add API key to enable)">
+        <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Search by image — drop a photo or click to upload">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
         </button>
         <input class="search-input" type="text" id="searchInput" placeholder="Search by name, e.g. iPhone 15, Nike Air Max..." onkeydown="if(event.key==='Enter') doSearch()"/>
@@ -2888,6 +2888,57 @@ function getRetailersForRegion(catKey, region){
   return list.slice(0,18); // cap at 18 so it never gets overwhelming
 }
 
+const RETAILER_URLS={
+  'Amazon':'https://www.amazon.co.uk/s?k=',
+  'eBay':'https://www.ebay.co.uk/sch/i.html?_nkw=',
+  'eBay Global':'https://www.ebay.com/sch/i.html?_nkw=',
+  'Currys':'https://www.currys.co.uk/search?q=',
+  'Argos':'https://www.argos.co.uk/search/',
+  'John Lewis':'https://www.johnlewis.com/search?search-term=',
+  'Ebuyer':'https://www.ebuyer.com/search?q=',
+  'Scan':'https://www.scan.co.uk/search?q=',
+  'AO':'https://ao.com/search?q=',
+  'Very':'https://www.very.co.uk/e/q/',
+  'Next':'https://www.next.co.uk/search?w=',
+  'Dunelm':'https://www.dunelm.com/search?q=',
+  'ASOS':'https://www.asos.com/search/?q=',
+  'JD Sports':'https://www.jdsports.co.uk/search/',
+  'Nike':'https://www.nike.com/gb/search?q=',
+  'Adidas':'https://www.adidas.co.uk/search?q=',
+  'Decathlon':'https://www.decathlon.co.uk/search?Ntt=',
+  'Game':'https://www.game.co.uk/search?q=',
+  'Smyths':'https://www.smythstoys.com/uk/en-gb/search/?text=',
+  'Boots':'https://www.boots.com/search?q=',
+  'Mothercare':'https://www.mothercare.com/search?q=',
+  'Best Buy':'https://www.bestbuy.com/site/searchpage.jsp?st=',
+  'Best Buy Canada':'https://www.bestbuy.ca/en-ca/search?query=',
+  'Walmart':'https://www.walmart.com/search?q=',
+  'Walmart Canada':'https://www.walmart.ca/search?q=',
+  'Target':'https://www.target.com/s?searchTerm=',
+  'B&H Photo':'https://www.bhphotovideo.com/c/search?q=',
+  'Newegg':'https://www.newegg.com/p/pl?d=',
+  'Canada Computers':'https://www.canadacomputers.com/search/do?search=',
+  'JB Hi-Fi':'https://www.jbhifi.com.au/search?query=',
+  'Officeworks':'https://www.officeworks.com.au/shop/officeworks/search?q=',
+  'The Good Guys':'https://www.thegoodguys.com.au/SearchDisplay?searchTerm=',
+  'Harvey Norman':'https://www.harveynorman.com.au/search/results?q=',
+  'Kogan':'https://www.kogan.com/au/shop/?q=',
+  'AliExpress':'https://www.aliexpress.com/wholesale?SearchText=',
+  'MediaMarkt':'https://www.mediamarkt.de/de/search.html?query=',
+  'Saturn':'https://www.saturn.de/de/search.html?query=',
+  'Otto':'https://www.otto.de/suche/',
+  'Fnac':'https://www.fnac.com/SearchResult/ResultList.aspx?SCat=0&Search=',
+  'Darty':'https://www.darty.com/nav/recherche/?text=',
+  'Boulanger':'https://www.boulanger.com/recherche/',
+  'IKEA':'https://www.ikea.com/gb/en/search/?q=',
+  'Wayfair':'https://www.wayfair.co.uk/keyword.php?keyword=',
+};
+function retailerSearchURL(retailer,product){
+  const base=RETAILER_URLS[retailer];
+  if(base)return base+encodeURIComponent(product);
+  return'https://www.google.com/search?tbm=shop&q='+encodeURIComponent(product+' '+retailer);
+}
+
 const CATEGORIES={
   electronics:{label:'Electronics',icon:'💻',keywords:['phone','iphone','samsung','galaxy','pixel','laptop','macbook','chromebook','tablet','ipad','kindle','headphones','earbuds','airpods','speaker','soundbar','tv','television','monitor','camera','dslr','smartwatch','router','wifi','charger','cable','usb','hdmi','processor','cpu','gpu','ram','ssd','dyson','vacuum','hair dryer','sony','lg','panasonic','bose','jbl','apple','dell','hp','lenovo','asus','acer','xiaomi'],priceInsight:'Electronics prices typically drop significantly in November (Black Friday) and January (post-Christmas sales).'},
   gaming:{label:'Gaming',icon:'🎮',keywords:['ps5','ps4','playstation','xbox','nintendo','switch','game','games','controller','console','gaming','gamer','steam','pc game','fifa','call of duty','fortnite','minecraft','gta','zelda','headset','gaming chair','gaming mouse','gaming keyboard','rgb','gpu','graphics card','rtx','geforce','amd','pokemon','mario','sonic','halo','vr','oculus','quest'],priceInsight:'Game prices tend to drop 3–6 months after release and heavily during seasonal sales. Pre-owned games can save 40–60%.'},
@@ -3138,7 +3189,7 @@ function renderResults(results){
       <div class="result-info"><div class="result-name">${r.name} — ${r.retailer}</div><div class="result-meta"><span class="stars">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5-Math.round(r.rating))}</span><span>${r.rating} (${r.reviews.toLocaleString()} reviews)</span><span class="prixly-score">P ${r.score.toFixed(1)}</span><span>${r.shipping}</span></div></div>
       <div class="result-price-block">${r.was?`<div class="result-price-was">${fmt(r.was)}</div>`:''}<div class="result-price">${fmt(r.price)}</div>${r.best?`<div style="margin-top:4px"><span class="best-badge">${t('best_price')}</span></div>`:''}${discBadge}</div>
       ${inlineStarHTML(witem)}
-      <a class="result-cta" href="#" onclick="return false;">${t('view_deal')}</a>
+      <a class="result-cta" href="${retailerSearchURL(r.retailer,r.name)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${t('view_deal')}</a>
     </a>`;
   }).join('');
 }
@@ -3439,8 +3490,46 @@ function handleLogout(){
   showPage('home');
 }
 function submitAlert(){
-  const e=document.getElementById('alertEmail').value.trim(),p=document.getElementById('alertPrice').value.trim();
-  if(!e||!p){alert('Please enter your email and a target price.');return;}
+  const emailEl=document.getElementById('alertEmail');
+  const priceEl=document.getElementById('alertPrice');
+  const e=emailEl.value.trim(),p=priceEl.value.trim();
+  if(!e||!e.includes('@')){
+    emailEl.style.borderColor='#e74c3c';
+    shakeField(emailEl);
+    return;
+  }
+  if(!p||isNaN(p)||parseFloat(p)<=0){
+    priceEl.style.borderColor='#e74c3c';
+    shakeField(priceEl);
+    return;
+  }
+  emailEl.style.borderColor='';
+  priceEl.style.borderColor='';
+  // Save alert to localStorage
+  const alert_item={
+    id:wishlistItemId(lastQuery||'unknown','alert'),
+    product:lastQuery||'Unknown product',
+    targetPrice:parseFloat(p),
+    email:e,
+    retailer:currentResults[0]?.retailer||'',
+    currentPrice:currentResults[0]?.price||0,
+    created:Date.now()
+  };
+  try{
+    const saved=JSON.parse(localStorage.getItem('prixly_alerts')||'[]');
+    saved.unshift(alert_item);
+    localStorage.setItem('prixly_alerts',JSON.stringify(saved));
+  }catch(err){}
+  // If user is logged in, also save to their account alerts
+  const user=prixlyAuth.getCurrentUser();
+  if(user){
+    try{
+      const key='prixly_acct_alerts_'+user.email.replace(/[^a-z0-9]/gi,'_');
+      const saved=JSON.parse(localStorage.getItem(key)||'[]');
+      saved.unshift(alert_item);
+      localStorage.setItem(key,JSON.stringify(saved));
+    }catch(err){}
+  }
   document.getElementById('alertForm').style.display='none';
   document.getElementById('alertSuccess').style.display='flex';
 }
@@ -3685,7 +3774,7 @@ function renderDeals(){
         <div class="deal-card-name">${d.name}</div>
         <div class="deal-card-retailer">${t('pa_via')} ${d.retailer}</div>
         <div class="deal-card-prices"><span class="deal-card-price">${fmt(d.price)}</span><span class="deal-card-was">${fmt(d.was)}</span></div>
-        <div class="deal-card-footer"><span class="deal-card-shipping">${d.shipping}</span><button class="deal-card-btn">${t('deal_view')}</button></div>
+        <div class="deal-card-footer"><span class="deal-card-shipping">${d.shipping}</span><a class="deal-card-btn" href="${retailerSearchURL(d.retailer,d.name)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${t('deal_view')}</a></div>
       </div>`;}).join('')}</div>`;
   }
   document.getElementById('dealsContent').innerHTML=html2;
