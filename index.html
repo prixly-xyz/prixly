@@ -599,6 +599,14 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .nav-user-chip:hover{border-color:var(--accent);}
 .nav-user-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 
+/* ── SHAKE / FIELD ERROR ANIMATION ── */
+@keyframes shake-error{0%,100%{transform:translateX(0);}15%{transform:translateX(-7px);}35%{transform:translateX(7px);}55%{transform:translateX(-5px);}75%{transform:translateX(4px);}90%{transform:translateX(-2px);}}
+.shake-error{animation:shake-error .4s ease;}
+.field-error{font-size:.77rem;color:#e74c3c;display:none;padding:.15rem .1rem 0;line-height:1.4;}
+.signup-input.input-invalid{border-color:#e74c3c!important;}
+.show-pass-row{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--muted);cursor:pointer;user-select:none;padding:.15rem 0;}
+.show-pass-row input[type=checkbox]{width:14px;height:14px;accent-color:var(--accent);cursor:pointer;}
+
 /* ── PRICE DROP COLOUR CLASSES ── */
 .drop-major{background:var(--accent)!important;color:#fff!important;}
 .drop-medium{background:#e67e22!important;color:#fff!important;}
@@ -989,8 +997,22 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       </div>
       <div class="signup-form" id="signupForm">
         <input class="signup-input" type="text" id="signupName" placeholder="Your name" autocomplete="name" />
+        <div class="field-error" id="nameError"></div>
+
         <input class="signup-input" type="email" id="signupEmail" placeholder="Email address" autocomplete="email" />
-        <input class="signup-input" type="password" id="signupPassword" placeholder="Create a password" autocomplete="new-password" />
+        <div class="field-error" id="emailError"></div>
+
+        <input class="signup-input" type="password" id="signupPassword" placeholder="Create a password (min. 6 characters)" autocomplete="new-password" />
+        <div class="field-error" id="passwordError"></div>
+
+        <input class="signup-input" type="password" id="signupConfirmPassword" placeholder="Confirm your password" autocomplete="new-password" />
+        <div class="field-error" id="confirmPasswordError"></div>
+
+        <label class="show-pass-row">
+          <input type="checkbox" id="showPasswordToggle" onchange="toggleShowPassword()">
+          Show password
+        </label>
+
         <div id="signupError" style="font-size:.82rem;color:#e74c3c;display:none;"></div>
         <button class="signup-submit" onclick="handleSignup()">Create free account</button>
         <p class="signup-legal">By signing up you agree to our <a href="#" onclick="showPage('privacy')" style="color:var(--accent);">Privacy Policy</a> and <a href="#" onclick="showPage('terms')" style="color:var(--accent);">Terms of Use</a>. We never share your data with third parties.</p>
@@ -2582,7 +2604,7 @@ function showPage(id) {
   if(id==='alerts') renderAlerts();
   if(id==='deals') renderDeals();
   if(id==='categories') renderCatsBrowse();
-  if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; ['signupName','signupEmail','signupPassword'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.style.borderColor='';}}); const err=document.getElementById('signupError');if(err)err.style.display='none'; }
+  if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; ['signupName','signupEmail','signupPassword','signupConfirmPassword'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.type=x.includes('assword')?'password':'text';el.classList.remove('input-invalid');el.style.borderColor='';}}); ['nameError','emailError','passwordError','confirmPasswordError','signupError'].forEach(id2=>{const e=document.getElementById(id2);if(e){e.textContent='';e.style.display='none';}}); const tog=document.getElementById('showPasswordToggle');if(tog)tog.checked=false; }
   if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; const em=document.getElementById('loginEmail');if(em)em.value=''; const pw=document.getElementById('loginPassword');if(pw)pw.value=''; }
 }
 
@@ -3348,19 +3370,51 @@ function removeFromWishlist(id){
   if(btn){btn.classList.remove('wishlisted');btn.title='Wishlist this item';btn.querySelector('svg').setAttribute('fill','none');}
 }
 
+function shakeField(el){
+  el.classList.remove('shake-error');
+  void el.offsetWidth;
+  el.classList.add('shake-error');
+  el.addEventListener('animationend',()=>el.classList.remove('shake-error'),{once:true});
+}
+function setFieldError(el,errorId,msg){
+  el.classList.add('input-invalid');
+  shakeField(el);
+  const err=document.getElementById(errorId);
+  if(err){err.textContent=msg;err.style.display='block';}
+}
+function clearFieldError(el,errorId){
+  el.classList.remove('input-invalid');
+  el.style.borderColor='';
+  const err=document.getElementById(errorId);
+  if(err){err.textContent='';err.style.display='none';}
+}
+function isValidEmail(email){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);}
+function toggleShowPassword(){
+  const show=document.getElementById('showPasswordToggle').checked;
+  const type=show?'text':'password';
+  const p=document.getElementById('signupPassword');
+  const c=document.getElementById('signupConfirmPassword');
+  if(p)p.type=type;
+  if(c)c.type=type;
+}
 function handleSignup(){
   const nameEl=document.getElementById('signupName');
   const emailEl=document.getElementById('signupEmail');
   const passEl=document.getElementById('signupPassword');
-  const errEl=document.getElementById('signupError');
-  const name=nameEl.value.trim(),email=emailEl.value.trim(),password=passEl.value;
-  errEl.style.display='none';
-  if(!name){nameEl.style.borderColor='#e74c3c';nameEl.focus();return;}
-  if(!email||!email.includes('@')){emailEl.style.borderColor='#e74c3c';emailEl.focus();return;}
-  if(password.length<6){passEl.style.borderColor='#e74c3c';errEl.textContent='Password must be at least 6 characters.';errEl.style.display='block';passEl.focus();return;}
-  nameEl.style.borderColor='';emailEl.style.borderColor='';passEl.style.borderColor='';
+  const confEl=document.getElementById('signupConfirmPassword');
+  // Clear all errors first
+  [[nameEl,'nameError'],[emailEl,'emailError'],[passEl,'passwordError'],[confEl,'confirmPasswordError']].forEach(([el,id])=>clearFieldError(el,id));
+  const name=nameEl.value.trim(),email=emailEl.value.trim(),password=passEl.value,confirm=confEl.value;
+  let valid=true;
+  if(!name){setFieldError(nameEl,'nameError','Please enter your name.');valid=false;}
+  if(!email){setFieldError(emailEl,'emailError','Please enter your email address.');valid=false;}
+  else if(!isValidEmail(email)){setFieldError(emailEl,'emailError','That doesn\'t look like a valid email — check for typos.');valid=false;}
+  if(password.length<6){setFieldError(passEl,'passwordError','Password must be at least 6 characters.');valid=false;}
+  if(password.length>=6&&confirm!==password){setFieldError(confEl,'confirmPasswordError','Passwords don\'t match — please check and try again.');valid=false;}
+  else if(password.length>=6&&!confirm){setFieldError(confEl,'confirmPasswordError','Please confirm your password.');valid=false;}
+  if(!valid)return;
   const result=prixlyAuth.register(name,email,password);
-  if(result.error){errEl.textContent=result.error;errEl.style.display='block';return;}
+  if(result.error){setFieldError(emailEl,'emailError',result.error);return;}
   updateNavState();
   document.getElementById('signupForm').style.display='none';
   document.getElementById('signupSuccess').style.display='flex';
