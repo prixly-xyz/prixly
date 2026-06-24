@@ -580,11 +580,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .mobile-bottom-nav a:hover{color:var(--text);}
 
 /* ── MOBILE SETTINGS PANEL ── */
-.mob-settings-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;}
+.mob-settings-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;}
 .mob-settings-overlay.open{display:block;}
-.mob-settings-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:18px 18px 0 0;border-top:1px solid var(--border);padding:1.25rem 1.5rem 2rem;z-index:401;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);}
+.mob-settings-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:18px 18px 0 0;border-top:1px solid var(--border);padding:1.25rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom,0));z-index:601;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);}
 .mob-settings-overlay.open .mob-settings-sheet{transform:translateY(0);}
-.mob-settings-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto .75rem;}
+.mob-settings-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto .5rem;cursor:pointer;}
+.mob-settings-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;}
+.mob-settings-close-btn{background:none;border:none;color:var(--muted);font-size:1.4rem;line-height:1;cursor:pointer;padding:.1rem .3rem;}
 .mob-settings-title{font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.1rem;}
 .mob-settings-row{display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid var(--border);}
 .mob-settings-row:last-child{border-bottom:none;}
@@ -1750,9 +1752,12 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 
 <!-- Mobile settings slide-up panel -->
 <div class="mob-settings-overlay" id="mobSettingsOverlay" onclick="closeMobSettings(event)">
-  <div class="mob-settings-sheet">
-    <div class="mob-settings-handle"></div>
-    <div class="mob-settings-title">Settings</div>
+  <div class="mob-settings-sheet" onclick="event.stopPropagation()">
+    <div class="mob-settings-handle" onclick="closeMobSettings()"></div>
+    <div class="mob-settings-header">
+      <div class="mob-settings-title">Settings</div>
+      <button class="mob-settings-close-btn" onclick="closeMobSettings()" aria-label="Close">&#x2715;</button>
+    </div>
     <div class="mob-settings-row">
       <span class="mob-settings-label">Language</span>
       <div class="cselect" id="mobLangSelectWrap">
@@ -2659,7 +2664,7 @@ function renderCatsBrowse(){
       <div class="cat-row-scroll">
         ${seededShuffle(c.items,seed+c.key.charCodeAt(0)).map(item=>`
           <div class="cat-scroll-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
-            ${wishlistBtnHTML(item)}
+            ${wishlistStarHTML({...item,id:'browse-'+item.name.replace(/\s+/g,'-').toLowerCase()})}
             <div class="cat-scroll-tag">${item.tag}</div>
             <div class="cat-scroll-name">${item.name}</div>
             <div class="cat-scroll-price">${fmt(item.price)}</div>
@@ -2701,7 +2706,7 @@ function renderCatItems(items,sub){
   const filtered=sub==='All'?items:items.filter(i=>i.tag===sub);
   document.getElementById('catpageGrid').innerHTML=filtered.length?filtered.map(item=>`
     <div class="item-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
-      ${wishlistBtnHTML(item)}
+      ${wishlistStarHTML({...item,id:'cat-'+item.name.replace(/\s+/g,'-').toLowerCase()})}
       <div class="item-card-img" style="font-size:.85rem;font-weight:700;color:var(--muted);">${item.tag}</div>
       <div class="item-card-body">
         <div class="item-card-tag">${item.tag}</div>
@@ -2846,7 +2851,7 @@ function openMobSettings(){
   document.getElementById('mobSettingsOverlay').classList.add('open');
 }
 function closeMobSettings(e){
-  if(!e||e.target===document.getElementById('mobSettingsOverlay')||e.currentTarget===document.getElementById('mobSettingsOverlay')){
+  if(!e||e.target===document.getElementById('mobSettingsOverlay')){
     document.getElementById('mobSettingsOverlay').classList.remove('open');
   }
 }
