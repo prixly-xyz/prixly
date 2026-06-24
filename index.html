@@ -2997,7 +2997,7 @@ async function resolveURL(url){
 
   // Fallback — send URL to Claude to identify the product
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/claude',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
@@ -3173,7 +3173,7 @@ Return ONLY a JSON object in this exact format, no markdown, no extra text:
 
 Make reviews feel authentic — vary the rating (mix of 5★, 4★, 3★), writing style, and perspective. Some mention packaging, delivery, value, build quality etc. At least one review should mention a small downside.`;
 
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/claude',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
@@ -3464,7 +3464,7 @@ async function processImageFile(f){
 
     const mediaType=f.type||'image/jpeg';
 
-    const response=await fetch('https://api.anthropic.com/v1/messages',{
+    const response=await fetch('/api/claude',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
@@ -3693,3 +3693,4 @@ function renderDeals(){
 </script>
 </body>
 </html>
+
