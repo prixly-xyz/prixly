@@ -21,6 +21,15 @@
 <meta name="twitter:image" content="https://prixly.xyz/og-image.png">
 <meta name="twitter:image:alt" content="Prixly price comparison">
 <link rel="canonical" href="https://prixly.xyz">
+<!--
+  THIRD-PARTY INTEGRATIONS — replace YOUR_* placeholders before going live.
+  1. PostHog  : https://app.posthog.com  > Project Settings > Project API key
+  2. GA4      : https://analytics.google.com  e.g. G-XXXXXXXXXX
+  3. Sentry   : https://sentry.io  > Settings > Client Keys > DSN
+  4. Clarity  : https://clarity.microsoft.com  (10-char project ID)
+  5. Convex   : https://dashboard.convex.dev  (deployment URL, uncomment block in JS)
+  Nothing below fires until the user accepts cookies (see initAnalytics in JS).
+-->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111111'/%3E%3Crect x='8' y='27' width='16' height='2.5' rx='1.25' fill='%2300d48a' opacity='0.6'/%3E%3Ctext x='16' y='24' font-family='Arial Black%2C Impact%2C sans-serif' font-weight='900' font-size='23' fill='%2300d48a' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E" type="image/svg+xml">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23111111'/%3E%3Crect x='44' y='152' width='92' height='14' rx='7' fill='%2300d48a' opacity='0.6'/%3E%3Ctext x='90' y='138' font-family='Arial Black%2C Impact%2C sans-serif' font-weight='900' font-size='130' fill='%2300d48a' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
 <style>
@@ -531,6 +540,24 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .search-input,.alert-input,.mock-alert-input,.mock-search-input{cursor:text !important;}
 
 /* ── MOBILE BOTTOM NAV ── */
+/* ── COOKIE BANNER ── */
+#cookieBanner{position:fixed;left:0;right:0;bottom:0;z-index:450;background:var(--surface);border-top:1px solid var(--border2);padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;box-shadow:0 -4px 24px rgba(0,0,0,0.25);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+#cookieBanner.hidden{transform:translateY(110%);pointer-events:none;}
+.cookie-banner-text{display:flex;align-items:center;gap:.65rem;flex:1;min-width:200px;}
+.cookie-banner-text p{font-size:.8rem;color:var(--muted);line-height:1.5;}
+.cookie-banner-text p a{color:var(--accent);cursor:pointer;text-decoration:none;}
+.cookie-banner-text p a:hover{text-decoration:underline;}
+.cookie-banner-icon{font-size:1.2rem;flex-shrink:0;}
+.cookie-banner-actions{display:flex;gap:.55rem;flex-shrink:0;}
+.cookie-btn{background:var(--accent);color:#000;border:none;padding:.42rem .95rem;border-radius:var(--radius-xs);font-size:.8rem;font-weight:700;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
+.cookie-btn:hover{opacity:.85;}
+.cookie-btn-ghost{background:none;border:1px solid var(--border2);color:var(--muted);padding:.42rem .85rem;border-radius:var(--radius-xs);font-size:.8rem;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap;}
+.cookie-btn-ghost:hover{color:var(--text);}
+@media(max-width:640px){
+  #cookieBanner{bottom:calc(62px + env(safe-area-inset-bottom,0));padding:.75rem 1rem;gap:.65rem;}
+  .cookie-banner-actions{width:100%;}
+  .cookie-btn,.cookie-btn-ghost{flex:1;text-align:center;}
+}
 /* ── CONSENT MODAL ── */
 #consentOverlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.72);display:flex;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
 #consentOverlay.hidden{display:none;}
@@ -2748,10 +2775,80 @@ function showPage(id) {
   if(id==='categories') renderCatsBrowse();
   if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; ['signupName','signupEmail','signupPassword','signupConfirmPassword'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.type=x.includes('assword')?'password':'text';el.classList.remove('input-invalid');el.style.borderColor='';}}); ['nameError','emailError','passwordError','confirmPasswordError','signupError'].forEach(id2=>{const e=document.getElementById(id2);if(e){e.textContent='';e.style.display='none';}}); const tog=document.getElementById('showPasswordToggle');if(tog)tog.checked=false; }
   if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; const em=document.getElementById('loginEmail');if(em)em.value=''; const pw=document.getElementById('loginPassword');if(pw)pw.value=''; }
+  window.posthog?.capture('$pageview',{$current_url:window.location.href+'#'+id,page:id});
 }
 
 // Init strip and localisation on load
-// ── CONSENT ──
+// ── ANALYTICS — only fires after user accepts cookies ──
+function initAnalytics(){
+  let cookies=null;
+  try{cookies=localStorage.getItem('prixly_cookies');}catch(e){}
+  if(cookies!=='all') return;
+
+  // ── PostHog ──────────────────────────────────────────────────
+  (function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js',(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],u.toString=function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e},u.people.toString=function(){return u.toString(1)+'.people (stub)'},o='init me ws'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]));
+  posthog.init('phc_yWRtjEqUMHqJVDKMNWMFJaFt38iZW7W3ZMMwxZDAHQQL',{api_host:'https://us.i.posthog.com',person_profiles:'identified_only'});
+
+  // ── Google Analytics GA4 ─────────────────────────────────────
+  // Replace YOUR_GA4_ID with your Measurement ID e.g. G-XXXXXXXXXX
+  (function(){const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=YOUR_GA4_ID';document.head.appendChild(s);})();
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('config','YOUR_GA4_ID',{anonymize_ip:true});
+
+  // ── Sentry ───────────────────────────────────────────────────
+  // Replace YOUR_SENTRY_DSN with your DSN from sentry.io > Settings > Client Keys
+  (function(){const s=document.createElement('script');s.async=true;
+    s.src='https://browser.sentry-cdn.com/8.38.0/bundle.min.js';
+    s.crossOrigin='anonymous';
+    s.onload=function(){
+      Sentry.init({
+        dsn:'YOUR_SENTRY_DSN',
+        tracesSampleRate:0.15,
+        environment:'production',
+        release:'prixly@1.0.0'
+      });
+    };
+    document.head.appendChild(s);
+  })();
+
+  // ── Microsoft Clarity (heatmaps + session recordings) ────────
+  // Replace YOUR_CLARITY_ID with your 10-char project ID from clarity.microsoft.com
+  (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,'clarity','script','YOUR_CLARITY_ID');
+
+  // ── Convex (real-time backend) ───────────────────────────────
+  // Uncomment once you have a Convex project at dashboard.convex.dev
+  // Replace YOUR_CONVEX_URL with your deployment URL e.g. https://xxxx.convex.cloud
+  /*
+  (function(){const s=document.createElement('script');
+    s.type='module';
+    s.textContent=`
+      import { ConvexClient } from "https://unpkg.com/convex@latest/browser/index.js";
+      window.convex = new ConvexClient("YOUR_CONVEX_URL");
+    `;
+    document.head.appendChild(s);
+  })();
+  */
+}
+
+// ── COOKIE BANNER ──
+function showCookieBanner(){
+  const el=document.getElementById('cookieBanner');
+  if(el) el.classList.remove('hidden');
+}
+function hideCookieBanner(){
+  const el=document.getElementById('cookieBanner');
+  if(el) el.classList.add('hidden');
+}
+function acceptCookies(level){
+  try{localStorage.setItem('prixly_cookies',level);}catch(e){}
+  hideCookieBanner();
+  if(level==='all') initAnalytics();
+}
+
+// ── CONSENT MODAL ──
 function showConsentModal(){
   const el=document.getElementById('consentOverlay');
   if(el) el.classList.remove('hidden');
@@ -2760,6 +2857,10 @@ function acceptConsent(){
   try{localStorage.setItem('prixly_consent','full');}catch(e){}
   const el=document.getElementById('consentOverlay');
   if(el) el.classList.add('hidden');
+  // Also show cookie banner if not yet answered
+  let cookies=null;
+  try{cookies=localStorage.getItem('prixly_cookies');}catch(e){}
+  if(!cookies) showCookieBanner();
 }
 function declineConsent(){
   try{localStorage.setItem('prixly_consent','essential');}catch(e){}
@@ -2771,10 +2872,18 @@ window.addEventListener('DOMContentLoaded',()=>{
   updateNavState();
   renderCatStrip();
 
-  // Show consent modal on first visit
+  // Show ToS consent on very first visit
   let consent=null;
   try{consent=localStorage.getItem('prixly_consent');}catch(e){}
-  if(!consent) showConsentModal();
+  if(!consent){ showConsentModal(); }
+
+  // Show cookie banner if ToS was already accepted but cookies not yet answered
+  let cookies=null;
+  try{cookies=localStorage.getItem('prixly_cookies');}catch(e){}
+  if(consent && !cookies){ showCookieBanner(); }
+
+  // If user already accepted cookies in a previous session, init analytics now
+  if(cookies==='all') initAnalytics();
 
   // ── THEME — restore saved choice, default stays dark if nothing saved ──
   let savedTheme = null;
@@ -3288,6 +3397,7 @@ function runSearch(query){
   detectedCat=detection;
   const cat=CATEGORIES[detection.key];
   const retailers=getRetailersForRegion(detection.key,activeRegion);
+  window.posthog?.capture('search_performed',{query,category:detection.key,region:activeRegion,currency:activeCurrency,from_cache:!!cached});
   const revSec=document.getElementById('reviewsSection');
   if(revSec) revSec.style.display='none';
   document.getElementById('resultsSection').classList.remove('visible');
@@ -3339,6 +3449,11 @@ function showResults(query,catKey,detection,cached){
   if(!cached) fetchReviews(query);
   window.scrollTo({top:document.getElementById('categoryBanner').offsetTop-80,behavior:'smooth'});
 }
+function phTrackResultClick(el){
+  const c=el.closest('.result-card');
+  if(!c)return;
+  window.posthog?.capture('result_clicked',{retailer:c.dataset.ph_retailer,product:c.dataset.ph_product,price:parseFloat(c.dataset.ph_price),currency:activeCurrency,category:detectedCat?.key,best_deal:c.dataset.ph_best==='1'});
+}
 function renderResults(results){
   document.getElementById('resultsCount').textContent=results.length;
   document.getElementById('resultsQuery').textContent='"'+(results[0]?.name||'')+'"';
@@ -3346,13 +3461,13 @@ function renderResults(results){
     const witem={id:wishlistItemId(r.name,r.retailer),name:r.name,retailer:r.retailer,price:r.price,logoClass:r.logoClass,category:detectedCat?.key||'general'};
     const savePct=r.was?Math.round((r.was-r.price)/r.was*100):0;
     const discBadge=r.was?`<span class="deal-card-discount ${dropClass(savePct)}" style="font-size:.65rem;padding:.15rem .4rem;border-radius:3px;margin-top:3px;display:inline-block;">-${savePct}%</span>`:'';
-    return`<a class="result-card ${r.best?'best-deal':''}" href="#" onclick="return false;">
+    return`<a class="result-card ${r.best?'best-deal':''}" href="#" onclick="return false;" data-ph_retailer="${r.retailer.replace(/"/g,'&quot;')}" data-ph_product="${r.name.replace(/"/g,'&quot;')}" data-ph_price="${r.price}" data-ph_best="${r.best?'1':'0'}">
       <div class="relevance-bar"><div class="relevance-label">Match</div><div class="relevance-track"><div class="relevance-fill" style="width:${r.relevance}%"></div></div><div style="font-size:.65rem;color:var(--muted);margin-top:2px;text-align:center;">${r.relevance}%</div></div>
       <div class="retailer-logo ${r.logoClass}">${r.retailer}</div>
       <div class="result-info"><div class="result-name">${r.name} — ${r.retailer}</div><div class="result-meta"><span class="stars">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5-Math.round(r.rating))}</span><span>${r.rating} (${r.reviews.toLocaleString()} reviews)</span><span class="prixly-score">P ${r.score.toFixed(1)}</span><span>${r.shipping}</span></div></div>
       <div class="result-price-block">${r.was?`<div class="result-price-was">${fmt(r.was)}</div>`:''}<div class="result-price">${fmt(r.price)}</div>${r.best?`<div style="margin-top:4px"><span class="best-badge">${t('best_price')}</span></div>`:''}${discBadge}</div>
       ${inlineStarHTML(witem)}
-      <a class="result-cta" href="${retailerSearchURL(r.retailer,r.name)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${t('view_deal')}</a>
+      <a class="result-cta" href="${retailerSearchURL(r.retailer,r.name)}" target="_blank" rel="noopener noreferrer" onclick="phTrackResultClick(this);event.stopPropagation()">${t('view_deal')}</a>
     </a>`;
   }).join('');
 }
@@ -3943,6 +4058,17 @@ function renderDeals(){
   document.getElementById('dealsContent').innerHTML=html2;
 }
 </script>
+<!-- ── COOKIE BANNER ── -->
+<div id="cookieBanner" class="hidden" role="region" aria-label="Cookie consent">
+  <div class="cookie-banner-text">
+    <span class="cookie-banner-icon">🍪</span>
+    <p>We use cookies for analytics and to improve your experience. <a onclick="showPage('privacy')">Privacy Policy</a></p>
+  </div>
+  <div class="cookie-banner-actions">
+    <button class="cookie-btn-ghost" onclick="acceptCookies('essential')">Essential only</button>
+    <button class="cookie-btn" onclick="acceptCookies('all')">Accept all</button>
+  </div>
+</div>
 <!-- ── CONSENT MODAL ── -->
 <div id="consentOverlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
   <div id="consentBox">
