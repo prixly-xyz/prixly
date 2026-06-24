@@ -39,10 +39,10 @@
   --border:#e2e2de;--border2:#d4d4ce;--shadow:0 2px 16px rgba(0,0,0,0.07);
   --radius:14px;--radius-sm:9px;--radius-xs:6px;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s;-webkit-font-smoothing:antialiased;padding-top:56px;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s;-webkit-font-smoothing:antialiased;}
 
 /* NAV */
-nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:fixed;top:0;left:0;right:0;z-index:400;flex-wrap:nowrap;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:400;flex-wrap:nowrap;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 .logo{display:flex;align-items:center;gap:9px;font-size:1.25rem;font-weight:800;color:var(--accent);text-decoration:none;letter-spacing:-.03em;cursor:pointer;flex:1;}
 .logo svg{width:26px;height:26px;}
 .nav-right{display:flex;align-items:center;gap:.75rem;justify-content:flex-end;flex:1;}
@@ -551,11 +551,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 @media(max-width:640px){#consentBox{padding:1.5rem 1.25rem 2rem;border-radius:var(--radius) var(--radius) 0 0;}.consent-actions{flex-direction:column;}.consent-accept,.consent-decline{width:100%;text-align:center;}}
 .mobile-bottom-nav{
   display:none;
-  position:fixed;bottom:0;left:0;right:0;
+  position:fixed;top:auto;bottom:0;left:0;right:0;
   background:var(--surface);
   border-top:1px solid var(--border);
-  z-index:300;
+  z-index:500;
   padding:0 0 env(safe-area-inset-bottom,0);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 .mobile-bottom-nav ul{
   display:flex;list-style:none;margin:0;padding:0;
@@ -664,9 +666,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   /* ── GLOBAL ── */
   .mobile-bottom-nav{display:block;}
   body{padding-bottom:calc(62px + env(safe-area-inset-bottom,0));}
-  /* Fixed nav on mobile: no blur (WebKit stacking context bug), correct body offset */
+  /* No backdrop-filter on mobile — WebKit stacking context bug with sticky */
   nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg);}
-  body{padding-top:52px;}
 
   /* ── NAV ── */
   nav{padding:0 .75rem;height:52px;}
