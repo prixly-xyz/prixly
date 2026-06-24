@@ -30,6 +30,20 @@
   5. Convex   : https://dashboard.convex.dev  (deployment URL, uncomment block in JS)
   Nothing below fires until the user accepts cookies (see initAnalytics in JS).
 -->
+<!-- Clerk Authentication -->
+<script
+  defer
+  crossorigin="anonymous"
+  src="https://sound-terrapin-34.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"
+  type="text/javascript">
+</script>
+<script
+  defer
+  crossorigin="anonymous"
+  data-clerk-publishable-key="pk_test_c291bmQtdGVycmFwaW4tMzQuY2xlcmsuYWNjb3VudHMuZGV2JA"
+  src="https://sound-terrapin-34.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+  type="text/javascript">
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111111'/%3E%3Crect x='8' y='27' width='16' height='2.5' rx='1.25' fill='%2300d48a' opacity='0.6'/%3E%3Ctext x='16' y='24' font-family='Arial Black%2C Impact%2C sans-serif' font-weight='900' font-size='23' fill='%2300d48a' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E" type="image/svg+xml">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23111111'/%3E%3Crect x='44' y='152' width='92' height='14' rx='7' fill='%2300d48a' opacity='0.6'/%3E%3Ctext x='90' y='138' font-family='Arial Black%2C Impact%2C sans-serif' font-weight='900' font-size='130' fill='%2300d48a' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
 <style>
@@ -2775,7 +2789,6 @@ function showPage(id) {
   if(id==='categories') renderCatsBrowse();
   if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; ['signupName','signupEmail','signupPassword','signupConfirmPassword'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.type=x.includes('assword')?'password':'text';el.classList.remove('input-invalid');el.style.borderColor='';}}); ['nameError','emailError','passwordError','confirmPasswordError','signupError'].forEach(id2=>{const e=document.getElementById(id2);if(e){e.textContent='';e.style.display='none';}}); const tog=document.getElementById('showPasswordToggle');if(tog)tog.checked=false; }
   if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; const em=document.getElementById('loginEmail');if(em)em.value=''; const pw=document.getElementById('loginPassword');if(pw)pw.value=''; }
-  window.posthog?.capture('$pageview',{$current_url:window.location.href+'#'+id,page:id});
 }
 
 // Init strip and localisation on load
@@ -2786,8 +2799,9 @@ function initAnalytics(){
   if(cookies!=='all') return;
 
   // ── PostHog ──────────────────────────────────────────────────
+  // Replace YOUR_POSTHOG_KEY with your project API key from app.posthog.com
   (function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js',(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],u.toString=function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e},u.people.toString=function(){return u.toString(1)+'.people (stub)'},o='init me ws'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]));
-  posthog.init('phc_yWRtjEqUMHqJVDKMNWMFJaFt38iZW7W3ZMMwxZDAHQQL',{api_host:'https://us.i.posthog.com',person_profiles:'identified_only'});
+  posthog.init('YOUR_POSTHOG_KEY',{api_host:'https://eu.i.posthog.com',person_profiles:'identified_only'});
 
   // ── Google Analytics GA4 ─────────────────────────────────────
   // Replace YOUR_GA4_ID with your Measurement ID e.g. G-XXXXXXXXXX
@@ -2801,14 +2815,17 @@ function initAnalytics(){
   // ── Sentry ───────────────────────────────────────────────────
   // Replace YOUR_SENTRY_DSN with your DSN from sentry.io > Settings > Client Keys
   (function(){const s=document.createElement('script');s.async=true;
-    s.src='https://browser.sentry-cdn.com/8.38.0/bundle.min.js';
+    s.src='https://browser.sentry-cdn.com/8.38.0/bundle.replay.min.js';
     s.crossOrigin='anonymous';
     s.onload=function(){
       Sentry.init({
-        dsn:'YOUR_SENTRY_DSN',
+        dsn:'https://8e98bde3e3d7131dcdabed9e99218e08@o4511621048893441.ingest.us.sentry.io/4511621213650944',
         tracesSampleRate:0.15,
         environment:'production',
-        release:'prixly@1.0.0'
+        release:'prixly@1.0.0',
+        replaysSessionSampleRate:0.1,
+        replaysOnErrorSampleRate:1.0,
+        integrations:[new Sentry.Replay()]
       });
     };
     document.head.appendChild(s);
@@ -2819,18 +2836,16 @@ function initAnalytics(){
   (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,'clarity','script','YOUR_CLARITY_ID');
 
   // ── Convex (real-time backend) ───────────────────────────────
-  // Uncomment once you have a Convex project at dashboard.convex.dev
-  // Replace YOUR_CONVEX_URL with your deployment URL e.g. https://xxxx.convex.cloud
-  /*
-  (function(){const s=document.createElement('script');
+  (function(){
+    const s=document.createElement('script');
     s.type='module';
     s.textContent=`
       import { ConvexClient } from "https://unpkg.com/convex@latest/browser/index.js";
-      window.convex = new ConvexClient("YOUR_CONVEX_URL");
+      window.convex = new ConvexClient("https://youthful-goldfinch-624.convex.cloud");
+      window.dispatchEvent(new Event('convex-ready'));
     `;
     document.head.appendChild(s);
   })();
-  */
 }
 
 // ── COOKIE BANNER ──
@@ -3368,7 +3383,12 @@ async function doSearch(){
 function addRecent(query){
   recentSearches=[query,...recentSearches.filter(q=>q!==query)].slice(0,6);
   document.getElementById('recentlyViewed').classList.add('visible');
-  document.getElementById('recentBar').innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${q.replace(/'/g,"\\'")}')"><span class="recent-icon">&#8635;</span>${q}</span>`).join('');
+  document.getElementById('recentBar').innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${q.replace(/'/g,"\'")}')"><span class="recent-icon">&#8635;</span>${q}</span>`).join('');
+  // Save to Convex if logged in
+  const user=prixlyAuth.getCurrentUser();
+  if(user&&user.clerkId&&window.convex){
+    window.convex.mutation("searches:addSearch",{clerkId:user.clerkId,query,category:detectedCat?detectedCat.key:undefined}).catch(e=>console.warn('Search history:',e));
+  }
 }
 // ── SEARCH CACHE — keyed by normalised query string ──
 const searchCache=new Map();
@@ -3397,7 +3417,6 @@ function runSearch(query){
   detectedCat=detection;
   const cat=CATEGORIES[detection.key];
   const retailers=getRetailersForRegion(detection.key,activeRegion);
-  window.posthog?.capture('search_performed',{query,category:detection.key,region:activeRegion,currency:activeCurrency,from_cache:!!cached});
   const revSec=document.getElementById('reviewsSection');
   if(revSec) revSec.style.display='none';
   document.getElementById('resultsSection').classList.remove('visible');
@@ -3449,11 +3468,6 @@ function showResults(query,catKey,detection,cached){
   if(!cached) fetchReviews(query);
   window.scrollTo({top:document.getElementById('categoryBanner').offsetTop-80,behavior:'smooth'});
 }
-function phTrackResultClick(el){
-  const c=el.closest('.result-card');
-  if(!c)return;
-  window.posthog?.capture('result_clicked',{retailer:c.dataset.ph_retailer,product:c.dataset.ph_product,price:parseFloat(c.dataset.ph_price),currency:activeCurrency,category:detectedCat?.key,best_deal:c.dataset.ph_best==='1'});
-}
 function renderResults(results){
   document.getElementById('resultsCount').textContent=results.length;
   document.getElementById('resultsQuery').textContent='"'+(results[0]?.name||'')+'"';
@@ -3461,13 +3475,13 @@ function renderResults(results){
     const witem={id:wishlistItemId(r.name,r.retailer),name:r.name,retailer:r.retailer,price:r.price,logoClass:r.logoClass,category:detectedCat?.key||'general'};
     const savePct=r.was?Math.round((r.was-r.price)/r.was*100):0;
     const discBadge=r.was?`<span class="deal-card-discount ${dropClass(savePct)}" style="font-size:.65rem;padding:.15rem .4rem;border-radius:3px;margin-top:3px;display:inline-block;">-${savePct}%</span>`:'';
-    return`<a class="result-card ${r.best?'best-deal':''}" href="#" onclick="return false;" data-ph_retailer="${r.retailer.replace(/"/g,'&quot;')}" data-ph_product="${r.name.replace(/"/g,'&quot;')}" data-ph_price="${r.price}" data-ph_best="${r.best?'1':'0'}">
+    return`<a class="result-card ${r.best?'best-deal':''}" href="#" onclick="return false;">
       <div class="relevance-bar"><div class="relevance-label">Match</div><div class="relevance-track"><div class="relevance-fill" style="width:${r.relevance}%"></div></div><div style="font-size:.65rem;color:var(--muted);margin-top:2px;text-align:center;">${r.relevance}%</div></div>
       <div class="retailer-logo ${r.logoClass}">${r.retailer}</div>
       <div class="result-info"><div class="result-name">${r.name} — ${r.retailer}</div><div class="result-meta"><span class="stars">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5-Math.round(r.rating))}</span><span>${r.rating} (${r.reviews.toLocaleString()} reviews)</span><span class="prixly-score">P ${r.score.toFixed(1)}</span><span>${r.shipping}</span></div></div>
       <div class="result-price-block">${r.was?`<div class="result-price-was">${fmt(r.was)}</div>`:''}<div class="result-price">${fmt(r.price)}</div>${r.best?`<div style="margin-top:4px"><span class="best-badge">${t('best_price')}</span></div>`:''}${discBadge}</div>
       ${inlineStarHTML(witem)}
-      <a class="result-cta" href="${retailerSearchURL(r.retailer,r.name)}" target="_blank" rel="noopener noreferrer" onclick="phTrackResultClick(this);event.stopPropagation()">${t('view_deal')}</a>
+      <a class="result-cta" href="${retailerSearchURL(r.retailer,r.name)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${t('view_deal')}</a>
     </a>`;
   }).join('');
 }
@@ -3563,43 +3577,86 @@ function drawChart(){
   const data=[base*1.35,base*1.28,base*1.18,base*1.22,base*1.08,base].map(v=>parseFloat(v.toFixed(2)));
   chartInstance=new Chart(ctx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{data,borderColor:ac,borderWidth:2,pointBackgroundColor:ac,pointRadius:4,pointHoverRadius:6,fill:true,backgroundColor:isDark?'rgba(46,204,113,0.06)':'rgba(26,158,80,0.06)',tension:.35}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y/CURRENCIES[activeCurrency].rate)}}},scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:11}}},y:{grid:{color:gc},ticks:{color:lc,font:{size:11},callback:v=>fmt(v/CURRENCIES[activeCurrency].rate)},min:Math.floor(Math.min(...data)*.92),max:Math.ceil(Math.max(...data)*1.05)}}}});
 }
-// ── AUTH & WISHLIST ──
+// ── AUTH — powered by Clerk ──
 const prixlyAuth={
-  _uk:'prixly_users',_sk:'prixly_session',
-  getUsers(){try{return JSON.parse(localStorage.getItem(this._uk)||'[]');}catch(e){return[];}},
-  saveUsers(u){localStorage.setItem(this._uk,JSON.stringify(u));},
-  getSession(){try{return JSON.parse(localStorage.getItem(this._sk)||'null');}catch(e){return null;}},
-  saveSession(u){localStorage.setItem(this._sk,JSON.stringify(u));},
-  clearSession(){localStorage.removeItem(this._sk);},
-  isLoggedIn(){return!!this.getSession();},
-  getCurrentUser(){return this.getSession();},
-  register(name,email,password){
-    const users=this.getUsers();
-    if(users.find(u=>u.email===email.toLowerCase()))return{error:'An account with this email already exists.'};
-    const user={name:name.trim(),email:email.toLowerCase(),password,created:Date.now()};
-    users.push(user);
-    this.saveUsers(users);
-    this.saveSession({name:user.name,email:user.email});
-    return{success:true};
+  isLoggedIn(){
+    try{ return !!(window.Clerk && window.Clerk.user); }catch(e){return false;}
   },
-  login(email,password){
-    const users=this.getUsers();
-    const user=users.find(u=>u.email===email.toLowerCase()&&u.password===password);
-    if(!user)return{error:'Incorrect email or password.'};
-    this.saveSession({name:user.name,email:user.email});
-    return{success:true};
+  getCurrentUser(){
+    try{
+      const u=window.Clerk&&window.Clerk.user;
+      if(!u) return null;
+      return {
+        name: u.fullName || u.firstName || u.emailAddresses[0].emailAddress.split('@')[0],
+        email: u.emailAddresses[0].emailAddress,
+        clerkId: u.id
+      };
+    }catch(e){return null;}
   },
-  logout(){this.clearSession();}
+  // Kept for backward compat — Clerk handles actual login/register
+  register(name,email,password){ return {error:'Please use the sign-up form powered by Clerk.'}; },
+  login(email,password){ return {error:'Please use the sign-in form powered by Clerk.'}; },
+  logout(){ if(window.Clerk) window.Clerk.signOut().then(()=>{ updateAuthUI(); showPage('home'); }); }
 };
 
+// Initialise Clerk and sync user state once loaded
+window.addEventListener('load', async ()=>{
+  if(!window.Clerk) return;
+  await window.Clerk.load();
+  updateAuthUI();
+  // Sync user to Convex on sign-in
+  if(window.Clerk.user && window.convex){
+    const u = window.Clerk.user;
+    try{
+      await window.convex.mutation("users:upsertUser", {
+        clerkId: u.id,
+        email: u.emailAddresses[0].emailAddress,
+        name: u.fullName || u.firstName || u.emailAddresses[0].emailAddress.split('@')[0]
+      });
+    }catch(e){ console.warn('Convex user sync:', e); }
+  }
+});
+
 const prixlyWishlist={
-  _key(email){return'prixly_wl_'+email.replace(/[^a-z0-9]/gi,'_');},
-  getAll(email){try{return JSON.parse(localStorage.getItem(this._key(email))||'[]');}catch(e){return[];}},
-  save(email,items){localStorage.setItem(this._key(email),JSON.stringify(items));},
-  has(email,id){return this.getAll(email).some(i=>i.id===id);},
-  add(email,item){const items=this.getAll(email);if(!items.find(i=>i.id===item.id)){items.unshift({...item,timestamp:Date.now()});this.save(email,items);}},
-  remove(email,id){this.save(email,this.getAll(email).filter(i=>i.id!==id));},
-  toggle(email,item){if(this.has(email,item.id)){this.remove(email,item.id);return false;}else{this.add(email,item);return true;}}
+  // In-memory cache for current session
+  _cache: null,
+  async loadCache(clerkId){
+    if(!window.convex||!clerkId) return [];
+    try{
+      const items = await window.convex.query("wishlist:getWishlist", {clerkId});
+      this._cache = items;
+      return items;
+    }catch(e){ return []; }
+  },
+  has(email,id){
+    if(!this._cache) return false;
+    return this._cache.some(i=>i.itemId===id);
+  },
+  async add(clerkId, item){
+    if(!window.convex||!clerkId) return;
+    try{
+      await window.convex.mutation("wishlist:addToWishlist", {
+        clerkId, itemId: item.id, name: item.name,
+        retailer: item.retailer, price: item.price,
+        currency: item.currency, url: item.url
+      });
+      if(this._cache) this._cache.unshift({itemId:item.id,...item,savedAt:Date.now()});
+    }catch(e){ console.warn('Wishlist add:', e); }
+  },
+  async remove(clerkId, id){
+    if(!window.convex||!clerkId) return;
+    try{
+      await window.convex.mutation("wishlist:removeFromWishlist", {clerkId, itemId: id});
+      if(this._cache) this._cache = this._cache.filter(i=>i.itemId!==id);
+    }catch(e){ console.warn('Wishlist remove:', e); }
+  },
+  async toggle(clerkId, item){
+    if(this.has(null, item.id)){ await this.remove(clerkId, item.id); return false; }
+    else{ await this.add(clerkId, item); return true; }
+  },
+  // Legacy compat
+  getAll(email){ return this._cache||[]; },
+  save(email,items){ this._cache=items; }
 };
 
 function wishlistItemId(name,retailer){
