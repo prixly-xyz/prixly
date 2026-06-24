@@ -42,7 +42,7 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;-webkit-font-smoothing:antialiased;}
 
 /* NAV */
-nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200;flex-wrap:nowrap;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:400;flex-wrap:nowrap;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 .logo{display:flex;align-items:center;gap:9px;font-size:1.25rem;font-weight:800;color:var(--accent);text-decoration:none;letter-spacing:-.03em;cursor:pointer;flex:1;}
 .logo svg{width:26px;height:26px;}
 .nav-right{display:flex;align-items:center;gap:.75rem;justify-content:flex-end;flex:1;}
@@ -107,10 +107,10 @@ nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;di
 .cat-row-title{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;color:var(--text);}
 .cat-row-seeall{font-size:.8rem;color:var(--accent);cursor:pointer;text-decoration:none;white-space:nowrap;}
 .cat-row-seeall:hover{text-decoration:underline;}
-.cat-row-scroll{display:flex;gap:.75rem;overflow-x:auto;padding:0 0 .75rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.cat-row-scroll{display:flex;gap:.75rem;overflow-x:auto;padding:.25rem 0 .75rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .cat-row-scroll::-webkit-scrollbar{display:none;}
-.cat-row-scroll::before,.cat-row-scroll::after{content:'';flex-shrink:0;width:2rem;}
-.cat-scroll-card{flex:0 0 190px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;scroll-snap-align:start;display:flex;flex-direction:column;gap:.35rem;}
+.cat-row-scroll::before,.cat-row-scroll::after{content:'';flex-shrink:0;width:max(2rem,calc((100vw - 1100px) / 2 + 2rem));}
+.cat-scroll-card{flex:0 0 170px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;scroll-snap-align:start;display:flex;flex-direction:column;gap:.3rem;position:relative;}
 .cat-scroll-card:hover{border-color:var(--accent);box-shadow:0 6px 20px rgba(0,0,0,0.3);transform:translateY(-2px);}
 .cat-scroll-tag{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;}
 .cat-scroll-name{font-size:.85rem;font-weight:700;color:var(--text);line-height:1.3;flex:1;}
@@ -148,7 +148,7 @@ nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;di
 .cat-updated{font-size:.68rem;color:var(--muted2);margin-top:.7rem;}
 .cat-browse-strip{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;}
 .cat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .9rem 1.05rem;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;display:flex;flex-direction:column;align-items:center;gap:.38rem;width:108px;flex-shrink:0;position:relative;}
-.cat-card:hover{border-color:var(--accent);box-shadow:0 6px 20px rgba(0,212,138,0.12);transform:translateY(-2px);}
+.cat-card:hover{border-color:var(--accent);box-shadow:0 6px 20px rgba(0,0,0,0.35);transform:translateY(-2px);}
 .cat-card.hot::after{content:'HOT';position:absolute;top:-8px;right:-6px;background:#e74c3c;color:#fff;font-size:.58rem;font-weight:800;letter-spacing:.06em;padding:.1rem .35rem;border-radius:4px;}
 .cat-card.trending::after{content:'TRENDING';position:absolute;top:-8px;right:-6px;background:#f39c12;color:#fff;font-size:.58rem;font-weight:800;letter-spacing:.06em;padding:.1rem .35rem;border-radius:4px;}
 .cat-card-icon{font-size:1.9rem;line-height:1;}
@@ -531,6 +531,24 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .search-input,.alert-input,.mock-alert-input,.mock-search-input{cursor:text !important;}
 
 /* ── MOBILE BOTTOM NAV ── */
+/* ── CONSENT MODAL ── */
+#consentOverlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.72);display:flex;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+#consentOverlay.hidden{display:none;}
+#consentBox{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius) var(--radius) 0 0;padding:2rem 2rem 2.5rem;max-width:680px;width:100%;box-shadow:0 -8px 40px rgba(0,0,0,0.4);animation:consentIn .3s cubic-bezier(.22,1,.36,1) both;}
+@keyframes consentIn{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+#consentBox h2{font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.5rem;letter-spacing:-.025em;}
+#consentBox p{font-size:.83rem;color:var(--muted);line-height:1.65;margin-bottom:.85rem;}
+#consentBox p a{color:var(--accent);text-decoration:none;cursor:pointer;}
+#consentBox p a:hover{text-decoration:underline;}
+.consent-list{list-style:none;padding:0;margin:0 0 1.25rem;display:flex;flex-direction:column;gap:.5rem;}
+.consent-list li{display:flex;align-items:flex-start;gap:.6rem;font-size:.8rem;color:var(--muted);line-height:1.5;}
+.consent-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:.42em;}
+.consent-actions{display:flex;gap:.75rem;flex-wrap:wrap;}
+.consent-accept{background:var(--accent);color:#000;border:none;padding:.55rem 1.5rem;border-radius:var(--radius-sm);font-size:.85rem;font-weight:700;cursor:pointer;transition:opacity .15s;letter-spacing:-.01em;}
+.consent-accept:hover{opacity:.85;}
+.consent-decline{background:none;border:1px solid var(--border2);color:var(--muted);padding:.55rem 1.1rem;border-radius:var(--radius-sm);font-size:.85rem;cursor:pointer;transition:color .15s,border-color .15s;}
+.consent-decline:hover{color:var(--text);border-color:var(--border2);}
+@media(max-width:640px){#consentBox{padding:1.5rem 1.25rem 2rem;border-radius:var(--radius) var(--radius) 0 0;}.consent-actions{flex-direction:column;}.consent-accept,.consent-decline{width:100%;text-align:center;}}
 .mobile-bottom-nav{
   display:none;
   position:fixed;bottom:0;left:0;right:0;
@@ -646,6 +664,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   /* ── GLOBAL ── */
   .mobile-bottom-nav{display:block;}
   body{padding-bottom:calc(62px + env(safe-area-inset-bottom,0));}
+  /* Remove backdrop-filter on mobile — it breaks sticky positioning in WebKit */
+  nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg);}
 
   /* ── NAV ── */
   nav{padding:0 .75rem;height:52px;}
@@ -1812,14 +1832,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2025 Prixly. All rights reserved.</span>
+      <span class="footer-copy">© 2026 Prixly. All rights reserved.</span>
       <div class="footer-legal">
         <a onclick="showPage('privacy')">Privacy</a>
         <a onclick="showPage('terms')">Terms</a>
         <a onclick="showPage('data')">Compliance</a>
       </div>
     </div>
-    <p style="margin-top:.9rem;font-size:.71rem;color:var(--muted2);line-height:1.6;" data-i18n="footer_disclaimer">Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases, at no extra cost to you.</p>
   </div>
 </footer>
 
@@ -1851,8 +1870,7 @@ const TRANSLATIONS = {
     about_h1:'We exist so you can<br><span>spend less, live more.</span>',
     footer_privacy:'Privacy', footer_terms:'Terms', footer_hiw:'How it works',
     hiw_title:'How Prixly works',
-    hiw_eyebrow:'Simple. Fast. Transparent.', hiw_intro:'From search to saving — here\'s exactly what happens when you use Prixly to find a cheaper price.', step1_num:'Step 01', step1_title:'Tell us what you\'re looking for', step1_desc:'Type the name of any product, as specific or as vague as you like, or simply drop a photo. Prixly accepts both. Searching is always free: create an account to save items and track price drops.', step2_num:'Step 02', step2_title:'The algorithm detects your category', step2_desc:'Prixly\'s engine analyses your search and instantly identifies which category it belongs to — Electronics, Fashion, Gaming, and more. It then selects the most relevant retailers for that category and prioritises them, so you get results from the right places first.', step3_num:'Step 03', step3_title:'Results ranked cheapest first', step3_desc:'Every retailer\'s price is pulled, compared, and ranked from lowest to highest. The best deal gets highlighted at the top. You can also sort by rating, shipping speed, or Prixly score — a combined rating we calculate for each listing.', step4_num:'Step 04', step4_title:'See the price history', step4_desc:'Every result comes with a 6-month price history chart so you can see if today\'s price is actually a good deal — or if you\'re better off waiting. Prixly also tells you the best time of year to buy that type of product.', step5_num:'Step 05', step5_title:'Set an alert and never miss a drop', step5_desc:'Not ready to buy yet? Set a target price and your email, and Prixly will notify you the moment the item drops below it. You can manage all your alerts in the Price Alerts section.', mock_search_bar:'🔍 Search bar', mock_or_drop:'Or drop an image...', mock_dragdrop:'📁 Drag & drop any product photo', mock_category_detected:'Category detected: 💻 Electronics (94% match)', mock_searching_priority:'Searching top retailers by priority:', mock_ship_nextday:'⚡ Free next-day delivery', mock_ship_free:'Free delivery', mock_ship_shipping:'Free shipping', mock_price_history_header:'📈 Price over last 6 months', mock_now:'now', mock_peak:'peak', mock_lowest:'lowest', mock_price_insight:'💡 Price has dropped 27% since January', mock_set_alert:'🔔 Set a price alert', mock_target_ph:'Target', mock_alert_confirm:'✅ Alert set! We\'ll email you when Sony WH-1000XM5 drops below', pa_title:'🔔 Price Alerts', pa_subtitle:'Items you\'re watching — we\'ll tell you the moment the price drops.', pa_dropped_header:'🔥 Price dropped — act now', pa_watching_header:'⏳ Still watching', pa_suggested_header:'✨ You might also like', pa_via:'via', pa_your_target:'Your target:', pa_was:'was', pa_below_target:'✅ Below your target', pa_target_label:'Target:', pa_away:'away', pa_view_deal:'View deal', pa_remove:'Remove', pa_search_now:'Search now', pa_save:'Save', deals_filter_all:'All deals', deals_filter_electronics:'Electronics', deals_filter_gaming:'Gaming', deals_filter_fashion:'Fashion', deals_filter_home:'Home', deals_filter_sports:'Sports', deals_filter_toys:'Toys', deals_filter_baby:'Baby', deal_view:'View →', about_tagline:'"The smartest shopper isn\'t the one who buys the most — it\'s the one who pays the least."', about_intro:'Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don\'t have to, finding the best price on everything from headphones to nappies in seconds.', about_stat1:'Retailers searched', about_stat2:'Product categories', about_stat3:'Average search time', about_stat4:'Cost to use', about_slogans_header:'What we stand for', slogan1:'Your money. Your <span>choice.</span>', slogan2:'Same product. <span>Better price.</span>', slogan3:'Search once. <span>Save everywhere.</span>', slogan4:'No tricks. No markup. Just <span>the truth.</span>', slogan5:'Built for <span>real people,</span> not retailers.', about_values_header:'What makes us different', value1_title:'Smart category detection', value1_desc:'Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you\'re looking for.', value2_title:'Price history you can trust', value2_desc:'We show you whether today\'s "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.', value3_title:'Alerts that actually fire', value3_desc:'Set your target price and forget about it. We\'ll email you the moment something drops, so you never miss a deal you actually wanted.', value4_title:'No data selling, ever', value4_desc:'We don\'t sell your data. We don\'t track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that\'s it.', about_mission_header:'The goal', about_mission_text:'To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it\'s sold online, Prixly should find it cheaper. That\'s the mission. Simple as that.', footer_disclaimer:'Prices shown are for demonstration. Prixly may earn a small affiliate commission on purchases, at no extra cost to you.',
-  },
+    hiw_eyebrow:'Simple. Fast. Transparent.', hiw_intro:'From search to saving — here\'s exactly what happens when you use Prixly to find a cheaper price.', step1_num:'Step 01', step1_title:'Tell us what you\'re looking for', step1_desc:'Type the name of any product, as specific or as vague as you like, or simply drop a photo. Prixly accepts both. Searching is always free: create an account to save items and track price drops.', step2_num:'Step 02', step2_title:'The algorithm detects your category', step2_desc:'Prixly\'s engine analyses your search and instantly identifies which category it belongs to — Electronics, Fashion, Gaming, and more. It then selects the most relevant retailers for that category and prioritises them, so you get results from the right places first.', step3_num:'Step 03', step3_title:'Results ranked cheapest first', step3_desc:'Every retailer\'s price is pulled, compared, and ranked from lowest to highest. The best deal gets highlighted at the top. You can also sort by rating, shipping speed, or Prixly score — a combined rating we calculate for each listing.', step4_num:'Step 04', step4_title:'See the price history', step4_desc:'Every result comes with a 6-month price history chart so you can see if today\'s price is actually a good deal — or if you\'re better off waiting. Prixly also tells you the best time of year to buy that type of product.', step5_num:'Step 05', step5_title:'Set an alert and never miss a drop', step5_desc:'Not ready to buy yet? Set a target price and your email, and Prixly will notify you the moment the item drops below it. You can manage all your alerts in the Price Alerts section.', mock_search_bar:'🔍 Search bar', mock_or_drop:'Or drop an image...', mock_dragdrop:'📁 Drag & drop any product photo', mock_category_detected:'Category detected: 💻 Electronics (94% match)', mock_searching_priority:'Searching top retailers by priority:', mock_ship_nextday:'⚡ Free next-day delivery', mock_ship_free:'Free delivery', mock_ship_shipping:'Free shipping', mock_price_history_header:'📈 Price over last 6 months', mock_now:'now', mock_peak:'peak', mock_lowest:'lowest', mock_price_insight:'💡 Price has dropped 27% since January', mock_set_alert:'🔔 Set a price alert', mock_target_ph:'Target', mock_alert_confirm:'✅ Alert set! We\'ll email you when Sony WH-1000XM5 drops below', pa_title:'🔔 Price Alerts', pa_subtitle:'Items you\'re watching — we\'ll tell you the moment the price drops.', pa_dropped_header:'🔥 Price dropped — act now', pa_watching_header:'⏳ Still watching', pa_suggested_header:'✨ You might also like', pa_via:'via', pa_your_target:'Your target:', pa_was:'was', pa_below_target:'✅ Below your target', pa_target_label:'Target:', pa_away:'away', pa_view_deal:'View deal', pa_remove:'Remove', pa_search_now:'Search now', pa_save:'Save', deals_filter_all:'All deals', deals_filter_electronics:'Electronics', deals_filter_gaming:'Gaming', deals_filter_fashion:'Fashion', deals_filter_home:'Home', deals_filter_sports:'Sports', deals_filter_toys:'Toys', deals_filter_baby:'Baby', deal_view:'View →', about_tagline:'"The smartest shopper isn\'t the one who buys the most — it\'s the one who pays the least."', about_intro:'Prixly was built on one simple belief: nobody should pay more than they have to. We search the web so you don\'t have to, finding the best price on everything from headphones to nappies in seconds.', about_stat1:'Retailers searched', about_stat2:'Product categories', about_stat3:'Average search time', about_stat4:'Cost to use', about_slogans_header:'What we stand for', slogan1:'Your money. Your <span>choice.</span>', slogan2:'Same product. <span>Better price.</span>', slogan3:'Search once. <span>Save everywhere.</span>', slogan4:'No tricks. No markup. Just <span>the truth.</span>', slogan5:'Built for <span>real people,</span> not retailers.', about_values_header:'What makes us different', value1_title:'Smart category detection', value1_desc:'Our algorithm reads your search and instantly knows whether to send you to Currys or Smyths or Decathlon — so you always get results from the retailers that actually sell what you\'re looking for.', value2_title:'Price history you can trust', value2_desc:'We show you whether today\'s "sale" is actually a sale, or just the normal price with a fake line through it. Six months of history, visible at a glance.', value3_title:'Alerts that actually fire', value3_desc:'Set your target price and forget about it. We\'ll email you the moment something drops, so you never miss a deal you actually wanted.', value4_title:'No data selling, ever', value4_desc:'We don\'t sell your data. We don\'t track you across the web. We make money through small affiliate commissions when you find a deal and choose to buy — that\'s it.', about_mission_header:'The goal', about_mission_text:'To become the first place everyone goes before they buy anything online. Not just for electronics or fashion — for everything. Car parts, baby products, video games, clothes, garden furniture. If it\'s sold online, Prixly should find it cheaper. That\'s the mission. Simple as that.',  },
   fr: {
     _name:'🇫🇷 Français', _dir:'ltr', _currency:'EUR',
     nav_hiw:'Comment ça marche', nav_alerts:'Alertes prix', nav_deals:'Bons plans', nav_about:'À propos', nav_signup:'Inscription gratuite',
@@ -2639,6 +2657,7 @@ function renderCatsBrowse(){
       <div class="cat-row-scroll">
         ${seededShuffle(c.items,seed+c.key.charCodeAt(0)).map(item=>`
           <div class="cat-scroll-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
+            ${wishlistBtnHTML(item)}
             <div class="cat-scroll-tag">${item.tag}</div>
             <div class="cat-scroll-name">${item.name}</div>
             <div class="cat-scroll-price">${fmt(item.price)}</div>
@@ -2680,6 +2699,7 @@ function renderCatItems(items,sub){
   const filtered=sub==='All'?items:items.filter(i=>i.tag===sub);
   document.getElementById('catpageGrid').innerHTML=filtered.length?filtered.map(item=>`
     <div class="item-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
+      ${wishlistBtnHTML(item)}
       <div class="item-card-img" style="font-size:.85rem;font-weight:700;color:var(--muted);">${item.tag}</div>
       <div class="item-card-body">
         <div class="item-card-tag">${item.tag}</div>
@@ -2724,9 +2744,30 @@ function showPage(id) {
 }
 
 // Init strip and localisation on load
+// ── CONSENT ──
+function showConsentModal(){
+  const el=document.getElementById('consentOverlay');
+  if(el) el.classList.remove('hidden');
+}
+function acceptConsent(){
+  try{localStorage.setItem('prixly_consent','full');}catch(e){}
+  const el=document.getElementById('consentOverlay');
+  if(el) el.classList.add('hidden');
+}
+function declineConsent(){
+  try{localStorage.setItem('prixly_consent','essential');}catch(e){}
+  const el=document.getElementById('consentOverlay');
+  if(el) el.classList.add('hidden');
+}
+
 window.addEventListener('DOMContentLoaded',()=>{
   updateNavState();
   renderCatStrip();
+
+  // Show consent modal on first visit
+  let consent=null;
+  try{consent=localStorage.getItem('prixly_consent');}catch(e){}
+  if(!consent) showConsentModal();
 
   // ── THEME — restore saved choice, default stays dark if nothing saved ──
   let savedTheme = null;
@@ -3895,6 +3936,24 @@ function renderDeals(){
   document.getElementById('dealsContent').innerHTML=html2;
 }
 </script>
+<!-- ── CONSENT MODAL ── -->
+<div id="consentOverlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+  <div id="consentBox">
+    <h2 id="consentTitle">Before you start</h2>
+    <p>Prixly uses analytics to understand how people use the site so we can improve it. Here's exactly what we collect and why:</p>
+    <ul class="consent-list">
+      <li><strong>Google Analytics</strong> — page views, session duration, and navigation patterns. No personal identity is collected. Data is anonymised and aggregated.</li>
+      <li><strong>PostHog</strong> — product analytics including feature interactions, search queries (anonymised), and funnel behaviour. Used to understand which features are working and which aren't.</li>
+      <li><strong>Search queries &amp; uploaded images</strong> — sent to Anthropic's Claude API solely to identify products and generate results. Not stored by Prixly after the response is received.</li>
+      <li><strong>localStorage only</strong> — your language, region, currency preference, and recent searches are stored on your device and never sent to our servers.</li>
+    </ul>
+    <p>We do not sell your data. We do not use advertising or behavioural tracking cookies. By continuing you agree to our <a onclick="acceptConsent();showPage('privacy')">Privacy Policy</a> and <a onclick="acceptConsent();showPage('terms')">Terms of Use</a>.</p>
+    <div class="consent-actions">
+      <button class="consent-accept" onclick="acceptConsent()">Accept &amp; continue</button>
+      <button class="consent-decline" onclick="declineConsent()">Essential only</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 
