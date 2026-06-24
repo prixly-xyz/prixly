@@ -599,6 +599,14 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .nav-user-chip:hover{border-color:var(--accent);}
 .nav-user-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 
+/* ── PRICE DROP COLOUR CLASSES ── */
+.drop-major{background:var(--accent)!important;color:#fff!important;}
+.drop-medium{background:#e67e22!important;color:#fff!important;}
+.drop-small{background:#f39c12!important;color:#fff!important;}
+.drop-increase{background:#e74c3c!important;color:#fff!important;}
+/* inline star (inside flex rows, not absolute) */
+.wishlist-btn-inline{position:static!important;transform:none!important;flex-shrink:0;align-self:center;margin:0 .1rem;}
+
 /* ── AI DISCLOSURE ── */
 .ai-disclosure{max-width:700px;margin:2.5rem auto 0;padding:1.5rem 2rem;border-top:1px solid var(--border);text-align:center;}
 .ai-disclosure p{font-size:.8rem;color:var(--muted2);line-height:1.7;}
@@ -834,7 +842,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <div class="hiw-step-visual">
         <div style="font-size:.72rem;color:var(--muted);margin-bottom:.3rem;" data-i18n="mock_search_bar">Search bar</div>
         <div class="mock-search">
-          <span class="mock-typing" id="hiw-typing">Sony WH-1000XM5<span class="mock-cursor"></span></span>
+          <span class="mock-typing" id="hiw-typing">Oak dining table<span class="mock-cursor"></span></span>
           <button class="mock-search-btn" data-i18n="search_btn">Search</button>
         </div>
         <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem;" data-i18n="mock_or_drop">Or attach an image...</div>
@@ -851,16 +859,16 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 
     <div class="hiw-step">
       <div class="hiw-step-visual">
-        <div class="mock-detecting"><div class="mini-spin"></div><span data-i18n="mock_category_detected">Category detected: Electronics (94% match)</span></div>
+        <div class="mock-detecting"><div class="mini-spin"></div><span>Category detected: <strong style="color:var(--accent)">Home</strong> (91% match)</span></div>
         <div style="font-size:.72rem;color:var(--muted);margin:.4rem 0 .3rem;">Searching top retailers by priority:</div>
         <div class="mock-retailers">
-          <span class="mock-retailer-tag top">★ Amazon</span>
-          <span class="mock-retailer-tag top">★ Currys</span>
-          <span class="mock-retailer-tag top">★ eBay</span>
-          <span class="mock-retailer-tag">Ebuyer</span>
+          <span class="mock-retailer-tag top">★ IKEA</span>
+          <span class="mock-retailer-tag top">★ John Lewis</span>
+          <span class="mock-retailer-tag top">★ Wayfair</span>
+          <span class="mock-retailer-tag">Dunelm</span>
+          <span class="mock-retailer-tag">Amazon</span>
           <span class="mock-retailer-tag">Argos</span>
-          <span class="mock-retailer-tag">John Lewis</span>
-          <span class="mock-retailer-tag">AO</span>
+          <span class="mock-retailer-tag">Next</span>
         </div>
       </div>
       <div class="hiw-step-info">
@@ -875,31 +883,31 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <div class="hiw-step">
       <div class="hiw-step-visual">
         <div class="mock-result best">
-          <div class="mock-retailer-dot" style="background:#FF9900;color:#131921;">AMZ</div>
+          <div class="mock-retailer-dot" style="background:#0051a8;color:#fff;">IKE</div>
           <div class="mock-result-info">
-            <div class="mock-result-name">Sony WH-1000XM5 — Amazon</div>
-            <div class="mock-result-ship" data-i18n="mock_ship_nextday">Free next-day delivery</div>
+            <div class="mock-result-name">Oak dining table — IKEA</div>
+            <div class="mock-result-ship" data-i18n="mock_ship_free">Free delivery</div>
           </div>
           <div>
-            <div class="mock-result-price">£189.99</div>
+            <div class="mock-result-price">£249.00</div>
             <span class="mock-badge" data-i18n="best_price">Best price</span>
           </div>
         </div>
         <div class="mock-result" style="margin-top:.4rem;">
-          <div class="mock-retailer-dot" style="background:#7b2d8b;color:#fff;">CUR</div>
+          <div class="mock-retailer-dot" style="background:#1a1a2e;color:#fff;">JL</div>
           <div class="mock-result-info">
-            <div class="mock-result-name">Sony WH-1000XM5 — Currys</div>
+            <div class="mock-result-name">Oak dining table — John Lewis</div>
             <div class="mock-result-ship" data-i18n="mock_ship_free">Free delivery</div>
           </div>
-          <div class="mock-result-price">£209.00</div>
+          <div class="mock-result-price">£319.00</div>
         </div>
         <div class="mock-result" style="margin-top:.4rem;">
-          <div class="mock-retailer-dot" style="background:#E53238;color:#fff;">EBY</div>
+          <div class="mock-retailer-dot" style="background:#7b2fbe;color:#fff;">WAY</div>
           <div class="mock-result-info">
-            <div class="mock-result-name">Sony WH-1000XM5 — eBay</div>
-            <div class="mock-result-ship" data-i18n="mock_ship_shipping">Free shipping</div>
+            <div class="mock-result-name">Oak dining table — Wayfair</div>
+            <div class="mock-result-ship" data-i18n="mock_ship_free">Free delivery</div>
           </div>
-          <div class="mock-result-price">£214.50</div>
+          <div class="mock-result-price">£334.99</div>
         </div>
       </div>
       <div class="hiw-step-info">
@@ -949,7 +957,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
           </div>
         </div>
         <div style="margin-top:.75rem;background:var(--accent-dim);border:1px solid rgba(46,204,113,0.2);border-radius:var(--radius-sm);padding:.5rem .75rem;font-size:.75rem;color:var(--accent);">
-          <span data-i18n="mock_alert_confirm">Alert set! We'll email you when Sony WH-1000XM5 drops below</span> <strong>£180</strong>
+          <span>Alert set! We'll email you when Oak dining table drops below</span> <strong>£230</strong>
         </div>
       </div>
       <div class="hiw-step-info">
@@ -3100,12 +3108,14 @@ function renderResults(results){
   document.getElementById('resultsQuery').textContent='"'+(results[0]?.name||'')+'"';
   document.getElementById('resultsList').innerHTML=results.map(r=>{
     const witem={id:wishlistItemId(r.name,r.retailer),name:r.name,retailer:r.retailer,price:r.price,logoClass:r.logoClass,category:detectedCat?.key||'general'};
+    const savePct=r.was?Math.round((r.was-r.price)/r.was*100):0;
+    const discBadge=r.was?`<span class="deal-card-discount ${dropClass(savePct)}" style="font-size:.65rem;padding:.15rem .4rem;border-radius:3px;margin-top:3px;display:inline-block;">-${savePct}%</span>`:'';
     return`<a class="result-card ${r.best?'best-deal':''}" href="#" onclick="return false;">
-      ${wishlistStarHTML(witem)}
       <div class="relevance-bar"><div class="relevance-label">Match</div><div class="relevance-track"><div class="relevance-fill" style="width:${r.relevance}%"></div></div><div style="font-size:.65rem;color:var(--muted);margin-top:2px;text-align:center;">${r.relevance}%</div></div>
       <div class="retailer-logo ${r.logoClass}">${r.retailer}</div>
       <div class="result-info"><div class="result-name">${r.name} — ${r.retailer}</div><div class="result-meta"><span class="stars">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5-Math.round(r.rating))}</span><span>${r.rating} (${r.reviews.toLocaleString()} reviews)</span><span class="prixly-score">P ${r.score.toFixed(1)}</span><span>${r.shipping}</span></div></div>
-      <div class="result-price-block">${r.was?`<div class="result-price-was">${fmt(r.was)}</div>`:''}<div class="result-price">${fmt(r.price)}</div>${r.best?`<div style="margin-top:4px"><span class="best-badge">${t('best_price')}</span></div>`:''}</div>
+      <div class="result-price-block">${r.was?`<div class="result-price-was">${fmt(r.was)}</div>`:''}<div class="result-price">${fmt(r.price)}</div>${r.best?`<div style="margin-top:4px"><span class="best-badge">${t('best_price')}</span></div>`:''}${discBadge}</div>
+      ${inlineStarHTML(witem)}
       <a class="result-cta" href="#" onclick="return false;">${t('view_deal')}</a>
     </a>`;
   }).join('');
@@ -3255,6 +3265,20 @@ function wishlistStarHTML(item){
   return`<button class="wishlist-btn${on?' wishlisted':''}" id="wbtn-${item.id}" onclick="toggleWishlistBtn(event,'${item.id}')" title="${on?'Remove from Wishlist':'Wishlist this item'}" aria-label="Wishlist">
     <svg viewBox="0 0 24 24" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
   </button>`;
+}
+function inlineStarHTML(item){
+  _wlRegistry[item.id]=item;
+  const user=prixlyAuth.getCurrentUser();
+  const on=user?prixlyWishlist.has(user.email,item.id):false;
+  return`<button class="wishlist-btn wishlist-btn-inline${on?' wishlisted':''}" id="wbtn-${item.id}" onclick="toggleWishlistBtn(event,'${item.id}')" title="${on?'Remove from Wishlist':'Wishlist this item'}" aria-label="Wishlist">
+    <svg viewBox="0 0 24 24" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+  </button>`;
+}
+function dropClass(pct){
+  if(pct>=30)return'drop-major';
+  if(pct>=15)return'drop-medium';
+  if(pct>0)return'drop-small';
+  return'drop-increase';
 }
 function toggleWishlistBtn(e,id){
   e.preventDefault();e.stopPropagation();
@@ -3601,9 +3625,9 @@ function renderDeals(){
     html2+=`<div class="deals-section-head"><h2>${label}</h2></div>`;
     html2+=`<div class="deals-grid">${items.map(d=>{
       const witem={id:wishlistItemId(d.name,d.retailer),name:d.name,retailer:d.retailer,price:d.price,category:d.cat};
+      const pct=parseFloat(d.discount);
       return`<div class="deal-card" onclick="showPage('home');setTimeout(()=>quickSearch('${d.name.replace(/'/g,"\\'")}'),100)">
-        ${wishlistStarHTML(witem)}
-        <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><span class="deal-card-discount">-${d.discount}</span></div>
+        <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><div style="display:flex;align-items:center;gap:.3rem;"><span class="deal-card-discount ${dropClass(pct)}">-${d.discount}</span>${inlineStarHTML(witem)}</div></div>
         <div class="deal-card-name">${d.name}</div>
         <div class="deal-card-retailer">${t('pa_via')} ${d.retailer}</div>
         <div class="deal-card-prices"><span class="deal-card-price">${fmt(d.price)}</span><span class="deal-card-was">${fmt(d.was)}</span></div>
