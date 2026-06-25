@@ -21,15 +21,6 @@
 <meta name="twitter:image" content="https://prixly.xyz/og-image.png">
 <meta name="twitter:image:alt" content="Prixly price comparison">
 <link rel="canonical" href="https://prixly.xyz">
-<!--
-  THIRD-PARTY INTEGRATIONS — replace YOUR_* placeholders before going live.
-  1. PostHog  : https://app.posthog.com  > Project Settings > Project API key
-  2. GA4      : https://analytics.google.com  e.g. G-XXXXXXXXXX
-  3. Sentry   : https://sentry.io  > Settings > Client Keys > DSN
-  4. Clarity  : https://clarity.microsoft.com  (10-char project ID)
-  5. Convex   : https://dashboard.convex.dev  (deployment URL, uncomment block in JS)
-  Nothing below fires until the user accepts cookies (see initAnalytics in JS).
--->
 <!-- Clerk Authentication -->
 <script
   defer
@@ -62,6 +53,11 @@
   --border:#e2e2de;--border2:#d4d4ce;--shadow:0 2px 16px rgba(0,0,0,0.07);
   --radius:14px;--radius-sm:9px;--radius-xs:6px;
 }
+/* Skip navigation */
+.skip-link{position:absolute;left:-9999px;top:.5rem;z-index:9999;background:var(--accent);color:#000;padding:.5rem 1rem;border-radius:var(--radius-xs);font-weight:700;text-decoration:none;transform:translateY(-100%);}
+.skip-link:focus{left:.5rem;transform:translateY(0);}
+/* Focus visible */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s;-webkit-font-smoothing:antialiased;}
 
 /* NAV */
@@ -846,6 +842,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 </head>
 <body>
 
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <nav>
   <a class="logo" onclick="showPage('home')">
     <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -891,7 +888,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <!--  HOME PAGE                                 -->
 <!-- ══════════════════════════════════════════ -->
 <div id="page-home" class="page active">
-<main>
+<main id="main-content" role="main">
   <section class="hero">
     <span class="hero-eyebrow" data-i18n="hero_eyebrow">Searches 50+ retailers instantly</span>
     <h1 data-i18n="hero_h1">Stop overpaying.<br><span>Find it cheaper.</span></h1>
@@ -954,7 +951,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     </div>
     <div class="retailer-priority" id="retailerPriority"></div>
   </div>
-  <section class="results-section" id="resultsSection">
+  <section class="results-section" id="resultsSection" aria-live="polite" aria-atomic="false">
     <div class="results-header">
       <p class="results-title">Showing <strong id="resultsCount"></strong> results for <strong id="resultsQuery"></strong></p>
       <select class="sort-select" onchange="handleSort(this.value)" id="sortSelect">
@@ -1292,6 +1289,11 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <div class="wishlist-section">
       <div class="wishlist-section-title">My Wishlist</div>
       <div id="wishlistGrid" class="wishlist-grid"></div>
+      <div class="delete-account-section" style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.5rem;">Danger Zone</h3>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;">Permanently delete your account, wishlist, and search history. This cannot be undone.</p>
+        <button class="delete-account-btn" onclick="confirmDeleteAccount()" style="background:transparent;border:1px solid #e74c3c;color:#e74c3c;padding:.45rem 1.1rem;border-radius:var(--radius-xs);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='#e74c3c';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#e74c3c'">Delete my account</button>
+      </div>
     </div>
     <div class="pa-hero" style="padding-top:2rem;">
       <h1 data-i18n="pa_title" style="font-size:1.4rem;">Price Alerts</h1>
@@ -1456,6 +1458,18 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li>Tracking cookies or cross-site advertising identifiers — we do not use any advertising or behavioural tracking cookies.</li>
     <li>Precise geolocation — we never request GPS or precise location access.</li>
   </ul>
+  <table style="width:100%;border-collapse:collapse;font-size:.84rem;margin-bottom:1rem;">
+<thead><tr style="background:var(--surface2);"><th style="text-align:left;padding:.5rem .75rem;border:1px solid var(--border);">Data</th><th style="text-align:left;padding:.5rem .75rem;border:1px solid var(--border);">Why collected</th><th style="text-align:left;padding:.5rem .75rem;border:1px solid var(--border);">Retention</th></tr></thead>
+<tbody>
+<tr><td style="padding:.5rem .75rem;border:1px solid var(--border);">Name</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">To personalise your experience</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">Until account deletion</td></tr>
+<tr><td style="padding:.5rem .75rem;border:1px solid var(--border);">Email address</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">Account login and price alert notifications</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">Until account deletion</td></tr>
+<tr><td style="padding:.5rem .75rem;border:1px solid var(--border);">Wishlist items</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">To save products you want to track</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">Until removed or account deleted</td></tr>
+<tr><td style="padding:.5rem .75rem;border:1px solid var(--border);">Search history</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">To personalise results and show recent searches</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">Last 20 searches; cleared on account deletion</td></tr>
+<tr><td style="padding:.5rem .75rem;border:1px solid var(--border);">Analytics events (PostHog)</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">To improve product features (only with consent)</td><td style="padding:.5rem .75rem;border:1px solid var(--border);">90 days</td></tr>
+</tbody>
+</table>
+<p>To request deletion of your data, use the <strong>Delete my account</strong> button in your account settings, or email <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>.</p>
+
   <h2>3. How We Use Your Data</h2>
   <ul>
     <li>To return price comparison results for your search query.</li>
@@ -1996,7 +2010,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<!-- TODO: add SRI hash for Chart.js — run: curl -s https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js | openssl dgst -sha384 -binary | openssl base64 -A -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" crossorigin="anonymous"></script>
 <script>
 // ════════════════════════════════════════════════
 //  PRIXLY i18n — LOCALISATION ENGINE
@@ -3043,7 +3058,12 @@ function hideCookieBanner(){
 function acceptCookies(level){
   try{localStorage.setItem('prixly_cookies',level);}catch(e){}
   hideCookieBanner();
-  if(level==='all') initAnalytics();
+  if(level==='all'){
+    try{localStorage.setItem('prixly_consent','granted');document.cookie='prixly_consent=granted;path=/;max-age=31536000;SameSite=Lax';}catch(e){}
+    initAnalytics();
+  } else {
+    try{localStorage.setItem('prixly_consent','denied');document.cookie='prixly_consent=denied;path=/;max-age=31536000;SameSite=Lax';}catch(e){}
+  }
 }
 
 // ── CONSENT MODAL ──
@@ -3052,7 +3072,7 @@ function showConsentModal(){
   if(el) el.classList.remove('hidden');
 }
 function acceptConsent(){
-  try{localStorage.setItem('prixly_consent','full');}catch(e){}
+  try{localStorage.setItem('prixly_consent','granted');document.cookie='prixly_consent=granted;path=/;max-age=31536000;SameSite=Lax';}catch(e){}
   const el=document.getElementById('consentOverlay');
   if(el) el.classList.add('hidden');
   // Also show cookie banner if not yet answered
@@ -3061,7 +3081,7 @@ function acceptConsent(){
   if(!cookies) showCookieBanner();
 }
 function declineConsent(){
-  try{localStorage.setItem('prixly_consent','essential');}catch(e){}
+  try{localStorage.setItem('prixly_consent','denied');document.cookie='prixly_consent=denied;path=/;max-age=31536000;SameSite=Lax';}catch(e){}
   const el=document.getElementById('consentOverlay');
   if(el) el.classList.add('hidden');
 }
@@ -3082,7 +3102,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(consent && !cookies){ showCookieBanner(); }
 
   // If user already accepted cookies in a previous session, init analytics now
-  if(cookies==='all') initAnalytics();
+  if(cookies==='granted'||cookies==='full'||cookies==='all') initAnalytics();
 
   // ── THEME — restore saved choice, default stays dark if nothing saved ──
   let savedTheme = null;
@@ -3508,6 +3528,16 @@ function extractProductFromURL(url){
   }catch(e){ return null; }
 }
 
+function sanitizeHTML(str){
+  if(str===null||str===undefined)return'';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;');
+}
+
 async function resolveURL(url){
   // Show detection state in search input area
   const input=document.getElementById('searchInput');
@@ -3529,7 +3559,7 @@ async function resolveURL(url){
       body:JSON.stringify({
         model:'claude-sonnet-4-6',
         max_tokens:100,
-        messages:[{role:'user',content:`This is a product page URL: ${url}\n\nBased on the URL alone, what product is this likely listing? Return ONLY a short product search query (3-7 words) suitable for searching on a price comparison site. No punctuation, no explanation.`}]
+        messages:[{role:'user',content:`You are a product identification assistant. A user has provided a URL. Extract the product name only.\n\n<url>${url.replace(/</g,'').replace(/>/g,'')}</url>\n\nRespond with only the product name as a short search query (3-7 words). No punctuation, no explanation.`}]
       })
     });
     const data=await res.json();
@@ -3543,7 +3573,10 @@ async function resolveURL(url){
 }
 
 async function doSearch(){
-  const raw=document.getElementById('searchInput').value.trim();
+  const rawInput=document.getElementById('searchInput').value;
+  if(!rawInput||rawInput.trim().length===0){document.getElementById('searchInput').focus();return;}
+  if(rawInput.length>500){showToast('Search query too long (max 500 characters)');return;}
+  const raw=rawInput.replace(/[\x00-\x1F\x7F]/g,'').trim();
   if(!raw){document.getElementById('searchInput').focus();return;}
 
   if(isURL(raw)){
@@ -3571,7 +3604,7 @@ async function doSearch(){
 function addRecent(query){
   recentSearches=[query,...recentSearches.filter(q=>q!==query)].slice(0,6);
   document.getElementById('recentlyViewed').classList.add('visible');
-  document.getElementById('recentBar').innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${q.replace(/'/g,"\'")}')"><span class="recent-icon">&#8635;</span>${q}</span>`).join('');
+  document.getElementById('recentBar').innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${sanitizeHTML(q).replace(/'/g,"&#x27;")}')"><span class="recent-icon">&#8635;</span>${sanitizeHTML(q)}</span>`).join('');
   // Save to Convex if logged in
   const user=prixlyAuth.getCurrentUser();
   if(user&&user.clerkId&&window.convex){
@@ -3680,14 +3713,14 @@ async function fetchReviews(query){
   const summary=document.getElementById('reviewsSummary');
   sec.style.display='block';
   summary.innerHTML='';
-  body.innerHTML=`<div class="reviews-loading"><div class="reviews-mini-spin"></div>Fetching real reviews for <strong style="color:var(--text);margin-left:3px;">${query}</strong>...</div>`;
+  body.innerHTML=`<div class="reviews-loading"><div class="reviews-mini-spin"></div>Fetching real reviews for <strong style="color:var(--text);margin-left:3px;">${sanitizeHTML(query)}</strong>...</div>`;
 
   try{
-    const prompt=`You are a product review aggregator. For the product "${query}", provide 5 realistic customer reviews that reflect what actual buyers say on sites like Amazon, Trustpilot, and retail review pages.
+    const prompt=`You are a product review aggregator.\n\n<product_name>${query.replace(/</g,'').replace(/>/g,'')}</product_name>\n\nFor the product named above, provide 5 realistic customer reviews that reflect what actual buyers say on sites like Amazon, Trustpilot, and retail review pages.
 
 Return ONLY a JSON object in this exact format, no markdown, no extra text:
 {
-  "product": "${query}",
+  "product": "[product name]",
   "avg_rating": 4.3,
   "total_reviews": 12840,
   "reviews": [
@@ -3736,13 +3769,13 @@ Make reviews feel authentic — vary the rating (mix of 5★, 4★, 3★), writi
       const stars=Math.min(5,Math.max(1,r.rating));
       return `<div class="review-card">
         <div class="review-top">
-          <span class="review-author">${r.author}</span>
+          <span class="review-author">${sanitizeHTML(r.author)}</span>
           <span class="review-stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
-          <span class="review-source">${r.source}</span>
-          <span class="review-date">${r.date}</span>
+          <span class="review-source">${sanitizeHTML(r.source)}</span>
+          <span class="review-date">${sanitizeHTML(r.date)}</span>
         </div>
-        <div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.3rem;">${r.title}</div>
-        <div class="review-text">${r.text}</div>
+        <div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.3rem;">${sanitizeHTML(r.title)}</div>
+        <div class="review-text">${sanitizeHTML(r.text)}</div>
         ${r.verified?'<div class="review-verified">Verified purchase</div>':''}
       </div>`;
     }).join('')}</div>`;
@@ -3785,7 +3818,7 @@ const prixlyAuth={
   // Kept for backward compat — Clerk handles actual login/register
   register(name,email,password){ return {error:'Please use the sign-up form powered by Clerk.'}; },
   login(email,password){ return {error:'Please use the sign-in form powered by Clerk.'}; },
-  logout(){ if(window.Clerk) window.Clerk.signOut().then(()=>{ updateAuthUI(); showPage('home'); }); }
+  logout(){ if(window.Clerk) window.Clerk.signOut().then(()=>{ prixlyWishlist._cache=null; updateAuthUI(); showPage('home'); }); }
 };
 
 // Initialise Clerk and sync user state once loaded
@@ -3858,16 +3891,16 @@ const _wlRegistry={};
 function wishlistStarHTML(item){
   _wlRegistry[item.id]=item;
   const user=prixlyAuth.getCurrentUser();
-  const on=user?prixlyWishlist.has(user.email,item.id):false;
-  return`<button class="wishlist-btn${on?' wishlisted':''}" id="wbtn-${item.id}" onclick="toggleWishlistBtn(event,'${item.id}')" title="${on?'Remove from Wishlist':'Wishlist this item'}" aria-label="Wishlist">
+  const on=user?prixlyWishlist.has(user.clerkId,item.id):false;
+  return`<button class="wishlist-btn${on?' wishlisted':''}" id="wbtn-${item.id}" onclick="toggleWishlistBtn(event,'${item.id}')" title="${on?'Remove from Wishlist':'Wishlist this item'}" aria-label="${on?'Remove from Wishlist':'Add to Wishlist'}">
     <svg viewBox="0 0 24 24" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
   </button>`;
 }
 function inlineStarHTML(item){
   _wlRegistry[item.id]=item;
   const user=prixlyAuth.getCurrentUser();
-  const on=user?prixlyWishlist.has(user.email,item.id):false;
-  return`<button class="wishlist-btn wishlist-btn-inline${on?' wishlisted':''}" id="wbtn-${item.id}" onclick="toggleWishlistBtn(event,'${item.id}')" title="${on?'Remove from Wishlist':'Wishlist this item'}" aria-label="Wishlist">
+  const on=user?prixlyWishlist.has(user.clerkId,item.id):false;
+  return`<button class="wishlist-btn wishlist-btn-inline${on?' wishlisted':''}" id="wbtn-${item.id}" onclick="toggleWishlistBtn(event,'${item.id}')" title="${on?'Remove from Wishlist':'Wishlist this item'}" aria-label="${on?'Remove from Wishlist':'Add to Wishlist'}">
     <svg viewBox="0 0 24 24" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
   </button>`;
 }
@@ -3883,7 +3916,7 @@ function toggleWishlistBtn(e,id){
   if(!user){showPage('login');return;}
   const item=_wlRegistry[id];
   if(!item)return;
-  const added=prixlyWishlist.toggle(user.email,item);
+  const added=prixlyWishlist.toggle(user.clerkId,item);
   const btn=document.getElementById('wbtn-'+id);
   if(btn){
     btn.classList.toggle('wishlisted',added);
@@ -3892,7 +3925,7 @@ function toggleWishlistBtn(e,id){
   }
   // refresh wishlist grid if on alerts page
   if(document.getElementById('alertsDashboard')&&document.getElementById('alertsDashboard').style.display!=='none'){
-    renderWishlistGrid(user.email);
+    renderWishlistGrid(user.clerkId);
   }
 }
 
@@ -3919,27 +3952,27 @@ function updateNavState(){
   }
 }
 
-function renderWishlistGrid(email){
+function renderWishlistGrid(clerkId){
   const grid=document.getElementById('wishlistGrid');
   if(!grid)return;
-  const items=prixlyWishlist.getAll(email);
+  const items=prixlyWishlist.getAll(clerkId);
   if(!items.length){
     grid.innerHTML='<div class="wishlist-empty">No wishlisted items yet.<br>Hit the ★ star on any product to save it here.</div>';
     return;
   }
   grid.innerHTML=items.map(i=>`
     <div class="wishlist-card">
-      <button class="wishlist-card-remove" onclick="removeFromWishlist('${i.id}')" title="Remove">✕</button>
-      <div class="wishlist-card-name">${i.name}</div>
-      ${i.retailer?`<div class="wishlist-card-retailer">via ${i.retailer}</div>`:''}
+      <button class="wishlist-card-remove" onclick="removeFromWishlist('${sanitizeHTML(i.itemId||i.id)}')" title="Remove" aria-label="Remove ${sanitizeHTML(i.name)} from wishlist">✕</button>
+      <div class="wishlist-card-name">${sanitizeHTML(i.name)}</div>
+      ${i.retailer?`<div class="wishlist-card-retailer">via ${sanitizeHTML(i.retailer)}</div>`:''}
       ${i.price?`<div class="wishlist-card-price">${fmt(i.price)}</div>`:''}
     </div>`).join('');
 }
 function removeFromWishlist(id){
   const user=prixlyAuth.getCurrentUser();
   if(!user)return;
-  prixlyWishlist.remove(user.email,id);
-  renderWishlistGrid(user.email);
+  prixlyWishlist.remove(user.clerkId,id);
+  renderWishlistGrid(user.clerkId);
   // update any visible star buttons
   const btn=document.getElementById('wbtn-'+id);
   if(btn){btn.classList.remove('wishlisted');btn.title='Wishlist this item';btn.querySelector('svg').setAttribute('fill','none');}
@@ -4106,15 +4139,39 @@ async function handleLogin(){
 }
 
 function handleLogout(){
+  prixlyWishlist._cache=null;
   prixlyAuth.logout();
   updateNavState();
   showPage('home');
+}
+function confirmDeleteAccount(){
+  const modal=document.getElementById('deleteAccountModal');
+  if(modal){modal.style.display='flex';}
+}
+async function executeDeleteAccount(){
+  const user=prixlyAuth.getCurrentUser();
+  if(!user)return;
+  const modal=document.getElementById('deleteAccountModal');
+  if(modal)modal.style.display='none';
+  try{
+    if(window.convex){
+      await window.convex.mutation("users:deleteUserData",{clerkId:user.clerkId});
+    }
+    prixlyWishlist._cache=null;
+    if(window.Clerk){await window.Clerk.signOut();}
+    updateAuthUI();
+    showPage('home');
+    showToast('Your account has been permanently deleted.');
+  }catch(e){
+    showToast('Could not delete account. Please contact privacy.prixly.xyz@gmail.com');
+    console.error('Account deletion error:',e);
+  }
 }
 function submitAlert(){
   const emailEl=document.getElementById('alertEmail');
   const priceEl=document.getElementById('alertPrice');
   const e=emailEl.value.trim(),p=priceEl.value.trim();
-  if(!e||!e.includes('@')){
+  if(!e||e.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){
     emailEl.style.borderColor='#e74c3c';
     shakeField(emailEl);
     return;
@@ -4251,7 +4308,7 @@ function renderAlerts(){
   dashboard.style.display='block';
   document.getElementById('acctWelcomeName').textContent='Welcome back, '+user.name.split(' ')[0]+'!';
   document.getElementById('acctWelcomeEmail').textContent=user.email;
-  renderWishlistGrid(user.email);
+  renderWishlistGrid(user.clerkId);
 
   const dropped=ALERT_ITEMS.filter(i=>i.dropped);
   const watching=ALERT_ITEMS.filter(i=>!i.dropped);
@@ -4596,6 +4653,17 @@ function renderDeals(){
   document.getElementById('dealsContent').innerHTML=html2;
 }
 </script>
+<!-- ── DELETE ACCOUNT MODAL ── -->
+<div id="deleteAccountModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;max-width:420px;width:90%;margin:auto;">
+    <h2 id="deleteModalTitle" style="font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.75rem;">Delete your account?</h2>
+    <p style="font-size:.88rem;color:var(--muted);margin-bottom:1.5rem;">This will permanently delete your account, wishlist, and search history. <strong style="color:var(--text);">This cannot be undone.</strong></p>
+    <div style="display:flex;gap:.75rem;justify-content:flex-end;">
+      <button onclick="document.getElementById('deleteAccountModal').style.display='none'" style="background:none;border:1px solid var(--border2);color:var(--text);padding:.45rem 1.1rem;border-radius:var(--radius-xs);font-size:.85rem;cursor:pointer;">Cancel</button>
+      <button onclick="executeDeleteAccount()" style="background:#e74c3c;border:none;color:#fff;padding:.45rem 1.1rem;border-radius:var(--radius-xs);font-size:.85rem;font-weight:600;cursor:pointer;">Yes, delete everything</button>
+    </div>
+  </div>
+</div>
 <!-- ── COOKIE BANNER ── -->
 <div id="cookieBanner" class="hidden" role="region" aria-label="Cookie consent">
   <div class="cookie-banner-text">
