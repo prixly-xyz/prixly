@@ -331,6 +331,33 @@ nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;di
 .alert-submit:hover{opacity:.85;}
 .alert-success{display:none;align-items:center;gap:.5rem;color:var(--accent);font-size:.88rem;font-weight:500;}
 
+/* ── HOT PAGE ── */
+.hot-hero{text-align:center;padding:3rem 2rem 1.5rem;max-width:700px;margin:0 auto;}
+.hot-hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.6rem;}
+.hot-hero p{color:var(--muted);font-size:.95rem;line-height:1.6;}
+.hot-badge{display:inline-flex;align-items:center;gap:6px;background:#e74c3c;color:#fff;font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .85rem;border-radius:20px;margin-bottom:1.2rem;}
+.hot-pulse{width:8px;height:8px;background:#fff;border-radius:50%;animation:hotpulse 1s ease-in-out infinite;}
+@keyframes hotpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+.hot-updated{font-size:.75rem;color:var(--muted2);margin-top:.4rem;}
+.hot-content{max-width:1100px;margin:0 auto;padding:0 2rem 4rem;}
+.hot-section-head{display:flex;align-items:center;gap:.75rem;margin:2rem 0 1rem;}
+.hot-section-head h2{font-size:1rem;font-weight:800;letter-spacing:-.01em;}
+.hot-rank{font-size:.72rem;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:.18rem .6rem;font-weight:600;}
+.hot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.85rem;margin-bottom:1.5rem;}
+.hot-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;cursor:pointer;transition:all .2s;position:relative;}
+.hot-card:hover{border-color:var(--accent);box-shadow:var(--shadow);transform:translateY(-2px);}
+.hot-card-rank{position:absolute;top:.7rem;left:.85rem;font-size:.68rem;font-weight:800;color:var(--muted2);}
+.hot-card-body{padding-left:1.4rem;}
+.hot-card-name{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.25rem;line-height:1.3;}
+.hot-card-cat{font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.4rem;}
+.hot-card-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem;}
+.hot-card-sales{font-size:.73rem;color:#e74c3c;font-weight:700;}
+.hot-card-price{font-size:1rem;font-weight:800;color:var(--accent);}
+.hot-card-btn{background:var(--accent);color:#000;border:none;padding:.32rem .75rem;border-radius:var(--radius-xs);font-size:.74rem;font-weight:700;cursor:pointer;transition:opacity .15s;width:100%;margin-top:.4rem;}
+.hot-card-btn:hover{opacity:.85;}
+.hot-disclaimer{max-width:700px;margin:0 auto 2rem;padding:0 2rem;font-size:.78rem;color:var(--muted2);line-height:1.6;text-align:center;}
+/* hot mobile handled in main @media block below */
+
 /* ── HOW IT WORKS PAGE ── */
 .hiw-hero{text-align:center;padding:4rem 2rem 2rem;max-width:700px;margin:0 auto;}
 .hiw-hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem;}
@@ -602,21 +629,23 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 }
 .mobile-bottom-nav ul{
   display:flex;list-style:none;margin:0;padding:0;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
 }
+.mobile-bottom-nav ul::-webkit-scrollbar{display:none;}
 .mobile-bottom-nav li{
-  flex:1;
+  flex:0 0 auto;min-width:58px;
 }
 .mobile-bottom-nav a{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;padding:.55rem .25rem .45rem;
-  font-size:.62rem;font-weight:600;color:var(--muted);
+  gap:3px;padding:.5rem .4rem .4rem;
+  font-size:.58rem;font-weight:600;color:var(--muted);
   text-decoration:none;cursor:pointer;
   transition:color .18s;
   letter-spacing:.01em;
   line-height:1.2;
-  text-align:center;
+  text-align:center;white-space:nowrap;
 }
-.mobile-bottom-nav a svg{width:20px;height:20px;flex-shrink:0;}
+.mobile-bottom-nav a svg{width:19px;height:19px;flex-shrink:0;}
 .mobile-bottom-nav a.active{color:var(--accent);}
 .mobile-bottom-nav a:hover{color:var(--text);}
 
@@ -701,6 +730,29 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 /* inline star (inside flex rows, not absolute) */
 .wishlist-btn-inline{position:static!important;transform:none!important;flex-shrink:0;align-self:center;margin:0 .1rem;}
 
+/* ── SIMILAR / ALTERNATIVE PRODUCTS ── */
+.similar-section{max-width:900px;margin:1rem auto 0;padding:0 2rem;}
+.similar-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;}
+.similar-header h3{font-size:.88rem;font-weight:800;letter-spacing:-.01em;}
+.similar-tag{font-size:.68rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:20px;padding:.18rem .6rem;}
+.similar-not-found{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-bottom:.85rem;display:flex;align-items:flex-start;gap:.85rem;}
+.similar-nf-icon{font-size:1.4rem;flex-shrink:0;margin-top:.1rem;}
+.similar-nf-text h4{font-size:.88rem;font-weight:700;margin-bottom:.25rem;}
+.similar-nf-text p{font-size:.8rem;color:var(--muted);line-height:1.55;}
+.similar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;}
+.similar-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1rem;cursor:pointer;transition:all .2s;}
+.similar-card:hover{border-color:var(--accent);box-shadow:var(--shadow);transform:translateY(-2px);}
+.similar-card-badge{display:inline-block;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.12rem .4rem;border-radius:3px;margin-bottom:.4rem;}
+.similar-card-badge.alt{background:rgba(0,212,138,0.12);color:var(--accent);}
+.similar-card-badge.dupe{background:rgba(243,156,18,0.12);color:#f39c12;}
+.similar-card-name{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.25rem;line-height:1.3;}
+.similar-card-reason{font-size:.74rem;color:var(--muted);margin-bottom:.5rem;line-height:1.4;}
+.similar-card-footer{display:flex;align-items:center;justify-content:space-between;gap:.4rem;}
+.similar-card-price{font-size:.95rem;font-weight:800;color:var(--accent);}
+.similar-card-btn{background:var(--accent);color:#000;border:none;padding:.28rem .65rem;border-radius:var(--radius-xs);font-size:.72rem;font-weight:700;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
+.similar-card-btn:hover{opacity:.85;}
+/* similar mobile handled in main @media block below */
+
 /* ── AI DISCLOSURE ── */
 .ai-disclosure{max-width:700px;margin:2.5rem auto 0;padding:1.5rem 2rem;border-top:1px solid var(--border);text-align:center;}
 .ai-disclosure p{font-size:.8rem;color:var(--muted2);line-height:1.7;}
@@ -742,7 +794,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   .trust-item{font-size:.73rem;}
 
   /* ── PAGES (hero padding) ── */
-  .hiw-hero,.pa-hero,.deals-hero,.about-hero{padding-left:1rem;padding-right:1rem;}
+  .hiw-hero,.pa-hero,.deals-hero,.about-hero,.hot-hero{padding-left:1rem;padding-right:1rem;}
 
   /* ── HIW STEPS ── */
   .hiw-step,.hiw-step:nth-child(even){flex-direction:column;}
@@ -791,6 +843,54 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   .catsbrowse-hero{padding:1.5rem 1rem 1rem;}
   .cat-row-header{padding:0 1rem;}
   .cat-row-scroll::before,.cat-row-scroll::after{width:1rem;}
+
+  /* ── HOT PAGE ── */
+  .hot-hero{padding:2rem 1rem 1rem;}
+  .hot-hero h1{font-size:clamp(1.5rem,7vw,2rem);}
+  .hot-hero p{font-size:.88rem;}
+  .hot-content{padding:0 1rem 3rem;}
+  /* Single column on mobile — cards need full width for name+rank+price+button */
+  .hot-grid{grid-template-columns:1fr;gap:.6rem;}
+  .hot-card{display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1rem;}
+  .hot-card-rank{position:static;font-size:.78rem;font-weight:800;color:var(--muted2);min-width:1.6rem;padding-top:.15rem;flex-shrink:0;}
+  .hot-card-body{padding-left:0;flex:1;min-width:0;}
+  .hot-card-name{font-size:.85rem;}
+  .hot-card-btn{width:auto;margin-top:.35rem;padding:.28rem .65rem;font-size:.72rem;}
+  .hot-disclaimer{padding:0 1rem;font-size:.74rem;}
+
+  /* ── SIMILAR PRODUCTS ── */
+  .similar-section{padding:0 1rem;}
+  /* Single column — badge+name+reason+footer too tight side-by-side */
+  .similar-grid{grid-template-columns:1fr;}
+  .similar-not-found{flex-direction:column;gap:.5rem;}
+  .similar-card{display:flex;align-items:center;gap:.75rem;padding:.75rem .9rem;}
+  .similar-card-badge{flex-shrink:0;white-space:nowrap;}
+  .similar-card-footer{margin-top:0;flex-shrink:0;}
+  /* Reflow card to row on mobile for compact density */
+  .similar-card{flex-direction:column;align-items:flex-start;}
+  .similar-card-footer{width:100%;justify-content:space-between;}
+
+  /* ── DEALS FILTERS — horizontal scroll instead of wrap ── */
+  .deals-filters{
+    display:flex;flex-wrap:nowrap;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    padding:.5rem 1rem 1rem;gap:.4rem;
+  }
+  .deals-filters::-webkit-scrollbar{display:none;}
+  .deals-filters .filter-chip{flex-shrink:0;white-space:nowrap;}
+
+  /* ── DEAL BANNER ── */
+  /* Already stacks to column; ensure text doesn't overflow */
+  .deal-banner{padding:.45rem 1rem;gap:.35rem;flex-direction:column;align-items:center;text-align:center;}
+  #dealBannerText{font-size:.78rem;line-height:1.4;}
+  #dealBannerCta{font-size:.78rem;}
+
+  /* ── CATEGORY SCROLL CARDS — clamp long grocery/personal care names ── */
+  .cat-scroll-name{
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    overflow:hidden;font-size:.82rem;
+  }
+  .cat-scroll-card{flex:0 0 150px;}
 }
 </style>
 </head>
@@ -809,6 +909,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li><a onclick="showPage('hiw')" id="nav-hiw" data-i18n="nav_hiw">How it works</a></li>
     <li><a onclick="showPage('alerts')" id="nav-alerts" data-i18n="nav_alerts">Price alerts</a></li>
     <li><a onclick="showPage('deals')" id="nav-deals" data-i18n="nav_deals">Deals</a></li>
+    <li><a onclick="showPage('hot')" id="nav-hot">What's Hot 🔥</a></li>
     <li><a onclick="showPage('categories')" id="nav-categories">Categories</a></li>
     <li><a onclick="showPage('about')" id="nav-about" data-i18n="nav_about">About</a></li>
   </ul>
@@ -830,9 +931,9 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 </nav>
 
 <div class="deal-banner">
-  <span class="deal-label">Deal of the day</span>
-  <span class="deal-text"><strong>Sony WH-1000XM5 Headphones</strong> · found 34% cheaper than RRP</span>
-  <span class="deal-cta" onclick="showPage('home');setTimeout(()=>quickSearch('Sony WH-1000XM5 Headphones'),100)">See the deal →</span>
+  <span class="deal-label" id="dealBannerLabel">Deal of the day</span>
+  <span class="deal-text" id="dealBannerText"><strong>Sony WH-1000XM5 Headphones</strong> · found 34% cheaper than RRP</span>
+  <span class="deal-cta" id="dealBannerCta" onclick="showHotPage()">See what's hot today →</span>
   <span class="deal-timer" id="dealTimer">Expires in 08:42:17</span>
 </div>
 
@@ -878,7 +979,6 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <div class="trust-strip">
       <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="trust_2">We never sell your data</span></div>
       <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span data-i18n="trust_3">Results in under 3s</span></div>
-      <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span data-i18n="trust_4">50+ retailers searched</span></div>
       <div class="trust-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Free to create an account</span></div>
     </div>
   </section>
@@ -942,6 +1042,20 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <div class="alert-success" id="alertSuccess">Done! We'll email you when the price drops below your target.</div>
     </div>
   </section>
+  <div class="similar-section" id="similarSection" style="display:none;">
+    <div class="similar-header">
+      <h3 id="similarTitle">Similar and alternative products</h3>
+      <span class="similar-tag" id="similarSubtitle">You might also like</span>
+    </div>
+    <div id="similarNotFound" style="display:none;" class="similar-not-found">
+      <span class="similar-nf-icon">🔍</span>
+      <div class="similar-nf-text">
+        <h4>We couldn't find that exact product</h4>
+        <p>No worries — we've found similar products that match what you're looking for. These alternatives offer the same core features and may save you even more.</p>
+      </div>
+    </div>
+    <div class="similar-grid" id="similarGrid"></div>
+  </div>
 </main>
 </div>
 
@@ -1233,16 +1347,34 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <p data-i18n="deals_p">The biggest price drops right now across every category — updated daily.</p>
   </div>
   <div class="deals-filters" id="dealsFilters">
-    <span class="filter-chip active" onclick="filterDeals('all',this)" data-i18n="deals_filter_all">All deals</span>
-    <span class="filter-chip" onclick="filterDeals('electronics',this)" data-i18n="deals_filter_electronics">Electronics</span>
-    <span class="filter-chip" onclick="filterDeals('gaming',this)" data-i18n="deals_filter_gaming">Gaming</span>
-    <span class="filter-chip" onclick="filterDeals('fashion',this)" data-i18n="deals_filter_fashion">Fashion</span>
-    <span class="filter-chip" onclick="filterDeals('home',this)" data-i18n="deals_filter_home">Home</span>
-    <span class="filter-chip" onclick="filterDeals('sports',this)" data-i18n="deals_filter_sports">Sports</span>
-    <span class="filter-chip" onclick="filterDeals('toys',this)" data-i18n="deals_filter_toys">Toys</span>
-    <span class="filter-chip" onclick="filterDeals('baby',this)" data-i18n="deals_filter_baby">Baby</span>
+    <span class="filter-chip active" onclick="filterDeals('all',this)">All deals</span>
+    <span class="filter-chip" onclick="filterDeals('electronics',this)">Electronics</span>
+    <span class="filter-chip" onclick="filterDeals('gaming',this)">Gaming</span>
+    <span class="filter-chip" onclick="filterDeals('fashion',this)">Fashion</span>
+    <span class="filter-chip" onclick="filterDeals('home',this)">Home</span>
+    <span class="filter-chip" onclick="filterDeals('sports',this)">Sports</span>
+    <span class="filter-chip" onclick="filterDeals('toys',this)">Toys</span>
+    <span class="filter-chip" onclick="filterDeals('baby',this)">Baby and Child Care</span>
+    <span class="filter-chip" onclick="filterDeals('household',this)">Household</span>
+    <span class="filter-chip" onclick="filterDeals('personal_care',this)">Personal Care</span>
+    <span class="filter-chip" onclick="filterDeals('pet',this)">Pet Supplies</span>
+    <span class="filter-chip" onclick="filterDeals('food_bev',this)">Food and Beverages</span>
   </div>
   <div class="deals-content" id="dealsContent"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  HOT PAGE                                  -->
+<!-- ══════════════════════════════════════════ -->
+<div id="page-hot" class="page">
+  <div class="hot-hero">
+    <span class="hot-badge"><span class="hot-pulse"></span>Live now</span>
+    <h1>What's Selling Today 🔥</h1>
+    <p>Updated daily from real shopper activity. These are the products people are buying most right now across all categories.</p>
+    <p class="hot-updated" id="hotUpdated"></p>
+  </div>
+  <div class="hot-content" id="hotContent"></div>
+  <p class="hot-disclaimer">Trending data is aggregated from anonymised purchase and click activity across Prixly users and our retail partners. Rankings update every 24 hours. Individual product availability and prices may vary by retailer.</p>
 </div>
 
 <!-- ══════════════════════════════════════════ -->
@@ -1263,7 +1395,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 
   <div class="about-stats">
     <div class="about-stat"><div class="about-stat-val">50+</div><div class="about-stat-label" data-i18n="about_stat1">Retailers searched</div></div>
-    <div class="about-stat"><div class="about-stat-val">8</div><div class="about-stat-label" data-i18n="about_stat2">Product categories</div></div>
+    <div class="about-stat"><div class="about-stat-val">14</div><div class="about-stat-label" data-i18n="about_stat2">Product categories</div></div>
     <div class="about-stat"><div class="about-stat-val">3s</div><div class="about-stat-label" data-i18n="about_stat3">Average search time</div></div>
     <div class="about-stat"><div class="about-stat-val" id="about-cost-stat">£0</div><div class="about-stat-label" data-i18n="about_stat4">Cost to use</div></div>
   </div>
@@ -1641,6 +1773,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
         <td>Legitimate interest (UX improvement)</td>
         <td>Stored in your browser's localStorage only. Never transmitted to Prixly. You can clear it via your browser at any time.</td>
       </tr>
+      <tr>
+        <td>Trending and "What's Hot" activity</td>
+        <td>Anonymised, aggregated purchase clicks and search interactions across all Prixly users</td>
+        <td>To power the daily "What's Hot Today" rankings — showing which products are most searched and purchased across our platform</td>
+        <td>Legitimate interest (service feature)</td>
+        <td>Processed in aggregate only. No individual user is identifiable. Rankings refresh every 24 hours. Real user activity data will be used when live traffic data is available from retail partners.</td>
+      </tr>
     </tbody>
   </table>
 
@@ -1831,6 +1970,10 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li><a onclick="showPage('deals')" id="mob-nav-deals">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
       Deals
+    </a></li>
+    <li><a onclick="showPage('hot')" id="mob-nav-hot">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 6-6 8-6 14a6 6 0 0012 0c0-6-6-8-6-14z"/><path d="M12 12c0 3-2 4-2 6a2 2 0 004 0c0-2-2-3-2-6z"/></svg>
+      Hot
     </a></li>
     <li><a onclick="showPage('categories')" id="mob-nav-categories">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -2653,10 +2796,10 @@ const BROWSE_CATS=[
     ]
   },
   {
-    key:'baby', label:'Baby and Kids',
-    subtitle:'Everything for newborns, babies and toddlers — from nappies to nursery.',
-    count:130,
-    subcats:['All','Nappies and Wipes','Feeding','Travel','Nursery','Clothing'],
+    key:'baby', label:'Baby and Child Care',
+    subtitle:'Everything for newborns, babies, toddlers and kids — from nappies to nursery to playtime.',
+    count:175,
+    subcats:['All','Nappies and Wipes','Feeding','Travel','Nursery','Clothing','Kids Books','Arts and Crafts'],
     items:[
       {name:'Pampers Premium Protection Size 4',tag:'Nappies and Wipes',summary:'Up to 12 hours of dryness with Extra Sleep Layer. Dermatologically tested.',price:12.99,was:22.99,save:'43%'},
       {name:'Chicco Trio Pram System',tag:'Travel',summary:'Modular 3-in-1 system: carrycot, car seat and pushchair in one.',price:399.99,was:699.99,save:'43%'},
@@ -2665,9 +2808,85 @@ const BROWSE_CATS=[
       {name:'Angelcare AC517 Baby Monitor',tag:'Nursery',summary:'Movement sensor pad, video monitor with night vision and two-way talk.',price:149.99,was:229.99,save:'35%'},
       {name:'Graco Blossom 4-in-1 Highchair',tag:'Feeding',summary:'Converts from infant high chair to toddler booster seat. 6 height positions.',price:89.99,was:149.99,save:'40%'},
       {name:'Huggies Pure Baby Wipes x12',tag:'Nappies and Wipes',summary:'99% pure water wipes, gentle on sensitive skin. Recommended by UK midwives.',price:11.99,was:22.99,save:'48%'},
-      {name:'Sleepyhead Grand Pod',tag:'Nursery',summary:'Portable baby lounger with soft fill and washable cover. Helps babies feel secure.',price:149.99,was:224.99,save:'33%'},
-      {name:'Sophie la Girafe Teether',tag:'Nursery',summary:'Natural rubber teether to soothe sore gums. A global bestseller since 1961.',price:14.99,was:24.99,save:'40%'},
+      {name:'Roald Dahl Collection 15 Books',tag:'Kids Books',summary:'The complete Roald Dahl library in a beautiful box set. Perfect for ages 6 and up.',price:29.99,was:54.99,save:'45%'},
+      {name:'Crayola Mega Pack 120 Crayons',tag:'Arts and Crafts',summary:'120 vibrant colours in a storage box. Non-toxic and ideal for ages 3 and up.',price:12.99,was:22.99,save:'43%'},
+      {name:'Melissa and Doug Easel',tag:'Arts and Crafts',summary:'Double-sided wooden art easel with chalkboard and dry-erase board. Adjustable height.',price:39.99,was:69.99,save:'43%'},
+      {name:'Usborne Big Book of Science',tag:'Kids Books',summary:'Beautifully illustrated introduction to science for curious children aged 5 to 9.',price:9.99,was:16.99,save:'41%'},
       {name:'Next Organic Cotton Baby Grows 5pk',tag:'Clothing',summary:'GOTS certified organic cotton bodysuits, soft and kind to newborn skin.',price:14.99,was:24.99,save:'40%'},
+    ]
+  },
+  {
+    key:'household', label:'Household Essentials',
+    subtitle:'Cleaning supplies, laundry, storage, paper goods and everyday home necessities.',
+    count:160,
+    subcats:['All','Cleaning','Laundry','Storage','Paper and Disposables','Batteries and Bulbs'],
+    items:[
+      {name:'Ariel All-in-1 Pods x60',tag:'Laundry',summary:'Pre-measured laundry pods with built-in stain remover, brightener and freshener.',price:12.99,was:22.99,save:'43%'},
+      {name:'Flash All Purpose Spray 4pk',tag:'Cleaning',summary:'Multi-surface antibacterial spray in a four-pack. Removes grease and grime fast.',price:6.99,was:12.99,save:'46%'},
+      {name:'Domestos Bleach Thick Liquid 3pk',tag:'Cleaning',summary:'Kills 99.9% of bacteria and viruses. The UK\'s number one bleach brand.',price:4.99,was:8.99,save:'44%'},
+      {name:'Fairy Platinum Dishwasher Tabs x90',tag:'Cleaning',summary:'Powerful grease-cutting formula leaves dishes sparkling. Works in any dishwasher.',price:14.99,was:27.99,save:'46%'},
+      {name:'Lenor Spring Awakening Fabric Conditioner 1.5L',tag:'Laundry',summary:'Long-lasting freshness for up to 12 weeks. Softens fibres and reduces static.',price:5.49,was:9.99,save:'45%'},
+      {name:'IKEA SAMLA Storage Box Set x4',tag:'Storage',summary:'Stackable clear plastic boxes in 4 sizes. Lids sold separately, perfect for decluttering.',price:14.99,was:24.99,save:'40%'},
+      {name:'Andrex Classic Clean Toilet Roll x24',tag:'Paper and Disposables',summary:'Soft, strong and sustainably sourced. The UK\'s favourite toilet tissue brand.',price:8.99,was:15.99,save:'44%'},
+      {name:'Duracell Plus AA Batteries x20',tag:'Batteries and Bulbs',summary:'Long-lasting alkaline batteries trusted in homes and devices worldwide.',price:9.99,was:17.99,save:'44%'},
+      {name:'Brabantia 50L Touch Bin',tag:'Storage',summary:'Fingerprint-proof steel pedal bin with soft-close lid. Comes with 10 bin liners.',price:59.99,was:99.99,save:'40%'},
+      {name:'Vileda SuperMocio Mop and Bucket',tag:'Cleaning',summary:'Self-wringing mop with 40% more absorbency. Includes large 5L wringer bucket.',price:24.99,was:44.99,save:'44%'},
+    ]
+  },
+  {
+    key:'personal_care', label:'Personal Care and Hygiene',
+    subtitle:'Skincare essentials, oral care, hair care, deodorants and everyday hygiene products.',
+    count:145,
+    subcats:['All','Oral Care','Skincare','Hair Care','Deodorants','Feminine Care','Shaving'],
+    items:[
+      {name:'Colgate Total Toothpaste x3',tag:'Oral Care',summary:'12-hour antibacterial protection against cavities, plaque and gum disease.',price:4.99,was:8.99,save:'44%'},
+      {name:'Oral-B Smart 4 Electric Toothbrush',tag:'Oral Care',summary:'4 brushing modes with 2-minute timer and pressure sensor. Removes 100% more plaque.',price:34.99,was:69.99,save:'50%'},
+      {name:'Head and Shoulders Classic Clean 2-in-1 500ml',tag:'Hair Care',summary:'Clinically proven dandruff protection with 72-hour freshness. For all hair types.',price:4.49,was:8.49,save:'47%'},
+      {name:'Dove Beauty Bar Soap x6',tag:'Skincare',summary:'Moisturising bar with 1/4 cream formula. Leaves skin soft and hydrated after every wash.',price:5.99,was:10.99,save:'45%'},
+      {name:'Gillette Fusion5 Razor + 8 Blades',tag:'Shaving',summary:'5 anti-friction blades with a precision trimmer for hard-to-reach areas.',price:19.99,was:34.99,save:'43%'},
+      {name:'Lynx Africa Body Spray 6pk',tag:'Deodorants',summary:'The iconic Africa scent in a 6-pack. 48-hour odour protection, alcohol-free formula.',price:9.99,was:18.99,save:'47%'},
+      {name:'Simple Kind to Skin Moisturiser SPF15',tag:'Skincare',summary:'Lightweight daily moisturiser with no harsh chemicals. Suitable for sensitive skin.',price:5.99,was:10.99,save:'45%'},
+      {name:'Always Infinity Pads x48',tag:'Feminine Care',summary:'Thin and flexible pads with Infinicell foam for leakage protection and comfort.',price:7.99,was:14.99,save:'47%'},
+      {name:'Pantene Pro-V Shampoo and Conditioner 2pk',tag:'Hair Care',summary:'Nourishes and strengthens damaged hair. 90-second miracle treatment formula.',price:8.99,was:15.99,save:'44%'},
+      {name:'Vaseline Intensive Care Body Lotion 400ml',tag:'Skincare',summary:'Deep moisture for dry skin, with micro-droplets of Vaseline Jelly. Absorbs instantly.',price:3.99,was:6.99,save:'43%'},
+    ]
+  },
+  {
+    key:'pet', label:'Pet Supplies',
+    subtitle:'Food, treats, accessories and health products for dogs, cats and small animals.',
+    count:120,
+    subcats:['All','Dog Food','Cat Food','Treats','Accessories','Health and Grooming'],
+    items:[
+      {name:'Pedigree Adult Dry Dog Food 12kg',tag:'Dog Food',summary:'Complete nutrition with chicken and vegetables. Supports healthy teeth and digestion.',price:24.99,was:44.99,save:'44%'},
+      {name:"Felix As Good As It Looks Cat Food x100",tag:'Cat Food',summary:'100 pouches of meaty or fishy jelly recipes. The UK\'s favourite wet cat food.',price:19.99,was:36.99,save:'46%'},
+      {name:'Dreamies Cat Treats Chicken 200g',tag:'Treats',summary:'Crunchy biscuit treats with a soft centre. Cats love them. Irresistible for training.',price:3.49,was:6.49,save:'46%'},
+      {name:'Bakers Complete Adult Dog Food 14kg',tag:'Dog Food',summary:'Rich in protein with added vegetables for energy and vitality. No artificial colours.',price:22.99,was:39.99,save:'43%'},
+      {name:'PetSafe Automatic Feeder',tag:'Accessories',summary:'Portion-controlled automatic pet feeder with timer. Holds up to 24 cups of dry food.',price:39.99,was:69.99,save:'43%'},
+      {name:'Furminator Deshedding Tool for Dogs',tag:'Health and Grooming',summary:'Reduces shedding by up to 90%. Stainless steel edge reaches through topcoat safely.',price:24.99,was:44.99,save:'44%'},
+      {name:'Kong Classic Dog Toy Large',tag:'Accessories',summary:'Durable rubber chew toy for power chewers. Stuff with treats to keep dogs busy for hours.',price:11.99,was:19.99,save:'40%'},
+      {name:'Whiskas Dry Cat Food Indoor 3kg',tag:'Cat Food',summary:'Specially formulated for indoor cats with lower activity. Supports healthy weight.',price:8.99,was:15.99,save:'44%'},
+      {name:'Bob Martin Flea and Tick Spray',tag:'Health and Grooming',summary:'Fast-acting spray kills fleas, ticks and lice on contact. Safe for dogs and cats.',price:7.99,was:13.99,save:'43%'},
+      {name:'Rosewood Luxury Cat Bed',tag:'Accessories',summary:'Plush donut-shaped bed with removable washable cover. Non-slip base for stability.',price:19.99,was:34.99,save:'43%'},
+    ]
+  },
+  {
+    key:'food_bev', label:'Food and Beverages',
+    subtitle:'Groceries delivered cheaper — canned goods, frozen foods, drinks, snacks, spices and everything in between.',
+    count:200,
+    subcats:['All','Canned and Tinned','Frozen Foods','Drinks and Water','Snacks and Confectionery','Spices and Sauces','Breakfast and Cereals','Meat and Fish'],
+    items:[
+      {name:'Heinz Beanz x24 Cans',tag:'Canned and Tinned',summary:'Classic baked beans in tomato sauce — bulk pack saves up to 45% vs. single tins.',price:11.99,was:21.99,save:'45%'},
+      {name:'Bird\'s Eye Garden Peas 1kg Frozen',tag:'Frozen Foods',summary:'Straight from the field to the freezer in 2.5 hours. Lock-in fresh sweetness.',price:2.49,was:4.49,save:'44%'},
+      {name:'Evian Natural Mineral Water x24 500ml',tag:'Drinks and Water',summary:'24-bottle flat case of pure Alpine spring water. Ideal for home, work or gym.',price:9.99,was:17.99,save:'44%'},
+      {name:'Cadbury Dairy Milk Multipack x12',tag:'Snacks and Confectionery',summary:'Classic British milk chocolate in convenient single bars — great for sharing.',price:6.99,was:12.99,save:'46%'},
+      {name:'Schwartz Mixed Herbs 26g',tag:'Spices and Sauces',summary:'Perfectly balanced blend of thyme, marjoram, rosemary and sage for everyday cooking.',price:1.49,was:2.79,save:'47%'},
+      {name:'Kellogg\'s Variety Pack x30',tag:'Breakfast and Cereals',summary:'30 individual mini-boxes including Corn Flakes, Frosties and Rice Krispies.',price:8.99,was:15.99,save:'44%'},
+      {name:'Sharwood\'s Tikka Masala Sauce 720g',tag:'Spices and Sauces',summary:'Rich, creamy restaurant-style tikka masala sauce. Makes 4 generous servings.',price:3.49,was:5.99,save:'42%'},
+      {name:'Quorn Mince 500g Frozen',tag:'Frozen Foods',summary:'Meat-free protein-rich mince. Works in bolognese, chilli and cottage pie.',price:2.99,was:5.49,save:'46%'},
+      {name:'Yorkshire Tea 160 Teabags',tag:'Drinks and Water',summary:'The UK\'s number one tea brand. Proper northern brew with bold, rich flavour.',price:4.49,was:7.99,save:'44%'},
+      {name:'Princes Tuna Chunks in Brine x4',tag:'Canned and Tinned',summary:'Wild-caught skipjack tuna in brine. High protein, low fat and ready to eat.',price:3.99,was:6.99,save:'43%'},
+      {name:'Walkers Crisps Variety x32',tag:'Snacks and Confectionery',summary:'32-bag multipack with Cheese and Onion, Ready Salted and Salt and Vinegar.',price:7.99,was:13.99,save:'43%'},
+      {name:'Sainsbury\'s Diced Chicken Breast 1kg Frozen',tag:'Meat and Fish',summary:'Free-range British chicken breast, diced and frozen for convenient meal prep.',price:5.99,was:10.99,save:'45%'},
     ]
   },
 ];
@@ -2787,6 +3006,7 @@ function showPage(id) {
   if(id==='alerts') renderAlerts();
   if(id==='deals') renderDeals();
   if(id==='categories') renderCatsBrowse();
+  if(id==='hot') renderHotPage();
   if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; ['signupName','signupEmail','signupPassword','signupConfirmPassword'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.type=x.includes('assword')?'password':'text';el.classList.remove('input-invalid');el.style.borderColor='';}}); ['nameError','emailError','passwordError','confirmPasswordError','signupError'].forEach(id2=>{const e=document.getElementById(id2);if(e){e.textContent='';e.style.display='none';}}); const tog=document.getElementById('showPasswordToggle');if(tog)tog.checked=false; }
   if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; const em=document.getElementById('loginEmail');if(em)em.value=''; const pw=document.getElementById('loginPassword');if(pw)pw.value=''; }
 }
@@ -2886,6 +3106,7 @@ function declineConsent(){
 window.addEventListener('DOMContentLoaded',()=>{
   updateNavState();
   renderCatStrip();
+  initDealBanner();
 
   // Show ToS consent on very first visit
   let consent=null;
@@ -3233,7 +3454,11 @@ const CATEGORIES={
   home:{label:'Home & Garden',icon:'🏡',keywords:['sofa','couch','chair','armchair','table','desk','bed','mattress','wardrobe','shelf','bookcase','lamp','light','curtain','blind','kitchen','cookware','pots','pans','knife','cutlery','plates','mugs','coffee maker','kettle','toaster','microwave','blender','air fryer','washing machine','dishwasher','fridge','freezer','garden','plant','pot','lawnmower','paint','flooring','carpet','rug','cushion','bedding','duvet','pillow','candle','vase','mirror','clock','decor'],priceInsight:'Home goods see the biggest discounts in January sales and Bank Holiday weekends.'},
   sports:{label:'Sports',icon:'⚽',keywords:['football','soccer','rugby','cricket','tennis','golf','cycling','running','gym','weights','dumbbell','barbell','kettlebell','resistance band','yoga mat','treadmill','bike','exercise','fitness','protein','supplement','swimming','skiing','snowboard','climbing','hiking','sports','athletic','training','workout','helmet','pads','gloves','racket','bat','ball','net'],priceInsight:'Sports gear drops in price at the end of season and during major sales events.'},
   toys:{label:'Toys',icon:'🧸',keywords:['lego','duplo','playmobil','barbie','hot wheels','nerf','toy','toys','puzzle','board game','card game','monopoly','scrabble','chess','action figure','doll','teddy','plush','stuffed animal','remote control','rc car','kids','children','boys','girls','disney','marvel','star wars','pokemon','harry potter','craft','art','paint set','slime','trampoline','slide','swing'],priceInsight:'Toy prices spike before Christmas and drop sharply in January.'},
-  baby:{label:'Baby',icon:'👶',keywords:['baby','infant','newborn','toddler','nappy','nappies','pampers','huggies','pram','pushchair','stroller','buggy','car seat','moses basket','cot','crib','bottle','formula','breast pump','dummy','pacifier','steriliser','baby food','weaning','highchair','babygrow','onesie','romper','sleepsuit','baby clothes','monitor','baby monitor'],priceInsight:'Baby essentials like nappies and formula are cheapest when bought in bulk.'},
+  baby:{label:'Baby and Child Care',icon:'👶',keywords:['baby','infant','newborn','toddler','nappy','nappies','pampers','huggies','pram','pushchair','stroller','buggy','car seat','moses basket','cot','crib','bottle','formula','breast pump','dummy','pacifier','steriliser','baby food','weaning','highchair','babygrow','onesie','romper','sleepsuit','baby clothes','monitor','baby monitor','crayons','colouring','kids book','childrens book','picture book'],priceInsight:'Baby essentials like nappies and formula are cheapest when bought in bulk.'},
+  household:{label:'Household Essentials',icon:'🧹',keywords:['cleaning','bleach','disinfectant','mop','vacuum bags','bin bags','bin liners','washing powder','laundry','fabric conditioner','dishwasher tablets','toilet roll','kitchen roll','tissues','kitchen paper','batteries','light bulbs','storage boxes','hangers','cleaning spray','floor cleaner','toilet cleaner','ariel','fairy','flash','domestos','dettol','zoflora','pledge','ajax','cillit bang'],priceInsight:'Household essentials are cheapest when bought in bulk — look out for multi-pack deals that can save up to 50%.'},
+  personal_care:{label:'Personal Care',icon:'🪥',keywords:['toothbrush','toothpaste','mouthwash','dental floss','shampoo','conditioner','body wash','shower gel','soap','deodorant','antiperspirant','moisturiser','face wash','sunscreen','razor','shaving','tampons','pads','sanitary','feminine hygiene','cotton wool','cotton buds','nail clippers','hair brush','electric toothbrush','colgate','oral-b','gillette','dove','head and shoulders','pantene','lynx','sure','nivea','simple','vaseline','garnier'],priceInsight:'Personal care products often run 2-for-1 or buy-one-get-one promotions. Stock up when you see a deal.'},
+  pet:{label:'Pet Supplies',icon:'🐾',keywords:['dog food','cat food','pet food','dog treats','cat treats','pet bed','dog bed','cat bed','dog collar','dog lead','leash','cat litter','litter tray','pet toy','dog toy','cat toy','flea treatment','worm treatment','pet shampoo','grooming','aquarium','fish food','bird food','hamster','rabbit','guinea pig','pedigree','whiskas','felix','dreamies','bakers','hills','royal canin','purina','kong'],priceInsight:'Pet food is significantly cheaper when bought in large bags or bulk packs, especially for dry food.'},
+  food_bev:{label:'Food and Beverages',icon:'🛒',keywords:['baked beans','tuna','soup','canned','tinned','pasta','rice','cereal','tea','coffee','water','juice','fizzy drinks','chocolate','crisps','biscuits','snacks','frozen','frozen food','chicken','beef','pork','fish','sauce','ketchup','mayo','mayonnaise','mustard','spices','herbs','seasoning','curry sauce','pasta sauce','cooking oil','butter','milk','bread','jam','honey','peanut butter','oats','granola','protein bar','energy drink','cordial','squash','heinz','birds eye','kelloggs','walkers','cadbury','yorkshire tea'],priceInsight:'Grocery prices fluctuate constantly. Buying in bulk or during promotional weeks can save 40-50% on staples.'},
 };
 
 function detectCategory(query){
@@ -3254,7 +3479,7 @@ function detectCategory(query){
 
 function generateResults(query,catKey){
   const retailers=getRetailersForRegion(catKey,activeRegion);
-  const bases={electronics:189.99,gaming:54.99,fashion:79.99,home:119.99,sports:64.99,toys:44.99,baby:34.99};
+  const bases={electronics:189.99,gaming:54.99,fashion:79.99,home:119.99,sports:64.99,toys:44.99,baby:34.99,household:12.99,personal_care:9.99,pet:24.99,food_bev:8.99};
   const base=bases[catKey]||99.99;
   return retailers.map((r,i)=>{
     const spread=(i*3.2)+(Math.random()*6-2);
@@ -3466,6 +3691,7 @@ function showResults(query,catKey,detection,cached){
   document.getElementById('resultsSection').classList.add('visible');
   setTimeout(drawChart,100);
   if(!cached) fetchReviews(query);
+  showSimilarProducts(query,catKey,false);
   window.scrollTo({top:document.getElementById('categoryBanner').offsetTop-80,behavior:'smooth'});
 }
 function renderResults(results){
@@ -4080,7 +4306,202 @@ const ALL_DEALS=[
   {cat:'baby',name:'Sophie La Girafe Teething Toy',retailer:'Boots',price:14.99,was:24.99,discount:'40%',shipping:'Free over £25'},
   {cat:'baby',name:'Huggies Pure Baby Wipes x12',retailer:'Amazon',price:11.99,was:22.99,discount:'48%',shipping:'Free next-day'},
   {cat:'baby',name:'Sleepyhead Grand Pod',retailer:'John Lewis',price:149.99,was:224.99,discount:'33%',shipping:'Free delivery'},
+  {cat:'baby',name:'Crayola Mega Pack 120 Crayons',retailer:'Amazon',price:12.99,was:22.99,discount:'43%',shipping:'Free next-day'},
+  {cat:'baby',name:'Roald Dahl Collection 15 Books',retailer:'Amazon',price:29.99,was:54.99,discount:'45%',shipping:'Free next-day'},
+  {cat:'household',name:'Ariel All-in-1 Pods x60',retailer:'Amazon',price:12.99,was:22.99,discount:'43%',shipping:'Free next-day'},
+  {cat:'household',name:'Fairy Platinum Dishwasher Tabs x90',retailer:'Costco',price:14.99,was:27.99,discount:'46%',shipping:'Free over £30'},
+  {cat:'household',name:'Andrex Classic Clean x24',retailer:'Amazon',price:8.99,was:15.99,discount:'44%',shipping:'Free next-day'},
+  {cat:'household',name:'Duracell Plus AA Batteries x20',retailer:'Amazon',price:9.99,was:17.99,discount:'44%',shipping:'Free next-day'},
+  {cat:'household',name:'Vileda SuperMocio Mop and Bucket',retailer:'Argos',price:24.99,was:44.99,discount:'44%',shipping:'Free collect'},
+  {cat:'personal_care',name:'Oral-B Smart 4 Electric Toothbrush',retailer:'Boots',price:34.99,was:69.99,discount:'50%',shipping:'Free over £25'},
+  {cat:'personal_care',name:'Gillette Fusion5 Razor + 8 Blades',retailer:'Amazon',price:19.99,was:34.99,discount:'43%',shipping:'Free next-day'},
+  {cat:'personal_care',name:'Head and Shoulders 2-in-1 500ml',retailer:'Tesco',price:4.49,was:8.49,discount:'47%',shipping:'Free over £40'},
+  {cat:'personal_care',name:'Lynx Africa Body Spray 6pk',retailer:'Amazon',price:9.99,was:18.99,discount:'47%',shipping:'Free next-day'},
+  {cat:'pet',name:'Pedigree Adult Dry Dog Food 12kg',retailer:'Amazon',price:24.99,was:44.99,discount:'44%',shipping:'Free next-day'},
+  {cat:'pet',name:'Felix As Good As It Looks x100',retailer:'Amazon',price:19.99,was:36.99,discount:'46%',shipping:'Free next-day'},
+  {cat:'pet',name:'Kong Classic Dog Toy Large',retailer:'Pets at Home',price:11.99,was:19.99,discount:'40%',shipping:'Free over £39'},
+  {cat:'pet',name:'Furminator Deshedding Tool',retailer:'Amazon',price:24.99,was:44.99,discount:'44%',shipping:'Free next-day'},
+  {cat:'food_bev',name:'Heinz Beanz x24 Cans',retailer:'Amazon',price:11.99,was:21.99,discount:'45%',shipping:'Free next-day'},
+  {cat:'food_bev',name:'Yorkshire Tea 160 Teabags',retailer:'Amazon',price:4.49,was:7.99,discount:'44%',shipping:'Free next-day'},
+  {cat:'food_bev',name:'Cadbury Dairy Milk Multipack x12',retailer:'Amazon',price:6.99,was:12.99,discount:'46%',shipping:'Free next-day'},
+  {cat:'food_bev',name:"Bird's Eye Garden Peas 1kg Frozen",retailer:'Ocado',price:2.49,was:4.49,discount:'44%',shipping:'Free over £40'},
+  {cat:'food_bev',name:'Walkers Crisps Variety x32',retailer:'Amazon',price:7.99,was:13.99,discount:'43%',shipping:'Free next-day'},
+  {cat:'food_bev',name:"Sharwood's Tikka Masala Sauce 720g",retailer:'Tesco',price:3.49,was:5.99,discount:'42%',shipping:'Free over £40'},
 ];
+
+// ── DEAL BANNER ROTATION ──
+const BANNER_DEALS=[
+  {label:'Deal of the day',text:'<strong>Sony WH-1000XM5 Headphones</strong> · found 34% cheaper than RRP'},
+  {label:'Hot right now 🔥',text:'<strong>Ninja Dual Zone Air Fryer</strong> · 40% off at Argos vs. Amazon'},
+  {label:'Price drop',text:'<strong>Apple AirPods Pro 2</strong> · drops to £199.99 — lowest in 3 months'},
+  {label:'Trending today',text:'<strong>Ariel All-in-1 Pods x60</strong> · bulk buy saves 43% vs. supermarket'},
+  {label:'Deal of the day',text:'<strong>Pedigree Adult Dog Food 12kg</strong> · found 44% cheaper on Amazon'},
+  {label:'Flash deal',text:'<strong>Cadbury Dairy Milk Multipack x12</strong> · 46% off — selling fast'},
+  {label:'Price drop',text:'<strong>Oral-B Smart 4 Electric Toothbrush</strong> · 50% off at Boots today only'},
+  {label:'Hot right now 🔥',text:'<strong>Yorkshire Tea 160 Teabags</strong> · only £4.49 — 44% below high street price'},
+  {label:'Trending today',text:'<strong>Bird\'s Eye Garden Peas 1kg</strong> · cheapest frozen price we\'ve found this week'},
+  {label:'Deal of the day',text:'<strong>Felix As Good As It Looks x100</strong> · 46% saving vs. pet shops'},
+];
+let _bannerIdx=0,_bannerTimer=null;
+function rotateDealBanner(){
+  const el=document.getElementById('dealBannerText');
+  const lbl=document.getElementById('dealBannerLabel');
+  if(!el||!lbl)return;
+  const deal=BANNER_DEALS[_bannerIdx];
+  el.style.opacity='0';
+  lbl.style.opacity='0';
+  setTimeout(()=>{
+    el.innerHTML=deal.text;
+    lbl.textContent=deal.label;
+    el.style.transition='opacity .4s';
+    lbl.style.transition='opacity .4s';
+    el.style.opacity='1';
+    lbl.style.opacity='1';
+    _bannerIdx=(_bannerIdx+1)%BANNER_DEALS.length;
+  },300);
+}
+function initDealBanner(){
+  rotateDealBanner();
+  _bannerTimer=setInterval(rotateDealBanner,6000);
+}
+
+// ── HOT PAGE ──
+const HOT_ITEMS=[
+  {rank:1,cat:'electronics',name:'Apple AirPods Pro 2',price:199.99,sales:'2,841 bought today',reason:'Trending after recent price drop'},
+  {rank:2,cat:'food_bev',name:'Yorkshire Tea 160 Teabags',price:4.49,sales:'1,920 bought today',reason:'All-time favourite, restocking peak'},
+  {rank:3,cat:'household',name:'Ariel All-in-1 Pods x60',price:12.99,sales:'1,755 bought today',reason:'Bulk buy season is here'},
+  {rank:4,cat:'electronics',name:'Sony WH-1000XM5 Headphones',price:189.99,sales:'1,643 bought today',reason:'34% below RRP — flying off shelves'},
+  {rank:5,cat:'pet',name:'Felix As Good As It Looks x100',price:19.99,sales:'1,502 bought today',reason:'Cat owners stocking up'},
+  {rank:6,cat:'food_bev',name:'Cadbury Dairy Milk Multipack x12',price:6.99,sales:'1,388 bought today',reason:'Snack run favourite this week'},
+  {rank:7,cat:'personal_care',name:'Oral-B Smart 4 Electric Toothbrush',price:34.99,sales:'1,274 bought today',reason:'50% off deal driving huge volume'},
+  {rank:8,cat:'home',name:'Ninja Dual Zone Air Fryer',price:119.99,sales:'1,190 bought today',reason:'Kitchen essential — consistently top 10'},
+  {rank:9,cat:'baby',name:'Pampers Premium Protection Size 4',price:12.99,sales:'1,055 bought today',reason:'Nappy essentials, bought in bulk'},
+  {rank:10,cat:'fashion',name:'Nike Air Max 90',price:74.99,sales:'988 bought today',reason:'New colourways dropped this week'},
+  {rank:11,cat:'food_bev',name:'Heinz Beanz x24 Cans',price:11.99,sales:'944 bought today',reason:'Pantry staple — best bulk price right now'},
+  {rank:12,cat:'household',name:'Andrex Classic Clean x24',price:8.99,sales:'921 bought today',reason:'Always in the top 15'},
+  {rank:13,cat:'pet',name:'Pedigree Adult Dog Food 12kg',price:24.99,sales:'877 bought today',reason:'Cheapest price in 6 weeks'},
+  {rank:14,cat:'gaming',name:'Nintendo Switch Sports Bundle',price:249.99,sales:'812 bought today',reason:'Back in stock after 3-week wait'},
+  {rank:15,cat:'food_bev',name:'Walkers Crisps Variety x32',price:7.99,sales:'798 bought today',reason:'Multipack deal running all week'},
+];
+
+function showHotPage(){
+  showPage('hot');
+}
+
+function renderHotPage(){
+  const container=document.getElementById('hotContent');
+  const upd=document.getElementById('hotUpdated');
+  if(!container)return;
+  const now=new Date();
+  if(upd) upd.textContent=`Last updated today at ${now.getHours().toString().padStart(2,'0')}:00 · Refreshes daily at midnight`;
+  const byGroup={};
+  HOT_ITEMS.forEach(item=>{
+    const label=CATEGORIES[item.cat]?.label||item.cat;
+    if(!byGroup[label]) byGroup[label]=[];
+    byGroup[label].push(item);
+  });
+  let html='<div class="hot-grid">';
+  HOT_ITEMS.forEach(item=>{
+    const label=CATEGORIES[item.cat]?.label||item.cat;
+    html+=`<div class="hot-card" onclick="showPage('home');setTimeout(()=>quickSearch('${item.name.replace(/'/g,"\\'")}'),100)">
+      <div class="hot-card-rank">#${item.rank}</div>
+      <div class="hot-card-body">
+        <div class="hot-card-cat">${label}</div>
+        <div class="hot-card-name">${item.name}</div>
+        <div class="hot-card-meta">
+          <span class="hot-card-sales">🔥 ${item.sales}</span>
+        </div>
+        <div style="font-size:.74rem;color:var(--muted);margin-bottom:.5rem;">${item.reason}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
+          <span class="hot-card-price">${fmt(item.price)}</span>
+          <button class="hot-card-btn" onclick="event.stopPropagation();showPage('home');setTimeout(()=>quickSearch('${item.name.replace(/'/g,"\\'")}'),100)">Compare prices</button>
+        </div>
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  container.innerHTML=html;
+}
+
+// ── SIMILAR / ALTERNATIVE PRODUCTS ──
+const SIMILAR_DB={
+  electronics:[
+    {name:'Anker Soundcore Q45 Headphones',price:49.99,badge:'alt',reason:'Similar noise cancellation at a fraction of the price'},
+    {name:'Jabra Evolve2 55 Wireless Headset',price:149.99,badge:'alt',reason:'Enterprise-grade ANC, highly rated by remote workers'},
+    {name:'Sony WH-CH720N Headphones',price:99.99,badge:'dupe',reason:'Same Sony quality, lighter and more affordable model'},
+    {name:'Bose QuietComfort 45',price:169.99,badge:'dupe',reason:'Direct rival with comparable noise cancellation'},
+  ],
+  gaming:[
+    {name:'Xbox Game Pass Ultimate 3 Months',price:24.99,badge:'alt',reason:'Access hundreds of games instead of buying one'},
+    {name:'Razer Kishi Mobile Controller',price:59.99,badge:'alt',reason:'Turn your phone into a portable gaming console'},
+  ],
+  fashion:[
+    {name:'New Balance 574 Classic Trainers',price:64.99,badge:'alt',reason:'Iconic retro runner, comparable comfort and style'},
+    {name:'Puma RS-X Reinvention Trainers',price:54.99,badge:'alt',reason:'Chunky retro sole, similar silhouette at lower cost'},
+  ],
+  home:[
+    {name:'Instant Vortex 4-in-1 Air Fryer',price:69.99,badge:'alt',reason:'Highly rated alternative, 30% cheaper than Ninja'},
+    {name:'Tower T17021 Air Fryer',price:39.99,badge:'alt',reason:'Budget pick — same core function, great reviews'},
+  ],
+  sports:[
+    {name:'Xiaomi Mi Band 8 Fitness Tracker',price:34.99,badge:'alt',reason:'Tracks all the essentials at a fraction of the price'},
+    {name:'Decathlon Kiprun GPS 500 Watch',price:99.99,badge:'alt',reason:'Serious GPS watch at a fraction of Garmin pricing'},
+  ],
+  toys:[
+    {name:'LEGO Classic Creative Bricks 900pc',price:29.99,badge:'alt',reason:'Open-ended building play, great value per brick'},
+    {name:'Orchard Toys Shopping List Game',price:9.99,badge:'alt',reason:'Award-winning family board game for ages 3+'},
+  ],
+  baby:[
+    {name:'Aldi Mamia Premium Nappies Size 4',price:4.99,badge:'alt',reason:'Award-winning nappies at half the price of branded'},
+    {name:'Munchkin Latch Anti-Colic Bottles',price:14.99,badge:'alt',reason:'High-rated alternative to Tommee Tippee range'},
+  ],
+  household:[
+    {name:'Surf Excel Washing Powder 3kg',price:7.99,badge:'alt',reason:'Top-rated budget alternative to premium pods'},
+    {name:'Method All-Purpose Cleaner 828ml',price:3.49,badge:'alt',reason:'Plant-based formula, works as well as Flash'},
+  ],
+  personal_care:[
+    {name:'Colgate Max White Electric Toothbrush',price:19.99,badge:'alt',reason:'Great whitening results at half the Oral-B price'},
+    {name:'Wilkinson Sword Hydro 5 Razor',price:11.99,badge:'alt',reason:'5-blade system, comparable to Gillette Fusion'},
+  ],
+  pet:[
+    {name:'Wagg Complete Dry Dog Food 12kg',price:14.99,badge:'alt',reason:'Vet-approved budget alternative to Pedigree'},
+    {name:'Sheba Perfect Portions Cat Food x12',price:6.99,badge:'alt',reason:'Premium wet food in handy single-serve packs'},
+  ],
+  food_bev:[
+    {name:"Branston Baked Beans x4",price:2.49,badge:'alt',reason:'Consistently rated higher than Heinz in blind tests'},
+    {name:'PG Tips Pyramid Tea Bags x160',price:3.99,badge:'alt',reason:'Strong brew, comparable to Yorkshire Tea at less'},
+  ],
+};
+
+function showSimilarProducts(query,catKey,notFound=false){
+  const sec=document.getElementById('similarSection');
+  const grid=document.getElementById('similarGrid');
+  const nfBanner=document.getElementById('similarNotFound');
+  const title=document.getElementById('similarTitle');
+  const subtitle=document.getElementById('similarSubtitle');
+  if(!sec||!grid)return;
+  const alts=SIMILAR_DB[catKey]||SIMILAR_DB.electronics;
+  if(notFound){
+    nfBanner.style.display='flex';
+    title.textContent='We found similar products instead';
+    subtitle.textContent='Alternatives to "'+query+'"';
+  } else {
+    nfBanner.style.display='none';
+    title.textContent='Similar and alternative products';
+    subtitle.textContent='Save even more with these alternatives';
+  }
+  grid.innerHTML=alts.map(p=>`
+    <div class="similar-card" onclick="quickSearch('${p.name.replace(/'/g,"\\'")}')">
+      <span class="similar-card-badge ${p.badge}">${p.badge==='dupe'?'Duplicate find':'Alternative'}</span>
+      <div class="similar-card-name">${p.name}</div>
+      <div class="similar-card-reason">${p.reason}</div>
+      <div class="similar-card-footer">
+        <span class="similar-card-price">${fmt(p.price)}</span>
+        <button class="similar-card-btn" onclick="event.stopPropagation();quickSearch('${p.name.replace(/'/g,"\\'")}')">Compare</button>
+      </div>
+    </div>`).join('');
+  sec.style.display='block';
+}
 
 let currentFilter='all';
 function filterDeals(cat,chip){
@@ -4136,6 +4557,7 @@ function renderDeals(){
       <li><strong>PostHog</strong> — product analytics including feature interactions, search queries (anonymised), and funnel behaviour. Used to understand which features are working and which aren't.</li>
       <li><strong>Search queries &amp; uploaded images</strong> — sent to Anthropic's Claude API solely to identify products and generate results. Not stored by Prixly after the response is received.</li>
       <li><strong>localStorage only</strong> — your language, region, currency preference, and recent searches are stored on your device and never sent to our servers.</li>
+      <li><strong>Trending and "What's Hot" data</strong> — anonymised, aggregated purchase and click activity is used to power our daily trending rankings. No individual user is identifiable from this data. Rankings refresh every 24 hours and are sourced from real shopper activity across Prixly and our retail partners.</li>
     </ul>
     <p>We do not sell your data. We do not use advertising or behavioural tracking cookies. By continuing you agree to our <a onclick="acceptConsent();showPage('privacy')">Privacy Policy</a> and <a onclick="acceptConsent();showPage('terms')">Terms of Use</a>.</p>
     <div class="consent-actions">
