@@ -356,7 +356,7 @@ nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;di
 .hot-card-btn{background:var(--accent);color:#000;border:none;padding:.32rem .75rem;border-radius:var(--radius-xs);font-size:.74rem;font-weight:700;cursor:pointer;transition:opacity .15s;width:100%;margin-top:.4rem;}
 .hot-card-btn:hover{opacity:.85;}
 .hot-disclaimer{max-width:700px;margin:0 auto 2rem;padding:0 2rem;font-size:.78rem;color:var(--muted2);line-height:1.6;text-align:center;}
-/* hot mobile handled in main @media block below */
+@media(max-width:640px){.hot-content{padding:0 1rem 3rem;}.hot-hero{padding:2rem 1rem 1rem;}.hot-grid{grid-template-columns:1fr 1fr;}}
 
 /* ── HOW IT WORKS PAGE ── */
 .hiw-hero{text-align:center;padding:4rem 2rem 2rem;max-width:700px;margin:0 auto;}
@@ -629,23 +629,21 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 }
 .mobile-bottom-nav ul{
   display:flex;list-style:none;margin:0;padding:0;
-  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
 }
-.mobile-bottom-nav ul::-webkit-scrollbar{display:none;}
 .mobile-bottom-nav li{
-  flex:0 0 auto;min-width:58px;
+  flex:1;
 }
 .mobile-bottom-nav a{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;padding:.5rem .4rem .4rem;
-  font-size:.58rem;font-weight:600;color:var(--muted);
+  gap:3px;padding:.55rem .25rem .45rem;
+  font-size:.62rem;font-weight:600;color:var(--muted);
   text-decoration:none;cursor:pointer;
   transition:color .18s;
   letter-spacing:.01em;
   line-height:1.2;
-  text-align:center;white-space:nowrap;
+  text-align:center;
 }
-.mobile-bottom-nav a svg{width:19px;height:19px;flex-shrink:0;}
+.mobile-bottom-nav a svg{width:20px;height:20px;flex-shrink:0;}
 .mobile-bottom-nav a.active{color:var(--accent);}
 .mobile-bottom-nav a:hover{color:var(--text);}
 
@@ -751,7 +749,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .similar-card-price{font-size:.95rem;font-weight:800;color:var(--accent);}
 .similar-card-btn{background:var(--accent);color:#000;border:none;padding:.28rem .65rem;border-radius:var(--radius-xs);font-size:.72rem;font-weight:700;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
 .similar-card-btn:hover{opacity:.85;}
-/* similar mobile handled in main @media block below */
+@media(max-width:640px){.similar-section{padding:0 1rem;}.similar-grid{grid-template-columns:1fr 1fr;}}
 
 /* ── AI DISCLOSURE ── */
 .ai-disclosure{max-width:700px;margin:2.5rem auto 0;padding:1.5rem 2rem;border-top:1px solid var(--border);text-align:center;}
@@ -794,7 +792,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   .trust-item{font-size:.73rem;}
 
   /* ── PAGES (hero padding) ── */
-  .hiw-hero,.pa-hero,.deals-hero,.about-hero,.hot-hero{padding-left:1rem;padding-right:1rem;}
+  .hiw-hero,.pa-hero,.deals-hero,.about-hero{padding-left:1rem;padding-right:1rem;}
 
   /* ── HIW STEPS ── */
   .hiw-step,.hiw-step:nth-child(even){flex-direction:column;}
@@ -843,54 +841,6 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   .catsbrowse-hero{padding:1.5rem 1rem 1rem;}
   .cat-row-header{padding:0 1rem;}
   .cat-row-scroll::before,.cat-row-scroll::after{width:1rem;}
-
-  /* ── HOT PAGE ── */
-  .hot-hero{padding:2rem 1rem 1rem;}
-  .hot-hero h1{font-size:clamp(1.5rem,7vw,2rem);}
-  .hot-hero p{font-size:.88rem;}
-  .hot-content{padding:0 1rem 3rem;}
-  /* Single column on mobile — cards need full width for name+rank+price+button */
-  .hot-grid{grid-template-columns:1fr;gap:.6rem;}
-  .hot-card{display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1rem;}
-  .hot-card-rank{position:static;font-size:.78rem;font-weight:800;color:var(--muted2);min-width:1.6rem;padding-top:.15rem;flex-shrink:0;}
-  .hot-card-body{padding-left:0;flex:1;min-width:0;}
-  .hot-card-name{font-size:.85rem;}
-  .hot-card-btn{width:auto;margin-top:.35rem;padding:.28rem .65rem;font-size:.72rem;}
-  .hot-disclaimer{padding:0 1rem;font-size:.74rem;}
-
-  /* ── SIMILAR PRODUCTS ── */
-  .similar-section{padding:0 1rem;}
-  /* Single column — badge+name+reason+footer too tight side-by-side */
-  .similar-grid{grid-template-columns:1fr;}
-  .similar-not-found{flex-direction:column;gap:.5rem;}
-  .similar-card{display:flex;align-items:center;gap:.75rem;padding:.75rem .9rem;}
-  .similar-card-badge{flex-shrink:0;white-space:nowrap;}
-  .similar-card-footer{margin-top:0;flex-shrink:0;}
-  /* Reflow card to row on mobile for compact density */
-  .similar-card{flex-direction:column;align-items:flex-start;}
-  .similar-card-footer{width:100%;justify-content:space-between;}
-
-  /* ── DEALS FILTERS — horizontal scroll instead of wrap ── */
-  .deals-filters{
-    display:flex;flex-wrap:nowrap;overflow-x:auto;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none;
-    padding:.5rem 1rem 1rem;gap:.4rem;
-  }
-  .deals-filters::-webkit-scrollbar{display:none;}
-  .deals-filters .filter-chip{flex-shrink:0;white-space:nowrap;}
-
-  /* ── DEAL BANNER ── */
-  /* Already stacks to column; ensure text doesn't overflow */
-  .deal-banner{padding:.45rem 1rem;gap:.35rem;flex-direction:column;align-items:center;text-align:center;}
-  #dealBannerText{font-size:.78rem;line-height:1.4;}
-  #dealBannerCta{font-size:.78rem;}
-
-  /* ── CATEGORY SCROLL CARDS — clamp long grocery/personal care names ── */
-  .cat-scroll-name{
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-    overflow:hidden;font-size:.82rem;
-  }
-  .cat-scroll-card{flex:0 0 150px;}
 }
 </style>
 </head>
@@ -1273,6 +1223,19 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
         <p class="signup-legal">By signing up you agree to our <a href="#" onclick="showPage('privacy')" style="color:var(--accent);">Privacy Policy</a> and <a href="#" onclick="showPage('terms')" style="color:var(--accent);">Terms of Use</a>. We never share your data with third parties.</p>
         <p class="signup-legal" style="margin-top:.25rem;">Already have an account? <a onclick="showPage('login')" style="color:var(--accent);cursor:pointer;text-decoration:underline;">Sign in →</a></p>
       </div>
+      <!-- Email verification step shown after sign-up submit -->
+      <div id="signupVerify" style="display:none;">
+        <div style="text-align:center;margin-bottom:1.25rem;">
+          <div style="font-size:2rem;margin-bottom:.5rem;">📧</div>
+          <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:.4rem;">Check your email</h2>
+          <p style="font-size:.88rem;color:var(--muted);line-height:1.6;">We sent a 6-digit code to <strong id="verifyEmailDisplay" style="color:var(--text);"></strong>. Enter it below to verify your account.</p>
+        </div>
+        <input class="signup-input" type="text" id="signupVerifyCode" placeholder="6-digit code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" style="letter-spacing:.2em;text-align:center;font-size:1.1rem;" oninput="if(this.value.length===6) handleVerifyCode()" />
+        <div class="field-error" id="verifyError"></div>
+        <button class="signup-submit" id="verifyBtn" onclick="handleVerifyCode()">Verify and continue</button>
+        <p style="font-size:.78rem;color:var(--muted2);text-align:center;margin-top:.75rem;">Didn't receive it? <span onclick="resendVerifyCode()" style="color:var(--accent);cursor:pointer;text-decoration:underline;">Resend code</span></p>
+      </div>
+
       <div class="signup-success" id="signupSuccess">
         <div class="signup-success-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -3007,7 +2970,7 @@ function showPage(id) {
   if(id==='deals') renderDeals();
   if(id==='categories') renderCatsBrowse();
   if(id==='hot') renderHotPage();
-  if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; ['signupName','signupEmail','signupPassword','signupConfirmPassword'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.type=x.includes('assword')?'password':'text';el.classList.remove('input-invalid');el.style.borderColor='';}}); ['nameError','emailError','passwordError','confirmPasswordError','signupError'].forEach(id2=>{const e=document.getElementById(id2);if(e){e.textContent='';e.style.display='none';}}); const tog=document.getElementById('showPasswordToggle');if(tog)tog.checked=false; }
+  if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; document.getElementById('signupVerify').style.display='none'; ['signupName','signupEmail','signupPassword','signupConfirmPassword','signupVerifyCode'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.type=x.includes('assword')?'password':'text';el.classList.remove('input-invalid');el.style.borderColor='';}}); ['nameError','emailError','passwordError','confirmPasswordError','signupError','verifyError'].forEach(id2=>{const e=document.getElementById(id2);if(e){e.textContent='';e.style.display='none';}}); const tog=document.getElementById('showPasswordToggle');if(tog)tog.checked=false; }
   if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; const em=document.getElementById('loginEmail');if(em)em.value=''; const pw=document.getElementById('loginPassword');if(pw)pw.value=''; }
 }
 
@@ -4009,40 +3972,137 @@ function toggleShowPassword(){
   if(p)p.type=type;
   if(c)c.type=type;
 }
-function handleSignup(){
+async function handleSignup(){
   const nameEl=document.getElementById('signupName');
   const emailEl=document.getElementById('signupEmail');
   const passEl=document.getElementById('signupPassword');
   const confEl=document.getElementById('signupConfirmPassword');
-  // Clear all errors first
+  const btn=document.querySelector('#signupForm .signup-submit');
   [[nameEl,'nameError'],[emailEl,'emailError'],[passEl,'passwordError'],[confEl,'confirmPasswordError']].forEach(([el,id])=>clearFieldError(el,id));
   const name=nameEl.value.trim(),email=emailEl.value.trim(),password=passEl.value,confirm=confEl.value;
   let valid=true;
   if(!name){setFieldError(nameEl,'nameError','Please enter your name.');valid=false;}
   if(!email){setFieldError(emailEl,'emailError','Please enter your email address.');valid=false;}
-  else if(!isValidEmail(email)){setFieldError(emailEl,'emailError','That doesn\'t look like a valid email — check for typos.');valid=false;}
+  else if(!isValidEmail(email)){setFieldError(emailEl,'emailError','That doesn\'t look like a valid email.');valid=false;}
   if(password.length<6){setFieldError(passEl,'passwordError','Password must be at least 6 characters.');valid=false;}
-  if(password.length>=6&&confirm!==password){setFieldError(confEl,'confirmPasswordError','Passwords don\'t match — please check and try again.');valid=false;}
+  if(password.length>=6&&confirm!==password){setFieldError(confEl,'confirmPasswordError','Passwords don\'t match.');valid=false;}
   else if(password.length>=6&&!confirm){setFieldError(confEl,'confirmPasswordError','Please confirm your password.');valid=false;}
   if(!valid)return;
-  const result=prixlyAuth.register(name,email,password);
-  if(result.error){setFieldError(emailEl,'emailError',result.error);return;}
+
+  // Use Clerk if available
+  if(window.Clerk){
+    btn.textContent='Creating account...';
+    btn.disabled=true;
+    try{
+      const firstName=name.split(' ')[0];
+      const lastName=name.split(' ').slice(1).join(' ')||undefined;
+      const signUp=await window.Clerk.client.signUp.create({
+        firstName, lastName, emailAddress:email, password
+      });
+      if(signUp.status==='missing_requirements'&&signUp.unverifiedFields.includes('email_address')){
+        await signUp.prepareEmailAddressVerification({strategy:'email_code'});
+        document.getElementById('signupForm').style.display='none';
+        document.getElementById('verifyEmailDisplay').textContent=email;
+        document.getElementById('signupVerify').style.display='block';
+        document.getElementById('signupVerifyCode').focus();
+      } else if(signUp.status==='complete'){
+        await window.Clerk.setActive({session:signUp.createdSessionId});
+        _signupComplete();
+      }
+    }catch(err){
+      const msg=err.errors?.[0]?.longMessage||err.errors?.[0]?.message||err.message||'Something went wrong. Please try again.';
+      setFieldError(emailEl,'emailError',msg);
+    }finally{
+      btn.textContent='Create free account';
+      btn.disabled=false;
+    }
+    return;
+  }
+  // Fallback: local-only account (no Clerk)
+  try{
+    localStorage.setItem('prixly_user',JSON.stringify({name,email}));
+  }catch(e){}
   updateNavState();
   document.getElementById('signupForm').style.display='none';
   document.getElementById('signupSuccess').style.display='flex';
 }
 
-function handleLogin(){
+async function handleVerifyCode(){
+  const codeEl=document.getElementById('signupVerifyCode');
+  const errEl=document.getElementById('verifyError');
+  const btn=document.getElementById('verifyBtn');
+  const code=codeEl.value.trim();
+  errEl.textContent='';
+  if(code.length!==6){errEl.textContent='Please enter the full 6-digit code.';return;}
+  btn.textContent='Verifying...';btn.disabled=true;
+  try{
+    const signUp=window.Clerk.client.signUp;
+    const result=await signUp.attemptEmailAddressVerification({code});
+    if(result.status==='complete'){
+      await window.Clerk.setActive({session:result.createdSessionId});
+      document.getElementById('signupVerify').style.display='none';
+      _signupComplete();
+    } else {
+      errEl.textContent='Verification incomplete. Please try again.';
+    }
+  }catch(err){
+    const msg=err.errors?.[0]?.longMessage||err.errors?.[0]?.message||'Incorrect code. Please try again.';
+    errEl.textContent=msg;
+    codeEl.value='';codeEl.focus();
+  }finally{
+    btn.textContent='Verify and continue';btn.disabled=false;
+  }
+}
+
+async function resendVerifyCode(){
+  try{
+    await window.Clerk.client.signUp.prepareEmailAddressVerification({strategy:'email_code'});
+    const errEl=document.getElementById('verifyError');
+    errEl.style.color='var(--accent)';
+    errEl.textContent='Code resent — check your inbox.';
+    setTimeout(()=>{errEl.textContent='';errEl.style.color='';},4000);
+  }catch(e){}
+}
+
+function _signupComplete(){
+  updateNavState();
+  document.getElementById('signupSuccess').style.display='flex';
+}
+
+async function handleLogin(){
   const emailEl=document.getElementById('loginEmail');
   const passEl=document.getElementById('loginPassword');
   const errEl=document.getElementById('loginError');
+  const btn=document.querySelector('#page-login .signup-submit')||document.querySelector('#page-login button[onclick="handleLogin()"]');
   const email=emailEl.value.trim(),password=passEl.value;
   errEl.style.display='none';
   if(!email||!password){errEl.textContent='Please enter your email and password.';errEl.style.display='block';return;}
-  const result=prixlyAuth.login(email,password);
-  if(result.error){errEl.textContent=result.error;errEl.style.display='block';return;}
-  updateNavState();
-  showPage('alerts');
+
+  if(window.Clerk){
+    if(btn){btn.textContent='Signing in...';btn.disabled=true;}
+    try{
+      const signIn=await window.Clerk.client.signIn.create({identifier:email,password});
+      if(signIn.status==='complete'){
+        await window.Clerk.setActive({session:signIn.createdSessionId});
+        updateNavState();
+        showPage('alerts');
+      } else {
+        errEl.textContent='Sign-in incomplete. Please try again.';errEl.style.display='block';
+      }
+    }catch(err){
+      const msg=err.errors?.[0]?.longMessage||err.errors?.[0]?.message||'Incorrect email or password.';
+      errEl.textContent=msg;errEl.style.display='block';
+    }finally{
+      if(btn){btn.textContent='Sign in';btn.disabled=false;}
+    }
+    return;
+  }
+  // Fallback: check localStorage
+  try{
+    const u=JSON.parse(localStorage.getItem('prixly_user')||'null');
+    if(u&&u.email===email){updateNavState();showPage('alerts');return;}
+  }catch(e){}
+  errEl.textContent='No account found with that email.';errEl.style.display='block';
 }
 
 function handleLogout(){
