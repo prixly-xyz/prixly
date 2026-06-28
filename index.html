@@ -4521,9 +4521,12 @@ function openProductDetail(idx){
   document.getElementById('detailReviewsRetailer').textContent=r.retailer;
 
   showPage('detail');
-  drawDetailChart(r);
-  fetchDetailReviews(r);
-  loadPrixlyReviews(productSlugFromName(r.name));
+  // Defer chart and reviews until the page is painted and canvas has dimensions
+  requestAnimationFrame(()=>{
+    drawDetailChart(r);
+    fetchDetailReviews(r);
+    loadPrixlyReviews(productSlugFromName(r.name));
+  });
 }
 
 function selectDetailThumb(el,emoji){
@@ -4596,8 +4599,9 @@ async function loadPrixlyReviews(productSlug){
   const list=document.getElementById('prixlyReviewsList');
   const countEl=document.getElementById('prixlyReviewCount');
   const formWrap=document.getElementById('prixlyReviewFormWrap');
-  if(!list)return;
+  if(!list||!formWrap)return;
   list.innerHTML='<div class="detail-reviews-loading"><div class="detail-reviews-mini-spin"></div>Loading community reviews...</div>';
+  formWrap.innerHTML='';
 
   let reviews=[];
   try{
@@ -4606,10 +4610,11 @@ async function loadPrixlyReviews(productSlug){
     }
   }catch(e){ console.warn('Prixly reviews load:',e); }
 
+  // Always render the list section
   if(!reviews.length){
     list.innerHTML='<div class="prixly-empty">No reviews yet — be the first to share your experience.</div>';
   } else {
-    countEl.textContent=`(${reviews.length})`;
+    if(countEl) countEl.textContent=`(${reviews.length})`;
     list.innerHTML=reviews.map(rv=>{
       const stars=Math.min(5,Math.max(1,rv.rating||5));
       const date=rv.createdAt?new Date(rv.createdAt).toLocaleDateString('en-GB',{month:'short',year:'numeric'}):'';
@@ -4624,30 +4629,34 @@ async function loadPrixlyReviews(productSlug){
     }).join('');
   }
 
-  // Login gate or review form
-  const user=prixlyAuth.getCurrentUser();
-  if(!user){
-    formWrap.innerHTML=`<div class="prixly-login-gate"><p>Sign in to leave a review</p><button onclick="showPage('login')">Sign in</button></div>`;
-  } else {
-    // Check if user already reviewed this product
-    const alreadyReviewed=reviews.some(rv=>rv.clerkId===user.clerkId);
-    if(alreadyReviewed){
-      formWrap.innerHTML=`<div class="prixly-login-gate"><p>You've already reviewed this product — thanks!</p></div>`;
+  // Always render the form section — login gate or write form
+  try{
+    const user=prixlyAuth.getCurrentUser();
+    if(!user){
+      formWrap.innerHTML=`<div class="prixly-login-gate"><p>Sign in to leave a review</p><button onclick="showPage('login')">Sign in</button></div>`;
     } else {
-      formWrap.innerHTML=`
-        <div class="prixly-review-form">
-          <h4>Leave a review</h4>
-          <div class="star-input" id="starInput">
-            <input type="radio" name="prixly_star" id="s5" value="5"><label for="s5" title="5 stars">★</label>
-            <input type="radio" name="prixly_star" id="s4" value="4"><label for="s4" title="4 stars">★</label>
-            <input type="radio" name="prixly_star" id="s3" value="3"><label for="s3" title="3 stars">★</label>
-            <input type="radio" name="prixly_star" id="s2" value="2"><label for="s2" title="2 stars">★</label>
-            <input type="radio" name="prixly_star" id="s1" value="1"><label for="s1" title="1 star">★</label>
-          </div>
-          <textarea class="prixly-review-textarea" id="prixlyReviewText" placeholder="Share your experience with this product…" maxlength="600"></textarea>
-          <button class="prixly-review-submit" id="prixlySubmitBtn" onclick="submitPrixlyReview('${productSlug}')">Post review</button>
-        </div>`;
+      const alreadyReviewed=reviews.some(rv=>rv.clerkId===user.clerkId);
+      if(alreadyReviewed){
+        formWrap.innerHTML=`<div class="prixly-login-gate"><p>You've already reviewed this product — thanks!</p></div>`;
+      } else {
+        formWrap.innerHTML=`
+          <div class="prixly-review-form">
+            <h4>Leave a review</h4>
+            <div class="star-input" id="starInput">
+              <input type="radio" name="prixly_star" id="s5" value="5"><label for="s5" title="5 stars">★</label>
+              <input type="radio" name="prixly_star" id="s4" value="4"><label for="s4" title="4 stars">★</label>
+              <input type="radio" name="prixly_star" id="s3" value="3"><label for="s3" title="3 stars">★</label>
+              <input type="radio" name="prixly_star" id="s2" value="2"><label for="s2" title="2 stars">★</label>
+              <input type="radio" name="prixly_star" id="s1" value="1"><label for="s1" title="1 star">★</label>
+            </div>
+            <textarea class="prixly-review-textarea" id="prixlyReviewText" placeholder="Share your experience with this product…" maxlength="600"></textarea>
+            <button class="prixly-review-submit" id="prixlySubmitBtn" onclick="submitPrixlyReview('${productSlug}')">Post review</button>
+          </div>`;
+      }
     }
+  }catch(e){
+    console.warn('Prixly review form:',e);
+    formWrap.innerHTML=`<div class="prixly-login-gate"><p>Sign in to leave a review</p><button onclick="showPage('login')">Sign in</button></div>`;
   }
 }
 
@@ -4721,7 +4730,6 @@ window.addEventListener('load', async ()=>{
   if(!window.Clerk) return;
   await window.Clerk.load();
   updateNavState(); // re-run after Clerk resolves its session
-  // Sync user to Convex on sign-in
   if(window.Clerk.user && window.convex){
     const u = window.Clerk.user;
     try{
@@ -4731,6 +4739,10 @@ window.addEventListener('load', async ()=>{
         name: u.fullName || u.firstName || u.emailAddresses[0].emailAddress.split('@')[0]
       });
     }catch(e){ console.warn('Convex user sync:', e); }
+    // Load wishlist from Convex so starred state is correct on every page load
+    await prixlyWishlist.loadCache(u.id);
+    // Re-render any open pages that depend on wishlist state
+    if(document.getElementById('alertsDashboard')?.style.display!=='none') renderAlerts();
   }
 });
 
@@ -4805,20 +4817,20 @@ function dropClass(pct){
   if(pct>0)return'drop-small';
   return'drop-increase';
 }
-function toggleWishlistBtn(e,id){
+async function toggleWishlistBtn(e,id){
   e.preventDefault();e.stopPropagation();
   const user=prixlyAuth.getCurrentUser();
   if(!user){showPage('login');return;}
   const item=_wlRegistry[id];
   if(!item)return;
-  const added=prixlyWishlist.toggle(user.clerkId,item);
+  const added=await prixlyWishlist.toggle(user.clerkId,item);
   const btn=document.getElementById('wbtn-'+id);
   if(btn){
     btn.classList.toggle('wishlisted',added);
     btn.title=added?'Remove from Wishlist':'Wishlist this item';
     btn.querySelector('svg').setAttribute('fill',added?'currentColor':'none');
   }
-  // refresh alerts page if open
+  // refresh alerts page if open so new item appears immediately
   if(document.getElementById('alertsDashboard')?.style.display!=='none'){
     renderAlerts();
   }
