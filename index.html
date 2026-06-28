@@ -3321,7 +3321,7 @@ function renderCatsBrowse(){
       </div>
       <div class="cat-row-scroll">
         ${seededShuffle(c.items,seed+c.key.charCodeAt(0)).map(item=>`
-          <div class="cat-scroll-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
+          <div class="cat-scroll-card" onclick="openMockDetail('${item.name.replace(/'/g,"\\'")}','${c.key}',${item.price},'','categories')"  >
             ${wishlistStarHTML({...item,id:'browse-'+item.name.replace(/\s+/g,'-').toLowerCase()})}
             <div class="cat-scroll-tag">${item.tag}</div>
             <div class="cat-scroll-name">${item.name}</div>
@@ -3363,7 +3363,7 @@ function filterCatItems(key,sub,chip){
 function renderCatItems(items,sub){
   const filtered=sub==='All'?items:items.filter(i=>i.tag===sub);
   document.getElementById('catpageGrid').innerHTML=filtered.length?filtered.map(item=>`
-    <div class="item-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
+    <div class="item-card" onclick="openMockDetail('${item.name.replace(/'/g,"\\'")}','${key}',${item.price},'','category')"  >
       ${wishlistStarHTML({...item,id:'cat-'+item.name.replace(/\s+/g,'-').toLowerCase()})}
       <div class="item-card-img" style="font-size:.85rem;font-weight:700;color:var(--muted);">${item.tag}</div>
       <div class="item-card-body">
@@ -3379,6 +3379,21 @@ function renderCatItems(items,sub){
         </div>
       </div>
     </div>`).join(''):`<div style="color:var(--muted);font-size:.9rem;padding:2rem;grid-column:1/-1;">No items in this subcategory yet.</div>`;
+}
+
+function openMockDetail(name, cat, price, retailerHint, originPage){
+  const retailers=getRetailersForRegion(cat||'general', activeRegion);
+  const r=retailers[0]||{name:'Amazon',logoClass:'logo-amazon'};
+  const mockResult={
+    name, retailer:retailerHint||r.name, logoClass:r.logoClass||'logo-amazon',
+    price:price||0, was:price?Math.round(price*1.22*100)/100:0,
+    rating:4.4, reviews:Math.floor(600+Math.random()*1200),
+    shipping:'Free delivery', score:8.6, relevance:95, best:true
+  };
+  currentResults=[mockResult];
+  detectedCat={key:cat||'general', confidence:95, auto:true};
+  detailOriginPage=originPage||'home';
+  openProductDetail(0);
 }
 
 function searchFromCategory(name){
@@ -4732,6 +4747,11 @@ window.addEventListener('load', async ()=>{
   updateNavState(); // re-run after Clerk resolves its session
   if(window.Clerk.user && window.convex){
     const u = window.Clerk.user;
+    // Wire Clerk session token into Convex so authenticated mutations work
+    window.convex.setAuth(async () => {
+      try{ return await window.Clerk.session?.getToken({template:'convex'}) ?? null; }
+      catch(e){ return null; }
+    });
     try{
       await window.convex.mutation("users:upsertUser", {
         clerkId: u.id,
@@ -4739,9 +4759,7 @@ window.addEventListener('load', async ()=>{
         name: u.fullName || u.firstName || u.emailAddresses[0].emailAddress.split('@')[0]
       });
     }catch(e){ console.warn('Convex user sync:', e); }
-    // Load wishlist from Convex so starred state is correct on every page load
     await prixlyWishlist.loadCache(u.id);
-    // Re-render any open pages that depend on wishlist state
     if(document.getElementById('alertsDashboard')?.style.display!=='none') renderAlerts();
   }
 });
@@ -5323,7 +5341,7 @@ function renderAlerts(){
     <div class="suggested-grid">${sorted.map(i=>{
       const id=wishlistItemId(i.name,'');
       _wlRegistry[id]={id,name:i.name,retailer:'',price:i.price,category:i.cat};
-      return`<div class="suggested-card" style="position:relative;" onclick="searchFromCategory('${i.name}')">
+      return`<div class="suggested-card" style="position:relative;" onclick="openMockDetail('${i.name.replace(/'/g,"\\'")}','${i.cat}',${i.price},'','alerts')"  >
         ${wishlistStarHTML({id,name:i.name,retailer:'',price:i.price,category:i.cat})}
         <div class="suggested-cat">${i.cat}</div>
         <div class="suggested-name">${i.name}</div>
@@ -5639,8 +5657,8 @@ function renderDeals(){
     html2+=`<div class="deals-grid">${items.map(d=>{
       const witem={id:wishlistItemId(d.name,d.retailer),name:d.name,retailer:d.retailer,price:d.price,category:d.cat};
       const pct=parseFloat(d.discount);
-      return`<div class="deal-card" onclick="searchFromCategory('${d.name.replace(/'/g,"\\'")}')">
-        <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><div style="display:flex;align-items:center;gap:.3rem;"><span class="deal-card-discount ${dropClass(pct)}">-${d.discount}</span>${inlineStarHTML(witem)}</div></div>
+      return`<div class="deal-card" onclick="openMockDetail('${d.name.replace(/'/g,"\\'")}','${catKey}',${d.price},'${d.retailer.replace(/'/g,"\\'")}','deals')">
+        <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><div style="display:flex;align-items:center;gap:.3rem;"><span class="deal-card-discount ${dropClass(pct)}">-${d.discount}</span>${wishlistStarHTML(witem)}</div></div>
         <div class="deal-card-name">${d.name}</div>
         <div class="deal-card-retailer">${t('pa_via')} ${d.retailer}</div>
         <div class="deal-card-prices"><span class="deal-card-price">${fmt(d.price)}</span><span class="deal-card-was">${fmt(d.was)}</span></div>
