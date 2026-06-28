@@ -1070,7 +1070,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       </div>
     </div>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
-    <a class="nav-cta" onclick="showPage('signup')" id="nav-signup">Sign up free</a>
+    <a class="nav-cta" onclick="showPage('login')" id="nav-signup">Log in</a>
     <a class="nav-user-chip" onclick="showPage('alerts')" id="nav-user" style="display:none;"><span class="nav-user-dot"></span><span id="nav-user-name"></span></a>
   </div>
 </nav>
@@ -2189,7 +2189,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <span class="mob-settings-label">Appearance</span>
       <button class="theme-toggle" onclick="toggleTheme()" id="mobThemeBtn">Light</button>
     </div>
-    <div id="mobSignupBtn"><a class="mob-settings-cta" onclick="closeMobSettings();showPage('signup')">Sign up free</a></div>
+    <div id="mobSignupBtn"><a class="mob-settings-cta" onclick="closeMobSettings();showPage('login')">Log in</a></div>
     <div id="mobUserBtn" style="display:none;"><a class="mob-settings-cta" style="background:var(--surface2);color:var(--text);border:1px solid var(--border2);" onclick="closeMobSettings();showPage('alerts')" id="mobUserName">My Account</a></div>
   </div>
 </div>
@@ -4237,13 +4237,15 @@ function renderResults(results){
   const list=document.getElementById('resultsList');
   list.className='results-grid';
   list.innerHTML=results.map((r,i)=>{
+    const witem={id:wishlistItemId(r.name,r.retailer),name:r.name,retailer:r.retailer,price:r.price,logoClass:r.logoClass,category:detectedCat?.key||'general'};
     const savePct=r.was?Math.round((r.was-r.price)/r.was*100):0;
     const discBadge=r.was?`<span style="background:var(--accent);color:#000;font-size:.64rem;font-weight:800;padding:.15rem .45rem;border-radius:3px;">-${savePct}%</span>`:'';
     return`<div class="result-card ${r.best?'best-deal':''}" style="cursor:pointer;flex-direction:column;align-items:stretch;gap:.6rem;padding:.95rem 1rem;" onclick="openProductDetail(${i})">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
+      <div style="display:flex;align-items:center;gap:.5rem;">
         <div class="retailer-logo ${r.logoClass}" style="width:auto;min-width:54px;padding:0 .5rem;font-size:.62rem;">${r.retailer}</div>
         ${r.best?`<span class="best-badge">${t('best_price')}</span>`:''}
         <span style="font-size:.7rem;color:var(--muted);margin-left:auto;">${r.relevance}% match</span>
+        ${inlineStarHTML(witem)}
       </div>
       <div style="font-size:.82rem;font-weight:600;color:var(--text);line-height:1.3;">${r.name}</div>
       <div style="display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;">
@@ -4260,6 +4262,7 @@ function renderResults(results){
 }
 async function fetchReviews(query){
   const sec=document.getElementById('reviewsSection');
+  if(!sec)return; // reviews now live on the detail page only
   const body=document.getElementById('reviewsBody');
   const summary=document.getElementById('reviewsSummary');
   sec.style.display='block';
@@ -4486,16 +4489,17 @@ const prixlyAuth={
   login(email,password){ return {error:'Please use the sign-in form powered by Clerk.'}; },
   logout(){
     try{ localStorage.removeItem('prixly_user'); }catch(e){}
-    if(window.Clerk && window.Clerk.user){ window.Clerk.signOut().then(()=>{ prixlyWishlist._cache=null; updateAuthUI(); showPage('home'); }); }
-    else{ prixlyWishlist._cache=null; updateAuthUI(); showPage('home'); }
+    if(window.Clerk && window.Clerk.user){ window.Clerk.signOut().then(()=>{ prixlyWishlist._cache=null; updateNavState(); showPage('home'); }); }
+    else{ prixlyWishlist._cache=null; updateNavState(); showPage('home'); }
   }
 };
 
 // Initialise Clerk and sync user state once loaded
 window.addEventListener('load', async ()=>{
+  updateNavState(); // restore local account state immediately (no Clerk dependency)
   if(!window.Clerk) return;
   await window.Clerk.load();
-  updateAuthUI();
+  updateNavState(); // re-run after Clerk resolves its session
   // Sync user to Convex on sign-in
   if(window.Clerk.user && window.convex){
     const u = window.Clerk.user;
@@ -4675,6 +4679,22 @@ function toggleShowPassword(){
   if(p)p.type=type;
   if(c)c.type=type;
 }
+async function hashPassword(password){
+  const data=new TextEncoder().encode(password);
+  const hash=await crypto.subtle.digest('SHA-256',data);
+  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function sendWelcomeEmail(name,email){
+  try{
+    await fetch('/api/send-email',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,email})
+    });
+  }catch(e){ console.warn('Welcome email failed:',e); }
+}
+
 async function handleSignup(){
   const nameEl=document.getElementById('signupName');
   const emailEl=document.getElementById('signupEmail');
@@ -4716,8 +4736,10 @@ async function handleSignup(){
       const errCode=err.errors?.[0]?.code||'';
       const errMsg=err.errors?.[0]?.longMessage||err.errors?.[0]?.message||err.message||'';
       if(errCode.includes('captcha')||errCode.includes('bot')||errMsg.toLowerCase().includes('captcha')||errMsg.toLowerCase().includes('turnstile')){
-        try{ localStorage.setItem('prixly_user',JSON.stringify({name,email,id:'local_'+Date.now()})); }catch(e){}
+        const ph=await hashPassword(password);
+        try{ localStorage.setItem('prixly_user',JSON.stringify({name,email,id:'local_'+Date.now(),passHash:ph})); }catch(e){}
         updateNavState();
+        sendWelcomeEmail(name,email);
         document.getElementById('signupForm').style.display='none';
         document.getElementById('signupSuccess').style.display='flex';
       } else {
@@ -4730,10 +4752,12 @@ async function handleSignup(){
     return;
   }
   // Fallback: local-only account (no Clerk)
+  const ph=await hashPassword(password);
   try{
-    localStorage.setItem('prixly_user',JSON.stringify({name,email,id:'local_'+Date.now()}));
+    localStorage.setItem('prixly_user',JSON.stringify({name,email,id:'local_'+Date.now(),passHash:ph}));
   }catch(e){}
   updateNavState();
+  sendWelcomeEmail(name,email);
   document.getElementById('signupForm').style.display='none';
   document.getElementById('signupSuccess').style.display='flex';
 }
@@ -4808,10 +4832,16 @@ async function handleLogin(){
     }
     return;
   }
-  // Fallback: check localStorage
+  // Fallback: check localStorage credentials
   try{
     const u=JSON.parse(localStorage.getItem('prixly_user')||'null');
-    if(u&&u.email===email){updateNavState();showPage('alerts');return;}
+    if(u&&u.email===email){
+      if(u.passHash){
+        const ph=await hashPassword(password);
+        if(ph!==u.passHash){errEl.textContent='Incorrect password.';errEl.style.display='block';return;}
+      }
+      updateNavState();showPage('alerts');return;
+    }
   }catch(e){}
   errEl.textContent='No account found with that email.';errEl.style.display='block';
 }
@@ -5198,7 +5228,7 @@ function renderHotPage(){
   let html='<div class="hot-grid">';
   HOT_ITEMS.forEach(item=>{
     const label=CATEGORIES[item.cat]?.label||item.cat;
-    html+=`<div class="hot-card" onclick="showPage('home');setTimeout(()=>quickSearch('${item.name.replace(/'/g,"\\'")}'),100)">
+    html+=`<div class="hot-card" onclick="showPage('home');setTimeout(()=>quickSearch('${item.name.replace(/'/g,"\\'")}'),350)">
       <div class="hot-card-rank">#${item.rank}</div>
       <div class="hot-card-body">
         <div class="hot-card-cat">${label}</div>
@@ -5209,7 +5239,7 @@ function renderHotPage(){
         <div style="font-size:.74rem;color:var(--muted);margin-bottom:.5rem;">${item.reason}</div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
           <span class="hot-card-price">${fmt(item.price)}</span>
-          <button class="hot-card-btn" onclick="event.stopPropagation();showPage('home');setTimeout(()=>quickSearch('${item.name.replace(/'/g,"\\'")}'),100)">Compare prices</button>
+          <button class="hot-card-btn" onclick="event.stopPropagation();showPage('home');setTimeout(()=>quickSearch('${item.name.replace(/'/g,"\\'")}'),350)">Compare prices</button>
         </div>
       </div>
     </div>`;
