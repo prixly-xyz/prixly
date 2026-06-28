@@ -5713,7 +5713,7 @@ function renderDeals(){
       const witem={id:wishlistItemId(d.name,d.retailer),name:d.name,retailer:d.retailer,price:d.price,category:d.cat};
       const pct=parseFloat(d.discount);
       return`<div class="deal-card" onclick="openMockDetail('${d.name.replace(/'/g,"\\'")}','${catKey}',${d.price},'${d.retailer.replace(/'/g,"\\'")}','deals')">
-        <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><div style="display:flex;align-items:center;gap:.3rem;"><span class="deal-card-discount ${dropClass(pct)}">-${d.discount}</span>${wishlistStarHTML(witem)}</div></div>
+        <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><div style="display:flex;align-items:center;gap:.3rem;"><span class="deal-card-discount ${dropClass(pct)}">-${d.discount}</span>${inlineStarHTML(witem)}</div></div>
         <div class="deal-card-name">${d.name}</div>
         <div class="deal-card-retailer">${t('pa_via')} ${d.retailer}</div>
         <div class="deal-card-prices"><span class="deal-card-price">${fmt(d.price)}</span><span class="deal-card-was">${fmt(d.was)}</span></div>
