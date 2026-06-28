@@ -825,11 +825,29 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .acct-welcome-email{font-size:.82rem;color:var(--muted);}
 .acct-logout{font-size:.82rem;color:var(--accent);cursor:pointer;border:1px solid var(--accent);background:none;padding:.3rem .8rem;border-radius:var(--radius-xs);font-weight:600;white-space:nowrap;}
 .acct-logout:hover{background:var(--accent);color:#000;}
+.acct-profile-section{max-width:900px;margin:0 auto;padding:1.5rem 2rem 3rem;}
+.acct-section-head{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.75rem;}
+.acct-info-row{display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--border);font-size:.88rem;}
+.acct-info-row span:first-child{color:var(--muted);}
+.acct-info-row span:last-child{font-weight:600;}
+.acct-recent-list{display:flex;flex-wrap:wrap;gap:.4rem;}
+.acct-recent-chip{font-size:.8rem;padding:.3rem .75rem;border-radius:20px;background:var(--surface2);border:1px solid var(--border2);cursor:pointer;color:var(--text);transition:border-color .15s;}
+.acct-recent-chip:hover{border-color:var(--accent);color:var(--accent);}
+.acct-empty-state{font-size:.85rem;color:var(--muted);font-style:italic;padding:.5rem 0;}
 .wishlist-section{max-width:900px;margin:1.5rem auto 0;padding:0 2rem;}
 .wishlist-section-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.75rem;}
 .wishlist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;}
 .wishlist-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;position:relative;transition:all .2s;}
-.wishlist-card:hover{border-color:var(--accent);box-shadow:var(--shadow);}
+.wishlist-card:hover{border-color:var(--accent);box-shadow:var(--shadow);cursor:pointer;}
+.acct-profile-section{max-width:700px;margin:2rem auto;padding:0 2rem;}
+.acct-section-head{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.6rem;}
+.acct-info-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--border);font-size:.88rem;}
+.acct-info-row span:first-child{color:var(--muted);}
+.acct-info-row span:last-child{font-weight:600;}
+.acct-recent-list{display:flex;flex-wrap:wrap;gap:.4rem;}
+.acct-recent-chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:.3rem .8rem;font-size:.8rem;cursor:pointer;transition:all .15s;}
+.acct-recent-chip:hover{border-color:var(--accent);color:var(--accent);}
+.acct-empty-recent{font-size:.85rem;color:var(--muted);}
 .wishlist-card-name{font-size:.88rem;font-weight:700;margin-bottom:.25rem;line-height:1.3;padding-right:1.5rem;}
 .wishlist-card-retailer{font-size:.75rem;color:var(--muted);margin-bottom:.4rem;}
 .wishlist-card-price{font-size:1rem;font-weight:800;color:var(--accent);}
@@ -1071,7 +1089,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     </div>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
     <a class="nav-cta" onclick="showPage('login')" id="nav-signup">Log in</a>
-    <a class="nav-user-chip" onclick="showPage('alerts')" id="nav-user" style="display:none;"><span class="nav-user-dot"></span><span id="nav-user-name"></span></a>
+    <a class="nav-user-chip" onclick="showPage('account')" id="nav-user" style="display:none;"><span class="nav-user-dot"></span><span id="nav-user-name"></span></a>
   </div>
 </nav>
 
@@ -1387,10 +1405,16 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
         <input class="signup-input" type="email" id="signupEmail" placeholder="Email address" autocomplete="email" />
         <div class="field-error" id="emailError"></div>
 
-        <input class="signup-input" type="password" id="signupPassword" placeholder="Create a password (min. 6 characters)" autocomplete="new-password" />
+        <div style="position:relative;">
+          <input class="signup-input" type="password" id="signupPassword" placeholder="Create a password (min. 6 characters)" autocomplete="new-password" style="width:100%;box-sizing:border-box;" onkeyup="checkCapsLock(event,'capsWarn1')" />
+          <div id="capsWarn1" style="display:none;font-size:.75rem;color:#f0a500;margin-top:.25rem;">⚠ Caps Lock is on</div>
+        </div>
         <div class="field-error" id="passwordError"></div>
 
-        <input class="signup-input" type="password" id="signupConfirmPassword" placeholder="Confirm your password" autocomplete="new-password" />
+        <div style="position:relative;">
+          <input class="signup-input" type="password" id="signupConfirmPassword" placeholder="Confirm your password" autocomplete="new-password" style="width:100%;box-sizing:border-box;" onkeyup="checkCapsLock(event,'capsWarn2')" />
+          <div id="capsWarn2" style="display:none;font-size:.75rem;color:#f0a500;margin-top:.25rem;">⚠ Caps Lock is on</div>
+        </div>
         <div class="field-error" id="confirmPasswordError"></div>
 
         <label class="show-pass-row">
@@ -1515,13 +1539,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <p>Sign in to access your wishlist and price alerts.</p>
       <div class="login-form">
         <span class="login-label">Email</span>
-        <input class="signup-input" type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" />
+        <input class="signup-input" type="email" id="loginEmail" placeholder="Your email" autocomplete="email" onkeydown="if(event.key==='Enter')handleLogin()" />
         <span class="login-label">Password</span>
-        <input class="signup-input" type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" />
+        <input class="signup-input" type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')handleLogin()" />
         <div class="login-error" id="loginError"></div>
         <button class="signup-submit" onclick="handleLogin()">Sign in</button>
       </div>
-      <p class="login-switch">Don't have an account? <a onclick="showPage('signup')">Create one free →</a></p>
+      <p class="login-switch">Don't have an account? <a onclick="showPage('signup')">Create one for free →</a></p>
     </div>
   </div>
 </div>
@@ -1537,23 +1561,9 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     </div>
   </div>
   <div id="alertsDashboard" style="display:none;">
-    <div class="acct-welcome">
-      <div class="acct-welcome-inner">
-        <div>
-          <div class="acct-welcome-name" id="acctWelcomeName"></div>
-          <div class="acct-welcome-email" id="acctWelcomeEmail"></div>
-        </div>
-        <button class="acct-logout" onclick="handleLogout()">Log out</button>
-      </div>
-    </div>
     <div class="wishlist-section">
       <div class="wishlist-section-title">My Wishlist</div>
       <div id="wishlistGrid" class="wishlist-grid"></div>
-      <div class="delete-account-section" style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
-        <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.5rem;">Danger Zone</h3>
-        <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;">Permanently delete your account, wishlist, and search history. This cannot be undone.</p>
-        <button class="delete-account-btn" onclick="confirmDeleteAccount()" style="background:transparent;border:1px solid #e74c3c;color:#e74c3c;padding:.45rem 1.1rem;border-radius:var(--radius-xs);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='#e74c3c';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#e74c3c'">Delete my account</button>
-      </div>
     </div>
     <div class="pa-hero" style="padding-top:2rem;">
       <h1 data-i18n="pa_title" style="font-size:1.4rem;">Price Alerts</h1>
@@ -1561,6 +1571,44 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     </div>
   </div>
   <div class="pa-content" id="paContent"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  ACCOUNT PAGE                              -->
+<!-- ══════════════════════════════════════════ -->
+<div id="page-account" class="page">
+  <div id="accountGate" class="acct-gate" style="display:none;">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <h2>Sign in to view your account</h2>
+    <p>Create a free account to access your profile, wishlist, and search history.</p>
+    <div class="acct-gate-btns">
+      <button class="acct-gate-btn" onclick="showPage('signup')">Create free account</button>
+      <button class="acct-gate-btn ghost" onclick="showPage('login')">Sign in</button>
+    </div>
+  </div>
+  <div id="accountDashboard" style="display:none;">
+    <div class="acct-welcome">
+      <div class="acct-welcome-inner">
+        <div>
+          <div class="acct-welcome-name" id="acctAccountName"></div>
+          <div class="acct-welcome-email" id="acctAccountEmail"></div>
+        </div>
+        <button class="acct-logout" onclick="handleLogout()">Log out</button>
+      </div>
+    </div>
+    <div class="acct-profile-section">
+      <div class="acct-section-head">Recent searches</div>
+      <div id="acctRecentSearches" class="acct-recent-list"></div>
+      <div class="acct-section-head" style="margin-top:2rem;">Account</div>
+      <div class="acct-info-row"><span>Email</span><span id="acctInfoEmail"></span></div>
+      <div class="acct-info-row"><span>Member since</span><span id="acctInfoSince"></span></div>
+      <div class="delete-account-section" style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.5rem;">Danger Zone</h3>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;">Permanently delete your account, wishlist, and search history. This cannot be undone.</p>
+        <button class="delete-account-btn" onclick="confirmDeleteAccount()" style="background:transparent;border:1px solid #e74c3c;color:#e74c3c;padding:.45rem 1.1rem;border-radius:var(--radius-xs);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='#e74c3c';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#e74c3c'">Delete my account</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════ -->
@@ -2190,7 +2238,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <button class="theme-toggle" onclick="toggleTheme()" id="mobThemeBtn">Light</button>
     </div>
     <div id="mobSignupBtn"><a class="mob-settings-cta" onclick="closeMobSettings();showPage('login')">Log in</a></div>
-    <div id="mobUserBtn" style="display:none;"><a class="mob-settings-cta" style="background:var(--surface2);color:var(--text);border:1px solid var(--border2);" onclick="closeMobSettings();showPage('alerts')" id="mobUserName">My Account</a></div>
+    <div id="mobUserBtn" style="display:none;"><a class="mob-settings-cta" style="background:var(--surface2);color:var(--text);border:1px solid var(--border2);" onclick="closeMobSettings();showPage('account')" id="mobUserName">My Account</a></div>
   </div>
 </div>
 
@@ -3285,6 +3333,7 @@ function showPage(id) {
   window.scrollTo({top:0,behavior:'instant'});
   if(id==='hiw') initHiwObserver();
   if(id==='alerts') renderAlerts();
+  if(id==='account') renderAccount();
   if(id==='deals') renderDeals();
   if(id==='categories') renderCatsBrowse();
   if(id==='hot') renderHotPage();
@@ -4158,18 +4207,19 @@ function addRecent(query){
 const searchCache=new Map();
 
 function buildSkeletons(){
-  return Array(6).fill(0).map((_,i)=>`
-    <div class="skel-card" style="animation-delay:${i*0.07}s">
-      <div class="skel-block skel-logo"></div>
-      <div class="skel-info">
-        <div class="skel-block" style="width:${55+Math.random()*25|0}%;height:12px;"></div>
-        <div class="skel-block" style="width:${30+Math.random()*20|0}%;height:10px;margin-top:2px;"></div>
+  return Array(8).fill(0).map((_,i)=>`
+    <div class="skel-card" style="animation-delay:${i*0.07}s;display:flex;flex-direction:column;gap:.6rem;padding:1rem;border-radius:var(--radius-sm);background:var(--card-bg);border:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:.6rem;">
+        <div class="skel-block" style="width:36px;height:36px;border-radius:6px;flex-shrink:0;"></div>
+        <div class="skel-block" style="width:70px;height:10px;border-radius:4px;"></div>
       </div>
-      <div class="skel-price-col">
-        <div class="skel-block" style="width:52px;height:10px;"></div>
-        <div class="skel-block" style="width:64px;height:18px;"></div>
+      <div class="skel-block" style="width:${70+Math.random()*20|0}%;height:13px;border-radius:4px;"></div>
+      <div class="skel-block" style="width:${40+Math.random()*20|0}%;height:11px;border-radius:4px;"></div>
+      <div style="display:flex;align-items:center;gap:.4rem;margin-top:.2rem;">
+        <div class="skel-block" style="width:72px;height:22px;border-radius:4px;"></div>
+        <div class="skel-block" style="width:44px;height:14px;border-radius:4px;"></div>
       </div>
-      <div class="skel-block skel-btn-box"></div>
+      <div class="skel-block" style="width:100%;height:34px;border-radius:var(--radius-xs);margin-top:.25rem;"></div>
     </div>`).join('');
 }
 
@@ -4635,8 +4685,8 @@ function renderWishlistGrid(clerkId){
     return;
   }
   grid.innerHTML=items.map(i=>`
-    <div class="wishlist-card">
-      <button class="wishlist-card-remove" onclick="removeFromWishlist('${sanitizeHTML(i.itemId||i.id)}')" title="Remove" aria-label="Remove ${sanitizeHTML(i.name)} from wishlist">✕</button>
+    <div class="wishlist-card" onclick="searchFromCategory('${sanitizeHTML(i.name).replace(/'/g,"\\'")}')">
+      <button class="wishlist-card-remove" onclick="event.stopPropagation();removeFromWishlist('${sanitizeHTML(i.itemId||i.id)}')" title="Remove" aria-label="Remove ${sanitizeHTML(i.name)} from wishlist">✕</button>
       <div class="wishlist-card-name">${sanitizeHTML(i.name)}</div>
       ${i.retailer?`<div class="wishlist-card-retailer">via ${sanitizeHTML(i.retailer)}</div>`:''}
       ${i.price?`<div class="wishlist-card-price">${fmt(i.price)}</div>`:''}
@@ -4737,7 +4787,7 @@ async function handleSignup(){
       const errMsg=err.errors?.[0]?.longMessage||err.errors?.[0]?.message||err.message||'';
       if(errCode.includes('captcha')||errCode.includes('bot')||errMsg.toLowerCase().includes('captcha')||errMsg.toLowerCase().includes('turnstile')){
         const ph=await hashPassword(password);
-        try{ localStorage.setItem('prixly_user',JSON.stringify({name,email,id:'local_'+Date.now(),passHash:ph})); }catch(e){}
+        try{ localStorage.setItem('prixly_user',JSON.stringify({name,email,id:'local_'+Date.now(),passHash:ph,since:new Date().toISOString()})); }catch(e){}
         updateNavState();
         sendWelcomeEmail(name,email);
         document.getElementById('signupForm').style.display='none';
@@ -4754,7 +4804,7 @@ async function handleSignup(){
   // Fallback: local-only account (no Clerk)
   const ph=await hashPassword(password);
   try{
-    localStorage.setItem('prixly_user',JSON.stringify({name,email,id:'local_'+Date.now(),passHash:ph}));
+    localStorage.setItem('prixly_user',JSON.stringify({name,email,id:'local_'+Date.now(),passHash:ph,since:new Date().toISOString()}));
   }catch(e){}
   updateNavState();
   sendWelcomeEmail(name,email);
@@ -5002,6 +5052,31 @@ const SUGGESTED_ITEMS=[
   {name:'LEGO City Police Station',cat:'Toys',price:89.99,save:'22%'},{name:'Nerf Elite 2.0',cat:'Toys',price:24.99,save:'30%'},
   {name:'Xbox Series S Controller',cat:'Gaming',price:44.99,save:'18%'},{name:'Shark DuoClean Vacuum',cat:'Electronics',price:219.99,save:'35%'},
 ];
+function renderAccount(){
+  const user=prixlyAuth.getCurrentUser();
+  const gate=document.getElementById('accountGate');
+  const dash=document.getElementById('accountDashboard');
+  if(!user){
+    if(gate)gate.style.display='flex';
+    if(dash)dash.style.display='none';
+    return;
+  }
+  if(gate)gate.style.display='none';
+  if(dash)dash.style.display='block';
+  const firstName=user.name.split(' ')[0];
+  const el=id=>document.getElementById(id);
+  if(el('acctAccountName'))el('acctAccountName').textContent='Hi, '+firstName+'!';
+  if(el('acctAccountEmail'))el('acctAccountEmail').textContent=user.email;
+  if(el('acctInfoEmail'))el('acctInfoEmail').textContent=user.email;
+  if(el('acctInfoSince'))el('acctInfoSince').textContent=user.since?new Date(user.since).toLocaleDateString('en-GB',{month:'long',year:'numeric'}):'Recently';
+  const recentEl=el('acctRecentSearches');
+  if(recentEl){
+    recentEl.innerHTML=recentSearches.length
+      ?recentSearches.map(q=>`<span class="acct-recent-chip" onclick="searchFromCategory('${sanitizeHTML(q).replace(/'/g,"\\'")}')">&#8635; ${sanitizeHTML(q)}</span>`).join('')
+      :`<span class="acct-empty-recent">No searches yet.</span>`;
+  }
+}
+
 function renderAlerts(){
   const user=prixlyAuth.getCurrentUser();
   const gate=document.getElementById('alertsGate');
@@ -5036,7 +5111,7 @@ function renderAlerts(){
           <div class="pa-target">${t('pa_below_target')}</div>
         </div>
         <div class="pa-cta-row">
-          <button class="pa-btn" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">${t('pa_view_deal')}</button>
+          <button class="pa-btn" onclick="searchFromCategory('${i.name}')">${t('pa_view_deal')}</button>
           <button class="pa-btn-ghost">${t('pa_remove')}</button>
         </div>
       </div>`).join('');
@@ -5054,7 +5129,7 @@ function renderAlerts(){
           <div class="pa-target">${t('pa_target_label')} ${fmt(i.target)} (${fmt(i.current-i.target)} ${t('pa_away')})</div>
         </div>
         <div class="pa-cta-row">
-          <button class="pa-btn-ghost" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">${t('pa_search_now')}</button>
+          <button class="pa-btn-ghost" onclick="searchFromCategory('${i.name}')">${t('pa_search_now')}</button>
           <button class="pa-btn-ghost">${t('pa_remove')}</button>
         </div>
       </div>`).join('');
@@ -5063,7 +5138,7 @@ function renderAlerts(){
     <div class="suggested-grid">${SUGGESTED_ITEMS.map(i=>{
       const id=wishlistItemId(i.name,'');
       _wlRegistry[id]={id,name:i.name,retailer:'',price:i.price,category:i.cat};
-      return`<div class="suggested-card" style="position:relative;" onclick="showPage('home');setTimeout(()=>quickSearch('${i.name}'),100)">
+      return`<div class="suggested-card" style="position:relative;" onclick="searchFromCategory('${i.name}')">
         ${wishlistStarHTML({id,name:i.name,retailer:'',price:i.price,category:i.cat})}
         <div class="suggested-cat">${i.cat}</div>
         <div class="suggested-name">${i.name}</div>
@@ -5228,7 +5303,7 @@ function renderHotPage(){
   let html='<div class="hot-grid">';
   HOT_ITEMS.forEach(item=>{
     const label=CATEGORIES[item.cat]?.label||item.cat;
-    html+=`<div class="hot-card" onclick="showPage('home');setTimeout(()=>quickSearch('${item.name.replace(/'/g,"\\'")}'),350)">
+    html+=`<div class="hot-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
       <div class="hot-card-rank">#${item.rank}</div>
       <div class="hot-card-body">
         <div class="hot-card-cat">${label}</div>
@@ -5239,7 +5314,7 @@ function renderHotPage(){
         <div style="font-size:.74rem;color:var(--muted);margin-bottom:.5rem;">${item.reason}</div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
           <span class="hot-card-price">${fmt(item.price)}</span>
-          <button class="hot-card-btn" onclick="event.stopPropagation();showPage('home');setTimeout(()=>quickSearch('${item.name.replace(/'/g,"\\'")}'),350)">Compare prices</button>
+          <button class="hot-card-btn" onclick="event.stopPropagation();searchFromCategory('${item.name.replace(/'/g,"\\'")}')">Compare prices</button>
         </div>
       </div>
     </div>`;
@@ -5350,7 +5425,7 @@ function renderDeals(){
     html2+=`<div class="deals-grid">${items.map(d=>{
       const witem={id:wishlistItemId(d.name,d.retailer),name:d.name,retailer:d.retailer,price:d.price,category:d.cat};
       const pct=parseFloat(d.discount);
-      return`<div class="deal-card" onclick="showPage('home');setTimeout(()=>quickSearch('${d.name.replace(/'/g,"\\'")}'),100)">
+      return`<div class="deal-card" onclick="searchFromCategory('${d.name.replace(/'/g,"\\'")}')">
         <div class="deal-card-top"><span class="deal-card-cat">${d.cat}</span><div style="display:flex;align-items:center;gap:.3rem;"><span class="deal-card-discount ${dropClass(pct)}">-${d.discount}</span>${inlineStarHTML(witem)}</div></div>
         <div class="deal-card-name">${d.name}</div>
         <div class="deal-card-retailer">${t('pa_via')} ${d.retailer}</div>
