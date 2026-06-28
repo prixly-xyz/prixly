@@ -528,10 +528,15 @@ nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;di
 .hiw-divider{width:2px;height:60px;background:var(--border);margin:0 auto;display:block;}
 
 /* ── PRICE ALERTS PAGE ── */
+#page-alerts{min-height:calc(100vh - 56px - 43px);display:flex;flex-direction:column;}
+#page-alerts #alertsGate,#page-alerts #alertsDashboard{flex:1;}
 .pa-hero{text-align:center;padding:3rem 2rem 1.5rem;max-width:700px;margin:0 auto;}
 .pa-hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.6rem;}
 .pa-hero p{color:var(--muted);font-size:.95rem;}
 .pa-content{max-width:900px;margin:0 auto;padding:0 2rem 4rem;}
+.pa-empty-state{text-align:center;padding:1.5rem;color:var(--muted);font-size:.85rem;line-height:1.6;background:var(--surface2);border-radius:var(--radius);border:1px dashed var(--border2);margin-bottom:.6rem;}
+.pa-empty-state .pa-empty-icon{font-size:1.6rem;margin-bottom:.4rem;}
+.pa-suggested-hint{font-size:.8rem;color:var(--muted);margin-bottom:.75rem;}
 .pa-section-title{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:1.5rem 0 .75rem;display:flex;align-items:center;gap:.5rem;}
 .pa-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
 .pa-alert-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:.6rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
@@ -1578,16 +1583,12 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     </div>
   </div>
   <div id="alertsDashboard" style="display:none;">
-    <div class="wishlist-section">
-      <div class="wishlist-section-title">My Wishlist</div>
-      <div id="wishlistGrid" class="wishlist-grid"></div>
-    </div>
-    <div class="pa-hero" style="padding-top:2rem;">
-      <h1 data-i18n="pa_title" style="font-size:1.4rem;">Price Alerts</h1>
+    <div class="pa-hero">
+      <h1 data-i18n="pa_title">🔔 Price Alerts</h1>
       <p data-i18n="pa_subtitle">Items you're watching — we'll tell you the moment the price drops.</p>
     </div>
+    <div class="pa-content" id="paContent"></div>
   </div>
-  <div class="pa-content" id="paContent"></div>
 </div>
 
 <!-- ══════════════════════════════════════════ -->
@@ -4665,9 +4666,9 @@ function toggleWishlistBtn(e,id){
     btn.title=added?'Remove from Wishlist':'Wishlist this item';
     btn.querySelector('svg').setAttribute('fill',added?'currentColor':'none');
   }
-  // refresh wishlist grid if on alerts page
-  if(document.getElementById('alertsDashboard')&&document.getElementById('alertsDashboard').style.display!=='none'){
-    renderWishlistGrid(user.clerkId);
+  // refresh alerts page if open
+  if(document.getElementById('alertsDashboard')?.style.display!=='none'){
+    renderAlerts();
   }
 }
 
@@ -4713,11 +4714,11 @@ function renderWishlistGrid(clerkId){
 function removeFromWishlist(id){
   const user=prixlyAuth.getCurrentUser();
   if(!user)return;
-  prixlyWishlist.remove(user.clerkId,id);
-  renderWishlistGrid(user.clerkId);
-  // update any visible star buttons
-  const btn=document.getElementById('wbtn-'+id);
-  if(btn){btn.classList.remove('wishlisted');btn.title='Wishlist this item';btn.querySelector('svg').setAttribute('fill','none');}
+  prixlyWishlist.remove(user.clerkId,id).then(()=>{
+    if(document.getElementById('alertsDashboard')?.style.display!=='none') renderAlerts();
+    const btn=document.getElementById('wbtn-'+id);
+    if(btn){btn.classList.remove('wishlisted');btn.title='Wishlist this item';btn.querySelector('svg').setAttribute('fill','none');}
+  });
 }
 
 function shakeField(el){
@@ -5102,58 +5103,60 @@ function renderAlerts(){
   if(!user){
     gate.style.display='flex';
     dashboard.style.display='none';
-    document.getElementById('paContent').innerHTML='';
     return;
   }
   gate.style.display='none';
   dashboard.style.display='block';
-  document.getElementById('acctWelcomeName').textContent='Welcome back, '+user.name.split(' ')[0]+'!';
-  document.getElementById('acctWelcomeEmail').textContent=user.email;
-  renderWishlistGrid(user.clerkId);
 
-  const dropped=ALERT_ITEMS.filter(i=>i.dropped);
-  const watching=ALERT_ITEMS.filter(i=>!i.dropped);
-  let html2='';
-  if(dropped.length){
-    html2+=`<div class="pa-section-title">${t('pa_dropped_header')}</div>`;
-    html2+=dropped.map(i=>`
-      <div class="pa-alert-card dropped">
-        <span class="pa-drop-badge">↓${i.savings} DROP</span>
+  const wishlistItems=prixlyWishlist.getAll(user.clerkId);
+  let html='';
+
+  // ── Price Dropped section ──
+  html+=`<div class="pa-section-title">🔥 ${t('pa_dropped_header')}</div>`;
+  // No real price-drop detection yet; show empty state with guidance
+  html+=`<div class="pa-empty-state"><div class="pa-empty-icon">📉</div>Wishlist an item to get alerted when its price drops.<br><span style="font-size:.78rem;opacity:.7;">Price drop alerts appear here the moment a deal is found.</span></div>`;
+
+  // ── Still Watching section ──
+  html+=`<div class="pa-section-title" style="margin-top:1.5rem;">⌛ ${t('pa_watching_header')}</div>`;
+  if(!wishlistItems.length){
+    html+=`<div class="pa-empty-state"><div class="pa-empty-icon">★</div>Items you save will appear here.<br><span style="font-size:.78rem;opacity:.7;">Tap the star on any product to add it to your watchlist.</span></div>`;
+  } else {
+    html+=wishlistItems.map(i=>{
+      const itemId=sanitizeHTML(i.itemId||i.id||'');
+      const name=sanitizeHTML(i.name||'');
+      const retailer=sanitizeHTML(i.retailer||'');
+      const cat=sanitizeHTML(i.category||'');
+      return`<div class="pa-alert-card">
         <div class="pa-alert-info">
-          <div class="pa-alert-name">${i.name}</div>
-          <div class="pa-alert-meta"><span>${i.cat}</span><span>${t('pa_via')} ${i.retailer}</span><span>${t('pa_your_target')} ${fmt(i.target)}</span></div>
+          <div class="pa-alert-name">${name}</div>
+          <div class="pa-alert-meta">${cat?`<span>${cat}</span>`:''}${retailer?`<span>${t('pa_via')} ${retailer}</span>`:''}</div>
         </div>
         <div class="pa-alert-prices">
-          <div class="pa-was">${t('pa_was')} ${fmt(i.was)}</div>
-          <div class="pa-current">${fmt(i.current)}</div>
-          <div class="pa-target">${t('pa_below_target')}</div>
+          ${i.price?`<div class="pa-current">${fmt(i.price)}</div>`:''}
+          <div class="pa-target" style="color:var(--muted);font-size:.75rem;">Watching for price drops</div>
         </div>
         <div class="pa-cta-row">
-          <button class="pa-btn" onclick="searchFromCategory('${i.name}')">${t('pa_view_deal')}</button>
-          <button class="pa-btn-ghost">${t('pa_remove')}</button>
+          <button class="pa-btn-ghost" onclick="searchFromCategory('${name.replace(/'/g,"\\'")}')">Search now</button>
+          <button class="pa-btn-ghost" onclick="removeFromWishlist('${itemId}')">${t('pa_remove')}</button>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
-  if(watching.length){
-    html2+=`<div class="pa-section-title" style="margin-top:1.5rem;">${t('pa_watching_header')}</div>`;
-    html2+=watching.map(i=>`
-      <div class="pa-alert-card">
-        <div class="pa-alert-info">
-          <div class="pa-alert-name">${i.name}</div>
-          <div class="pa-alert-meta"><span>${i.cat}</span><span>${t('pa_via')} ${i.retailer}</span></div>
-        </div>
-        <div class="pa-alert-prices">
-          <div class="pa-current">${fmt(i.current)}</div>
-          <div class="pa-target">${t('pa_target_label')} ${fmt(i.target)} (${fmt(i.current-i.target)} ${t('pa_away')})</div>
-        </div>
-        <div class="pa-cta-row">
-          <button class="pa-btn-ghost" onclick="searchFromCategory('${i.name}')">${t('pa_search_now')}</button>
-          <button class="pa-btn-ghost">${t('pa_remove')}</button>
-        </div>
-      </div>`).join('');
-  }
-  html2+=`<div class="pa-section-title" style="margin-top:2rem;">${t('pa_suggested_header')}</div>
-    <div class="suggested-grid">${SUGGESTED_ITEMS.map(i=>{
+
+  // ── You Might Also Like section ──
+  // Filter/sort suggestions to match user's wishlisted categories
+  const wlCats=new Set(wishlistItems.map(i=>(i.category||'').toLowerCase()));
+  const sorted=[...SUGGESTED_ITEMS].sort((a,b)=>{
+    const aMatch=wlCats.has(a.cat.toLowerCase())?1:0;
+    const bMatch=wlCats.has(b.cat.toLowerCase())?1:0;
+    return bMatch-aMatch;
+  });
+  const hintMsg=wishlistItems.length
+    ?'Picked based on your watchlist and searches'
+    :'Wishlist items and searches personalise these suggestions';
+  html+=`<div class="pa-section-title" style="margin-top:2rem;">✨ ${t('pa_suggested_header')}</div>
+    <p class="pa-suggested-hint">${hintMsg}</p>
+    <div class="suggested-grid">${sorted.map(i=>{
       const id=wishlistItemId(i.name,'');
       _wlRegistry[id]={id,name:i.name,retailer:'',price:i.price,category:i.cat};
       return`<div class="suggested-card" style="position:relative;" onclick="searchFromCategory('${i.name}')">
@@ -5163,7 +5166,8 @@ function renderAlerts(){
         <div class="suggested-price">${fmt(i.price)}</div>
         <span class="suggested-save">${t('pa_save')} ${i.save}</span>
       </div>`;}).join('')}</div>`;
-  document.getElementById('paContent').innerHTML=html2;
+
+  document.getElementById('paContent').innerHTML=html;
 }
 
 // ── DEALS PAGE ──
