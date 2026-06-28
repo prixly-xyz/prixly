@@ -4224,11 +4224,7 @@ function showResults(query,catKey,detection,cached){
   const list=document.getElementById('resultsList');
   if(cached) list.classList.add('results-cached'); else list.classList.remove('results-cached');
   renderResults(currentResults);
-  const bp=currentResults[0].price;
-  document.getElementById('historyStats').innerHTML=`<div class="history-stat good"><div class="stat-val">${fmt(bp)}</div><div class="stat-label">Best now</div></div><div class="history-stat bad"><div class="stat-val">${fmt(bp*1.35)}</div><div class="stat-label">Highest</div></div><div class="history-stat good"><div class="stat-val">${fmt(bp*.92)}</div><div class="stat-label">Lowest ever</div></div><div class="history-stat"><div class="stat-val">↓26%</div><div class="stat-label">vs peak</div></div>`;
-  document.getElementById('historyInsight').innerHTML=cat.priceInsight;
   document.getElementById('resultsSection').classList.add('visible');
-  setTimeout(drawChart,100);
   if(!cached) fetchReviews(query);
   showSimilarProducts(query,catKey,false);
   window.scrollTo({top:document.getElementById('categoryBanner').offsetTop-80,behavior:'smooth'});
