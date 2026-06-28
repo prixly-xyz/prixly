@@ -969,6 +969,40 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .detail-reviews-avg-num{font-size:2rem;font-weight:800;color:var(--text);}
 .detail-reviews-avg-stars{color:#f5a623;font-size:1rem;}
 .detail-reviews-avg-count{font-size:.75rem;color:var(--muted);}
+/* ── TOOLTIPS ── */
+[data-tooltip]{position:relative;cursor:help;}
+[data-tooltip]::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;font-size:.72rem;font-weight:400;line-height:1.45;padding:.5rem .7rem;border-radius:7px;white-space:normal;text-align:center;pointer-events:none;opacity:0;transition:opacity .18s;z-index:600;width:200px;box-shadow:0 4px 18px rgba(0,0,0,.45);}
+[data-tooltip]:hover::after{opacity:1;}
+[data-theme="light"] [data-tooltip]::after{background:#222;color:#fff;}
+[data-tooltip]::before{content:'';position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1a1a1a;pointer-events:none;opacity:0;transition:opacity .18s;z-index:601;}
+[data-tooltip]:hover::before{opacity:1;}
+[data-theme="light"] [data-tooltip]::before{border-top-color:#222;}
+/* ── CHART NOTE ── */
+.detail-chart-note{font-size:.74rem;color:var(--muted);margin-top:-.5rem;margin-bottom:.85rem;display:flex;align-items:center;gap:.35rem;}
+/* ── PRIXLY REVIEWS SECTION ── */
+.detail-prixly-section{margin-bottom:2rem;}
+.prixly-reviews-list{display:flex;flex-direction:column;gap:.65rem;margin-bottom:1rem;}
+.prixly-review-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;}
+.prixly-review-top{display:flex;align-items:center;gap:.65rem;margin-bottom:.35rem;flex-wrap:wrap;}
+.prixly-review-author{font-size:.82rem;font-weight:700;}
+.prixly-review-stars{color:#f5a623;font-size:.82rem;letter-spacing:-1px;}
+.prixly-review-date{font-size:.7rem;color:var(--muted);margin-left:auto;}
+.prixly-review-text{font-size:.82rem;color:var(--muted);line-height:1.6;}
+.prixly-empty{padding:1rem;color:var(--muted);font-size:.83rem;background:var(--surface2);border-radius:var(--radius-sm);border:1px dashed var(--border2);text-align:center;}
+.prixly-review-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.2rem;margin-top:.75rem;}
+.prixly-review-form h4{font-size:.9rem;font-weight:700;margin-bottom:.85rem;}
+.star-input{display:flex;gap:.3rem;margin-bottom:.85rem;flex-direction:row-reverse;justify-content:flex-end;}
+.star-input input{display:none;}
+.star-input label{font-size:1.5rem;color:var(--muted2);cursor:pointer;transition:color .1s;line-height:1;}
+.star-input label:hover,.star-input label:hover~label,.star-input input:checked~label{color:#f5a623;}
+.prixly-review-textarea{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-xs);color:var(--text);font-size:.83rem;padding:.65rem .8rem;resize:vertical;min-height:80px;font-family:inherit;margin-bottom:.75rem;}
+.prixly-review-textarea:focus{outline:none;border-color:var(--accent);}
+.prixly-review-submit{background:var(--accent);color:#000;border:none;padding:.45rem 1.1rem;border-radius:var(--radius-xs);font-size:.82rem;font-weight:700;cursor:pointer;transition:opacity .15s;}
+.prixly-review-submit:hover{opacity:.85;}
+.prixly-review-submit:disabled{opacity:.45;cursor:not-allowed;}
+.prixly-login-gate{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 1rem;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);margin-top:.75rem;}
+.prixly-login-gate p{font-size:.83rem;color:var(--muted);margin:0;}
+.prixly-login-gate button{background:var(--accent);color:#000;border:none;padding:.38rem .9rem;border-radius:var(--radius-xs);font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;}
 /* results grid layout (more sources visible) */
 .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.65rem;}
 @media(max-width:640px){.results-grid{grid-template-columns:1fr;}}
@@ -1522,9 +1556,9 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
           </button>
         </div>
         <div class="detail-score-row">
-          <div class="detail-score-chip"><span>Prixly Score</span><strong id="detailScore"></strong></div>
-          <div class="detail-score-chip"><span>Match</span><strong id="detailRelevance"></strong></div>
-          <div class="detail-score-chip"><span>Reviews</span><strong id="detailReviewBadge"></strong></div>
+          <div class="detail-score-chip" data-tooltip="Our algorithm scores each result 0–10 based on price competitiveness, retailer trust, and shipping value"><span>Prixly Score</span><strong id="detailScore"></strong></div>
+          <div class="detail-score-chip" data-tooltip="How closely this result matches your search query — higher means a more relevant product"><span>Match</span><strong id="detailRelevance"></strong></div>
+          <div class="detail-score-chip" data-tooltip="Total review count from this retailer's product listing"><span>Reviews</span><strong id="detailReviewBadge"></strong></div>
         </div>
       </div>
     </div>
@@ -1535,19 +1569,35 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         Price history at <span id="detailChartRetailer" style="color:var(--accent);margin-left:.25rem;"></span>
       </div>
+      <p class="detail-chart-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Price trend based on data collected over the past 6 months
+      </p>
       <div class="detail-chart-wrap"><canvas id="detailChartCanvas"></canvas></div>
     </div>
 
-    <!-- Retailer-specific reviews -->
+    <!-- Block 1: Retailer aggregate rating (AI-generated for demo) -->
     <div class="detail-reviews-section">
       <div class="detail-section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Customer reviews from <span id="detailReviewsRetailer" style="color:var(--accent);margin-left:.25rem;"></span>
+        Retailer rating at <span id="detailReviewsRetailer" style="color:var(--accent);margin-left:.25rem;"></span>
+        <span style="margin-left:auto;font-size:.68rem;font-weight:500;color:var(--muted);background:var(--surface2);border:1px solid var(--border2);border-radius:4px;padding:.1rem .45rem;">For demonstration purposes</span>
       </div>
       <div id="detailReviewsAvg"></div>
       <div class="detail-reviews-grid" id="detailReviewsBody">
         <div class="detail-reviews-loading"><div class="detail-reviews-mini-spin"></div>Loading reviews...</div>
       </div>
+    </div>
+
+    <!-- Block 2: Prixly community reviews -->
+    <div class="detail-prixly-section">
+      <div class="detail-section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Prixly Reviews
+        <span id="prixlyReviewCount" style="font-size:.74rem;font-weight:500;color:var(--muted);margin-left:.25rem;"></span>
+      </div>
+      <div class="prixly-reviews-list" id="prixlyReviewsList"></div>
+      <div id="prixlyReviewFormWrap"></div>
     </div>
   </div>
 </div>
@@ -4473,6 +4523,7 @@ function openProductDetail(idx){
   showPage('detail');
   drawDetailChart(r);
   fetchDetailReviews(r);
+  loadPrixlyReviews(productSlugFromName(r.name));
 }
 
 function selectDetailThumb(el,emoji){
@@ -4533,6 +4584,102 @@ async function fetchDetailReviews(r){
     }).join('');
   }catch(err){
     body.innerHTML=`<div style="padding:1rem;color:var(--muted);font-size:.85rem;">Couldn't load reviews right now — try again shortly.</div>`;
+  }
+}
+
+// ── PRIXLY COMMUNITY REVIEWS ──
+function productSlugFromName(name){
+  return(name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
+
+async function loadPrixlyReviews(productSlug){
+  const list=document.getElementById('prixlyReviewsList');
+  const countEl=document.getElementById('prixlyReviewCount');
+  const formWrap=document.getElementById('prixlyReviewFormWrap');
+  if(!list)return;
+  list.innerHTML='<div class="detail-reviews-loading"><div class="detail-reviews-mini-spin"></div>Loading community reviews...</div>';
+
+  let reviews=[];
+  try{
+    if(window.convex){
+      reviews=await window.convex.query('reviews:getReviews',{productSlug});
+    }
+  }catch(e){ console.warn('Prixly reviews load:',e); }
+
+  if(!reviews.length){
+    list.innerHTML='<div class="prixly-empty">No reviews yet — be the first to share your experience.</div>';
+  } else {
+    countEl.textContent=`(${reviews.length})`;
+    list.innerHTML=reviews.map(rv=>{
+      const stars=Math.min(5,Math.max(1,rv.rating||5));
+      const date=rv.createdAt?new Date(rv.createdAt).toLocaleDateString('en-GB',{month:'short',year:'numeric'}):'';
+      return`<div class="prixly-review-card">
+        <div class="prixly-review-top">
+          <span class="prixly-review-author">${sanitizeHTML(rv.userName||'Prixly user')}</span>
+          <span class="prixly-review-stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
+          <span class="prixly-review-date">${date}</span>
+        </div>
+        <div class="prixly-review-text">${sanitizeHTML(rv.text||'')}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Login gate or review form
+  const user=prixlyAuth.getCurrentUser();
+  if(!user){
+    formWrap.innerHTML=`<div class="prixly-login-gate"><p>Sign in to leave a review</p><button onclick="showPage('login')">Sign in</button></div>`;
+  } else {
+    // Check if user already reviewed this product
+    const alreadyReviewed=reviews.some(rv=>rv.clerkId===user.clerkId);
+    if(alreadyReviewed){
+      formWrap.innerHTML=`<div class="prixly-login-gate"><p>You've already reviewed this product — thanks!</p></div>`;
+    } else {
+      formWrap.innerHTML=`
+        <div class="prixly-review-form">
+          <h4>Leave a review</h4>
+          <div class="star-input" id="starInput">
+            <input type="radio" name="prixly_star" id="s5" value="5"><label for="s5" title="5 stars">★</label>
+            <input type="radio" name="prixly_star" id="s4" value="4"><label for="s4" title="4 stars">★</label>
+            <input type="radio" name="prixly_star" id="s3" value="3"><label for="s3" title="3 stars">★</label>
+            <input type="radio" name="prixly_star" id="s2" value="2"><label for="s2" title="2 stars">★</label>
+            <input type="radio" name="prixly_star" id="s1" value="1"><label for="s1" title="1 star">★</label>
+          </div>
+          <textarea class="prixly-review-textarea" id="prixlyReviewText" placeholder="Share your experience with this product…" maxlength="600"></textarea>
+          <button class="prixly-review-submit" id="prixlySubmitBtn" onclick="submitPrixlyReview('${productSlug}')">Post review</button>
+        </div>`;
+    }
+  }
+}
+
+async function submitPrixlyReview(productSlug){
+  const user=prixlyAuth.getCurrentUser();
+  if(!user){showPage('login');return;}
+  const ratingEl=document.querySelector('input[name="prixly_star"]:checked');
+  const textEl=document.getElementById('prixlyReviewText');
+  const btn=document.getElementById('prixlySubmitBtn');
+  if(!ratingEl){alert('Please select a star rating.');return;}
+  const text=(textEl?.value||'').trim();
+  if(!text){alert('Please write a short review.');return;}
+  btn.disabled=true;
+  btn.textContent='Posting…';
+  try{
+    if(window.convex){
+      await window.convex.mutation('reviews:addReview',{
+        clerkId:user.clerkId,
+        productSlug,
+        userName:user.name,
+        rating:parseInt(ratingEl.value,10),
+        text,
+        createdAt:Date.now()
+      });
+    }
+    // Reload reviews to show new one
+    await loadPrixlyReviews(productSlug);
+  }catch(e){
+    console.warn('Review submit:',e);
+    btn.disabled=false;
+    btn.textContent='Post review';
+    alert('Something went wrong — please try again.');
   }
 }
 
