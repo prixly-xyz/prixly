@@ -3484,6 +3484,15 @@ function initAnalytics(){
     `;
     document.head.appendChild(s);
   })();
+  // When Convex finishes loading, re-run loadCache so wishlist is populated
+  // even if it fired before window.convex was set
+  window.addEventListener('convex-ready', async ()=>{
+    const user=prixlyAuth.getCurrentUser();
+    if(user && prixlyWishlist._clerkId===user.clerkId){
+      await prixlyWishlist.loadCache(user.clerkId);
+      if(document.getElementById('page-alerts')?.classList.contains('active')) renderAlerts();
+    }
+  });
 }
 
 // ── COOKIE BANNER ──
@@ -4768,45 +4777,48 @@ window.addEventListener('load', async ()=>{
 });
 
 const prixlyWishlist={
-  // In-memory cache for current session
-  _cache: null,
+  _cache: [],   // always an array so getAll() never returns empty by accident
+  _clerkId: null,
   async loadCache(clerkId){
-    if(!window.convex||!clerkId) return [];
+    this._clerkId=clerkId;
+    if(!window.convex||!clerkId){ this._cache=[]; return []; }
     try{
       const items = await window.convex.query("wishlist:getWishlist", {clerkId});
-      this._cache = items;
-      return items;
-    }catch(e){ return []; }
+      this._cache = items||[];
+      return this._cache;
+    }catch(e){ console.warn('Wishlist load:',e); this._cache=[]; return []; }
   },
-  has(email,id){
-    if(!this._cache) return false;
+  has(clerkId,id){
     return this._cache.some(i=>i.itemId===id);
   },
   async add(clerkId, item){
+    // Update cache optimistically first so UI is always correct
+    if(!this._cache.some(i=>i.itemId===item.id)){
+      this._cache.unshift({itemId:item.id,...item,savedAt:Date.now()});
+    }
     if(!window.convex||!clerkId) return;
     try{
       await window.convex.mutation("wishlist:addToWishlist", {
         clerkId, itemId: item.id, name: item.name,
-        retailer: item.retailer, price: item.price,
-        currency: item.currency, url: item.url
+        retailer: item.retailer||'', price: item.price||0,
+        currency: item.currency||activeCurrency, url: item.url||''
       });
-      if(this._cache) this._cache.unshift({itemId:item.id,...item,savedAt:Date.now()});
     }catch(e){ console.warn('Wishlist add:', e); }
   },
   async remove(clerkId, id){
+    // Update cache optimistically first
+    this._cache = this._cache.filter(i=>i.itemId!==id);
     if(!window.convex||!clerkId) return;
     try{
       await window.convex.mutation("wishlist:removeFromWishlist", {clerkId, itemId: id});
-      if(this._cache) this._cache = this._cache.filter(i=>i.itemId!==id);
     }catch(e){ console.warn('Wishlist remove:', e); }
   },
   async toggle(clerkId, item){
-    if(this.has(null, item.id)){ await this.remove(clerkId, item.id); return false; }
+    if(this.has(clerkId, item.id)){ await this.remove(clerkId, item.id); return false; }
     else{ await this.add(clerkId, item); return true; }
   },
-  // Legacy compat
-  getAll(email){ return this._cache||[]; },
-  save(email,items){ this._cache=items; }
+  getAll(){ return this._cache; },
+  save(clerkId,items){ this._cache=items||[]; }
 };
 
 function wishlistItemId(name,retailer){
