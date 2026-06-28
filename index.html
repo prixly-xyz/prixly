@@ -242,13 +242,14 @@ nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;di
 .scan-chip:nth-child(2){animation-delay:.12s}.scan-chip:nth-child(3){animation-delay:.24s}
 .scan-chip:nth-child(4){animation-delay:.36s}.scan-chip:nth-child(5){animation-delay:.48s}
 /* ── SKELETON LOADERS ── */
-.skel-list{max-width:900px;margin:0 auto;padding:0 2rem;}
-.skel-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem;margin-bottom:.6rem;display:flex;align-items:center;gap:1rem;overflow:hidden;position:relative;}
+.skel-list{max-width:900px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.65rem;}
+.skel-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.95rem 1rem;display:flex;flex-direction:column;gap:.55rem;overflow:hidden;position:relative;}
 .skel-card::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%);animation:shimmer 1.5s infinite;}
 [data-theme="light"] .skel-card::after{background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.55) 50%,transparent 100%);}
 @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 .skel-block{background:var(--border2);border-radius:4px;flex-shrink:0;}
-.skel-logo{width:64px;height:38px;border-radius:var(--radius-xs);}
+.skel-logo{width:58px;height:24px;border-radius:var(--radius-xs);}
+.skel-row{display:flex;align-items:center;gap:.5rem;}
 .skel-info{flex:1;display:flex;flex-direction:column;gap:.5rem;}
 .skel-price-col{display:flex;flex-direction:column;gap:.4rem;align-items:flex-end;flex-shrink:0;}
 .skel-btn-box{width:80px;height:34px;border-radius:var(--radius-sm);}
@@ -1066,8 +1067,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   .acct-recent-chip{font-size:.76rem;padding:.25rem .65rem;}
 
   /* ── SKELETON ── */
+  .skel-list{grid-template-columns:1fr;}
   .skel-card{padding:.85rem 1rem;}
-  .skel-btn-box{width:64px;}
 
   /* ── WISHLIST GRID ── */
   .wishlist-grid{grid-template-columns:1fr 1fr;}
@@ -1479,7 +1480,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 <!-- ══════════════════════════════════════════ -->
 <div id="page-detail" class="page">
   <div class="detail-page">
-    <button class="detail-back" onclick="history.back();showPage(detailOriginPage||'home')">
+    <button class="detail-back" onclick="showPage(detailOriginPage||'home')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       Back to results
     </button>
@@ -4226,19 +4227,23 @@ function addRecent(query){
 const searchCache=new Map();
 
 function buildSkeletons(){
-  const w=()=>Math.floor(55+Math.random()*30);
+  const w=()=>Math.floor(55+Math.random()*35);
   return Array(8).fill(0).map((_,i)=>`
     <div class="skel-card" style="animation-delay:${i*0.07}s">
-      <div class="skel-block skel-logo"></div>
-      <div class="skel-info">
-        <div class="skel-block" style="width:${w()}%;height:13px;"></div>
-        <div class="skel-block" style="width:${w()-15}%;height:10px;margin-top:4px;"></div>
+      <div class="skel-row">
+        <div class="skel-block skel-logo"></div>
+        <div class="skel-block" style="width:52px;height:10px;margin-left:auto;"></div>
       </div>
-      <div class="skel-price-col">
-        <div class="skel-block" style="width:68px;height:20px;"></div>
-        <div class="skel-block" style="width:44px;height:10px;margin-top:3px;"></div>
+      <div class="skel-block" style="width:${w()}%;height:13px;"></div>
+      <div class="skel-block" style="width:${w()-18}%;height:11px;"></div>
+      <div class="skel-row" style="margin-top:4px;">
+        <div class="skel-block" style="width:72px;height:22px;"></div>
+        <div class="skel-block" style="width:48px;height:14px;margin-left:.4rem;"></div>
       </div>
-      <div class="skel-block skel-btn-box"></div>
+      <div class="skel-row" style="margin-top:2px;">
+        <div class="skel-block" style="width:${w()-10}%;height:10px;"></div>
+        <div class="skel-block" style="width:60px;height:10px;margin-left:auto;"></div>
+      </div>
     </div>`).join('');
 }
 
@@ -5328,8 +5333,8 @@ function renderHotPage(){
     const wid='hot-'+item.name.replace(/\s+/g,'-').toLowerCase();
     const witem={id:wid,name:item.name,retailer:'',price:item.price,category:item.cat};
     _wlRegistry[wid]=witem;
-    html+=`<div class="hot-card" onclick="searchFromCategory('${item.name.replace(/'/g,"\\'")}')">
-      ${inlineStarHTML(witem)}
+    html+=`<div class="hot-card" onclick="openHotItemDetail(${item.rank-1})">
+      ${wishlistStarHTML(witem)}
       <div class="hot-card-rank">#${item.rank}</div>
       <div class="hot-card-body">
         <div class="hot-card-cat">${label}</div>
@@ -5340,13 +5345,37 @@ function renderHotPage(){
         <div style="font-size:.74rem;color:var(--muted);margin-bottom:.5rem;">${item.reason}</div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
           <span class="hot-card-price">${fmt(item.price)}</span>
-          <button class="hot-card-btn" onclick="event.stopPropagation();searchFromCategory('${item.name.replace(/'/g,"\\'")}')">Compare prices</button>
+          <button class="hot-card-btn" onclick="event.stopPropagation();openHotItemDetail(${item.rank-1})">Compare prices</button>
         </div>
       </div>
     </div>`;
   });
   html+='</div>';
   container.innerHTML=html;
+}
+
+function openHotItemDetail(rankIdx){
+  const item=HOT_ITEMS[rankIdx];
+  if(!item)return;
+  const retailers=getRetailersForRegion(item.cat,activeRegion);
+  const r=retailers[0]||{name:'Amazon',logoClass:'logo-amazon'};
+  const mockResult={
+    name:item.name,
+    retailer:r.name,
+    logoClass:r.logoClass||'logo-amazon',
+    price:item.price,
+    was:Math.round(item.price*1.25*100)/100,
+    rating:4.5,
+    reviews:Math.floor(800+rankIdx*300),
+    shipping:'Free delivery',
+    score:8.8,
+    relevance:97,
+    best:true
+  };
+  currentResults=[mockResult];
+  detectedCat={key:item.cat||'general',confidence:99,auto:true};
+  detailOriginPage='hot';
+  openProductDetail(0);
 }
 
 // ── SIMILAR / ALTERNATIVE PRODUCTS ──
