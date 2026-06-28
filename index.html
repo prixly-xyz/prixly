@@ -4777,48 +4777,60 @@ window.addEventListener('load', async ()=>{
 });
 
 const prixlyWishlist={
-  _cache: [],   // always an array so getAll() never returns empty by accident
+  _cache: [],
   _clerkId: null,
+  _lsKey(clerkId){ return 'prixly_wl_'+(clerkId||'guest'); },
+  _persist(clerkId){
+    try{ localStorage.setItem(this._lsKey(clerkId), JSON.stringify(this._cache)); }catch(e){}
+  },
+  _loadLocal(clerkId){
+    try{ return JSON.parse(localStorage.getItem(this._lsKey(clerkId))||'[]'); }catch(e){ return []; }
+  },
   async loadCache(clerkId){
     this._clerkId=clerkId;
-    if(!window.convex||!clerkId){ this._cache=[]; return []; }
-    try{
-      const items = await window.convex.query("wishlist:getWishlist", {clerkId});
-      this._cache = items||[];
-      return this._cache;
-    }catch(e){ console.warn('Wishlist load:',e); this._cache=[]; return []; }
+    // Load from localStorage immediately so wishlist is available before Convex responds
+    this._cache=this._loadLocal(clerkId);
+    // Then try to sync from Convex in the background
+    if(window.convex&&clerkId){
+      try{
+        const items=await window.convex.query("wishlist:getWishlist",{clerkId});
+        if(items&&items.length){
+          this._cache=items;
+          this._persist(clerkId);
+        }
+      }catch(e){ console.warn('Wishlist sync:',e); }
+    }
+    return this._cache;
   },
-  has(clerkId,id){
-    return this._cache.some(i=>i.itemId===id);
-  },
+  has(clerkId,id){ return this._cache.some(i=>i.itemId===id); },
   async add(clerkId, item){
-    // Update cache optimistically first so UI is always correct
     if(!this._cache.some(i=>i.itemId===item.id)){
       this._cache.unshift({itemId:item.id,...item,savedAt:Date.now()});
     }
+    this._persist(clerkId);
     if(!window.convex||!clerkId) return;
     try{
-      await window.convex.mutation("wishlist:addToWishlist", {
-        clerkId, itemId: item.id, name: item.name,
-        retailer: item.retailer||'', price: item.price||0,
-        currency: item.currency||activeCurrency, url: item.url||''
+      await window.convex.mutation("wishlist:addToWishlist",{
+        clerkId, itemId:item.id, name:item.name,
+        retailer:item.retailer||'', price:item.price||0,
+        currency:item.currency||activeCurrency, url:item.url||''
       });
-    }catch(e){ console.warn('Wishlist add:', e); }
+    }catch(e){ console.warn('Wishlist add:',e); }
   },
   async remove(clerkId, id){
-    // Update cache optimistically first
-    this._cache = this._cache.filter(i=>i.itemId!==id);
+    this._cache=this._cache.filter(i=>i.itemId!==id);
+    this._persist(clerkId);
     if(!window.convex||!clerkId) return;
     try{
-      await window.convex.mutation("wishlist:removeFromWishlist", {clerkId, itemId: id});
-    }catch(e){ console.warn('Wishlist remove:', e); }
+      await window.convex.mutation("wishlist:removeFromWishlist",{clerkId,itemId:id});
+    }catch(e){ console.warn('Wishlist remove:',e); }
   },
   async toggle(clerkId, item){
-    if(this.has(clerkId, item.id)){ await this.remove(clerkId, item.id); return false; }
-    else{ await this.add(clerkId, item); return true; }
+    if(this.has(clerkId,item.id)){ await this.remove(clerkId,item.id); return false; }
+    else{ await this.add(clerkId,item); return true; }
   },
   getAll(){ return this._cache; },
-  save(clerkId,items){ this._cache=items||[]; }
+  save(clerkId,items){ this._cache=items||[]; this._persist(clerkId); }
 };
 
 function wishlistItemId(name,retailer){
