@@ -3419,6 +3419,7 @@ function showPage(id) {
   const mobNavEl = document.getElementById('mob-nav-'+id);
   if(mobNavEl) mobNavEl.classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
+  if(!['login','signup'].includes(id)) try{ localStorage.setItem('prixly_page',id); }catch(e){}
   if(id==='hiw') initHiwObserver();
   if(id==='alerts') renderAlerts();
   if(id==='account') renderAccount();
@@ -4753,26 +4754,39 @@ const prixlyAuth={
 
 // Initialise Clerk and sync user state once loaded
 window.addEventListener('load', async ()=>{
-  updateNavState(); // restore local account state immediately (no Clerk dependency)
+  // Restore last visited page before anything else
+  try{
+    const savedPage=localStorage.getItem('prixly_page');
+    if(savedPage && document.getElementById('page-'+savedPage)){
+      showPage(savedPage);
+    }
+  }catch(e){}
+
+  updateNavState();
   if(!window.Clerk) return;
   await window.Clerk.load();
-  updateNavState(); // re-run after Clerk resolves its session
-  if(window.Clerk.user && window.convex){
-    const u = window.Clerk.user;
-    // Wire Clerk session token into Convex so authenticated mutations work
-    window.convex.setAuth(async () => {
-      try{ return await window.Clerk.session?.getToken({template:'convex'}) ?? null; }
-      catch(e){ return null; }
-    });
-    try{
-      await window.convex.mutation("users:upsertUser", {
-        clerkId: u.id,
-        email: u.emailAddresses[0].emailAddress,
-        name: u.fullName || u.firstName || u.emailAddresses[0].emailAddress.split('@')[0]
-      });
-    }catch(e){ console.warn('Convex user sync:', e); }
+  updateNavState();
+
+  if(window.Clerk.user){
+    const u=window.Clerk.user;
+    // Load wishlist from localStorage immediately — no Convex dependency
     await prixlyWishlist.loadCache(u.id);
-    if(document.getElementById('alertsDashboard')?.style.display!=='none') renderAlerts();
+    // Re-render alerts now that wishlist cache is populated
+    if(document.getElementById('page-alerts')?.classList.contains('active')) renderAlerts();
+
+    if(window.convex){
+      window.convex.setAuth(async () => {
+        try{ return await window.Clerk.session?.getToken({template:'convex'}) ?? null; }
+        catch(e){ return null; }
+      });
+      try{
+        await window.convex.mutation("users:upsertUser", {
+          clerkId: u.id,
+          email: u.emailAddresses[0].emailAddress,
+          name: u.fullName || u.firstName || u.emailAddresses[0].emailAddress.split('@')[0]
+        });
+      }catch(e){ console.warn('Convex user sync:',e); }
+    }
   }
 });
 
