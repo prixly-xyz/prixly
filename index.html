@@ -801,7 +801,10 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 .wishlist-btn{position:absolute;top:7px;right:7px;background:none;border:none;padding:5px;border-radius:50%;color:var(--muted2);transition:color .18s,background .15s;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;cursor:pointer;}
 .wishlist-btn:hover{color:#f5a623;background:rgba(245,166,35,.12);}
 .wishlist-btn.wishlisted{color:#f5a623;}
-.wishlist-btn svg{width:15px;height:15px;display:block;}
+.wishlist-btn svg{width:15px;height:15px;display:block;transition:filter .2s;}
+.wishlist-btn.wishlisted svg{filter:drop-shadow(0 0 5px rgba(245,166,35,.75));}
+@keyframes star-pop{0%{transform:scale(1)}40%{transform:scale(1.5)}70%{transform:scale(.88)}100%{transform:scale(1)}}
+.wishlist-btn.star-pop{animation:star-pop .3s ease forwards;}
 .item-card,.deal-card,.suggested-card,.cat-scroll-card{position:relative;}
 .result-card{position:relative;}
 
@@ -4841,15 +4844,29 @@ async function toggleWishlistBtn(e,id){
   if(!user){showPage('login');return;}
   const item=_wlRegistry[id];
   if(!item)return;
-  const added=await prixlyWishlist.toggle(user.clerkId,item);
+
+  // Determine new state optimistically before awaiting Convex
+  const isCurrentlyOn=prixlyWishlist.has(user.clerkId,id);
+  const willBeOn=!isCurrentlyOn;
+
+  // Update UI immediately so it feels instant
   const btn=document.getElementById('wbtn-'+id);
   if(btn){
-    btn.classList.toggle('wishlisted',added);
-    btn.title=added?'Remove from Wishlist':'Wishlist this item';
-    btn.querySelector('svg').setAttribute('fill',added?'currentColor':'none');
+    btn.classList.toggle('wishlisted',willBeOn);
+    btn.title=willBeOn?'Remove from Wishlist':'Wishlist this item';
+    btn.querySelector('svg').setAttribute('fill',willBeOn?'currentColor':'none');
+    // Pop animation
+    btn.classList.remove('star-pop');
+    void btn.offsetWidth; // force reflow so animation restarts
+    btn.classList.add('star-pop');
+    setTimeout(()=>btn.classList.remove('star-pop'),350);
   }
-  // refresh alerts page if open so new item appears immediately
-  if(document.getElementById('alertsDashboard')?.style.display!=='none'){
+
+  // Save to Convex in background
+  await prixlyWishlist.toggle(user.clerkId,item);
+
+  // Refresh alerts page if it's the active page
+  if(document.getElementById('page-alerts')?.classList.contains('active')){
     renderAlerts();
   }
 }
