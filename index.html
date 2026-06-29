@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name='impact-site-verification' value='319c41ee-d3a2-4b32-8027-d702deb07bd6'>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Prixly — Find it cheaper. Compare prices across 50+ retailers instantly</title>
 <meta name="description" content="Prixly searches Amazon, eBay and dozens of local retailers worldwide to find you the lowest price on anything — search by name, image, or paste a product link. Track price history and get alerts when prices drop.">
 <meta name="keywords" content="price comparison, find cheaper, compare prices, shopping search, deal finder, price tracker">
@@ -84,8 +84,9 @@ nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;di
 
 /* PAGES */
 .page{display:none;}
-.page.active{display:block;animation:pageIn .22s cubic-bezier(.22,1,.36,1) both;}
-@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.page.active{display:block;animation:pageIn .15s ease-out both;will-change:opacity,transform;}
+@keyframes pageIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.page.active:not(:first-child){contain:layout style;}
 
 /* ── HOME PAGE ── */
 #page-home.active{min-height:calc(100vh - 56px - 43px);display:flex;flex-direction:column;}
@@ -3363,7 +3364,7 @@ function searchFromCategory(name){
 }
 
 // ── PAGE ROUTING ──
-function showPage(id) {
+function showPage(id, fromPopstate) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
@@ -3373,16 +3374,24 @@ function showPage(id) {
   const mobNavEl = document.getElementById('mob-nav-'+id);
   if(mobNavEl) mobNavEl.classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
+  if(!fromPopstate && !['login','signup'].includes(id)){
+    history.pushState({page:id},'','#'+id);
+  }
   if(!['login','signup'].includes(id)) try{ localStorage.setItem('prixly_page',id); }catch(e){}
   if(id==='hiw') initHiwObserver();
   if(id==='alerts') renderAlerts();
   if(id==='account') renderAccount();
-  if(id==='deals') renderDeals();
-  if(id==='categories') renderCatsBrowse();
-  if(id==='hot') renderHotPage();
+  if(id==='deals'&&!_dealsRendered){renderDeals();_dealsRendered=true;}
+  if(id==='categories'&&!_catsRendered){renderCatsBrowse();_catsRendered=true;}
+  if(id==='hot'&&!_hotRendered){renderHotPage();_hotRendered=true;}
   if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; document.getElementById('signupVerify').style.display='none'; ['signupName','signupEmail','signupPassword','signupConfirmPassword','signupVerifyCode'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.type=x.includes('assword')?'password':'text';el.classList.remove('input-invalid');el.style.borderColor='';}}); ['nameError','emailError','passwordError','confirmPasswordError','signupError','verifyError'].forEach(id2=>{const e=document.getElementById(id2);if(e){e.textContent='';e.style.display='none';}}); const tog=document.getElementById('showPasswordToggle');if(tog)tog.checked=false; }
   if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; }
 }
+
+window.addEventListener('popstate',e=>{
+  const page=(e.state&&e.state.page)||'home';
+  showPage(page,true);
+});
 
 // Init strip and localisation on load
 // ── ANALYTICS — only fires after user accepts cookies ──
@@ -4067,6 +4076,15 @@ const RETAILER_URLS={
   'Boulanger':'https://www.boulanger.com/recherche/',
   'IKEA':'https://www.ikea.com/gb/en/search/?q=',
   'Wayfair':'https://www.wayfair.co.uk/keyword.php?keyword=',
+  'Tesco':'https://www.tesco.com/groceries/en-GB/search?query=',
+  'Ocado':'https://www.ocado.com/search?entry=',
+  'Costco':'https://www.costco.co.uk/search?q=',
+  'Pets at Home':'https://www.petsathome.com/shop/en/pets/search?q=',
+  'Sainsburys':'https://www.sainsburys.co.uk/gol-ui/SearchDisplayView?searchTerm=',
+  'Asda':'https://groceries.asda.com/search/',
+  'Waitrose':'https://www.waitrose.com/ecom/shop/search?&query=',
+  'B&Q':'https://www.diy.com/search?term=',
+  'Screwfix':'https://www.screwfix.com/search?search=',
 };
 function retailerSearchURL(retailer,product){
   const base=RETAILER_URLS[retailer];
@@ -4122,7 +4140,9 @@ function generateResults(query,catKey){
 
 // ── SEARCH STATE ──
 let currentResults=[],detectedCat=null,manualCategory=null,chartInstance=null;
+let _dealsRendered=false,_catsRendered=false,_hotRendered=false;
 let recentSearches=(()=>{try{return JSON.parse(localStorage.getItem('prixly_recent')||'[]');}catch(e){return[];}})();
+document.addEventListener('DOMContentLoaded',()=>{const rb=document.getElementById('recentBar');if(rb&&recentSearches.length)rb.innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${sanitizeHTML(q).replace(/'/g,"&#x27;")}')"><span class="recent-icon">&#8635;</span>${sanitizeHTML(q)}</span>`).join('');});
 
 function setManualCategory(cat,chip){
   manualCategory=cat==='all'?null:cat;
