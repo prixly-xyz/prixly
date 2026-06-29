@@ -26,12 +26,6 @@
 <script
   defer
   crossorigin="anonymous"
-  src="https://sound-terrapin-34.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"
-  type="text/javascript">
-</script>
-<script
-  defer
-  crossorigin="anonymous"
   data-clerk-publishable-key="pk_live_Y2xlcmsucHJpeGx5Lnh5eiQ"
   src="https://clerk.prixly.xyz/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
   type="text/javascript">
@@ -3366,7 +3360,7 @@ function filterCatItems(key,sub,chip){
 function renderCatItems(items,sub){
   const filtered=sub==='All'?items:items.filter(i=>i.tag===sub);
   document.getElementById('catpageGrid').innerHTML=filtered.length?filtered.map(item=>`
-    <div class="item-card" onclick="openMockDetail('${item.name.replace(/'/g,"\\'")}','${key}',${item.price},'','category')"  >
+    <div class="item-card" onclick="openMockDetail('${item.name.replace(/'/g,"\\'")}','${window._currentCatKey}',${item.price},'','category')"  >
       ${wishlistStarHTML({...item,id:'cat-'+item.name.replace(/\s+/g,'-').toLowerCase()})}
       <div class="item-card-img" style="font-size:.85rem;font-weight:700;color:var(--muted);">${item.tag}</div>
       <div class="item-card-body">
@@ -3427,7 +3421,7 @@ function showPage(id) {
   if(id==='categories') renderCatsBrowse();
   if(id==='hot') renderHotPage();
   if(id==='signup'){ document.getElementById('signupForm').style.display='flex'; document.getElementById('signupSuccess').style.display='none'; document.getElementById('signupVerify').style.display='none'; ['signupName','signupEmail','signupPassword','signupConfirmPassword','signupVerifyCode'].forEach(x=>{const el=document.getElementById(x);if(el){el.value='';el.type=x.includes('assword')?'password':'text';el.classList.remove('input-invalid');el.style.borderColor='';}}); ['nameError','emailError','passwordError','confirmPasswordError','signupError','verifyError'].forEach(id2=>{const e=document.getElementById(id2);if(e){e.textContent='';e.style.display='none';}}); const tog=document.getElementById('showPasswordToggle');if(tog)tog.checked=false; }
-  if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; const em=document.getElementById('loginEmail');if(em)em.value=''; const pw=document.getElementById('loginPassword');if(pw)pw.value=''; }
+  if(id==='login'){ const le=document.getElementById('loginError');if(le)le.style.display='none'; }
 }
 
 // Init strip and localisation on load
@@ -4167,7 +4161,8 @@ function generateResults(query,catKey){
 }
 
 // ── SEARCH STATE ──
-let currentResults=[],detectedCat=null,manualCategory=null,recentSearches=[],chartInstance=null;
+let currentResults=[],detectedCat=null,manualCategory=null,chartInstance=null;
+let recentSearches=(()=>{try{return JSON.parse(localStorage.getItem('prixly_recent')||'[]');}catch(e){return[];}})();
 
 function setManualCategory(cat,chip){
   manualCategory=cat==='all'?null:cat;
@@ -4293,6 +4288,7 @@ async function doSearch(){
 }
 function addRecent(query){
   recentSearches=[query,...recentSearches.filter(q=>q!==query)].slice(0,6);
+  try{localStorage.setItem('prixly_recent',JSON.stringify(recentSearches));}catch(e){}
   document.getElementById('recentlyViewed').classList.add('visible');
   document.getElementById('recentBar').innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${sanitizeHTML(q).replace(/'/g,"&#x27;")}')"><span class="recent-icon">&#8635;</span>${sanitizeHTML(q)}</span>`).join('');
   // Save to Convex if logged in
@@ -4771,6 +4767,13 @@ window.addEventListener('load', async ()=>{
     const u=window.Clerk.user;
     // Load wishlist from localStorage immediately — no Convex dependency
     await prixlyWishlist.loadCache(u.id);
+    // Sync all rendered wishlist buttons to the now-loaded cache
+    document.querySelectorAll('.wishlist-btn[id^="wbtn-"]').forEach(btn=>{
+      const id=btn.id.replace('wbtn-','');
+      const on=prixlyWishlist.has(u.id,id);
+      btn.classList.toggle('wishlisted',on);
+      btn.querySelector('svg')?.setAttribute('fill',on?'currentColor':'none');
+    });
     // Re-render alerts now that wishlist cache is populated
     if(document.getElementById('page-alerts')?.classList.contains('active')) renderAlerts();
 
@@ -5131,6 +5134,14 @@ async function handleLogin(){
         errEl.textContent='Sign-in incomplete. Please try again.';errEl.style.display='block';
       }
     }catch(err){
+      // If Clerk can't find the account, try localStorage (accounts created via captcha fallback)
+      try{
+        const u=JSON.parse(localStorage.getItem('prixly_user')||'null');
+        if(u&&u.email===email){
+          const ph=await hashPassword(password);
+          if(!u.passHash||ph===u.passHash){updateNavState();showPage('alerts');return;}
+        }
+      }catch(le){}
       const msg=err.errors?.[0]?.longMessage||err.errors?.[0]?.message||'Incorrect email or password.';
       errEl.textContent=msg;errEl.style.display='block';
     }finally{
