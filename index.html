@@ -1142,7 +1142,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       </div>
     </div>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
-    <a class="nav-cta" onclick="showPage('login')" id="nav-signup">Log in</a>
+    <a class="nav-cta" onclick="openClerkSignIn()" id="nav-signup">Log in</a>
     <a class="nav-user-chip" onclick="showPage('account')" id="nav-user" style="display:none;"><span class="nav-user-dot"></span><span id="nav-user-name"></span></a>
   </div>
 </nav>
@@ -1453,45 +1453,9 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
         <div class="signup-benefit"><div class="signup-benefit-dot"></div>Free forever — no card required</div>
       </div>
       <div class="signup-form" id="signupForm">
-        <input class="signup-input" type="text" id="signupName" placeholder="Your name" autocomplete="name" />
-        <div class="field-error" id="nameError"></div>
-
-        <input class="signup-input" type="email" id="signupEmail" placeholder="Email address" autocomplete="email" />
-        <div class="field-error" id="emailError"></div>
-
-        <div style="position:relative;">
-          <input class="signup-input" type="password" id="signupPassword" placeholder="Create a password (min. 6 characters)" autocomplete="new-password" style="width:100%;box-sizing:border-box;" onkeyup="checkCapsLock(event,'capsWarn1')" />
-          <div id="capsWarn1" style="display:none;font-size:.75rem;color:#f0a500;margin-top:.25rem;">⚠ Caps Lock is on</div>
-        </div>
-        <div class="field-error" id="passwordError"></div>
-
-        <div style="position:relative;">
-          <input class="signup-input" type="password" id="signupConfirmPassword" placeholder="Confirm your password" autocomplete="new-password" style="width:100%;box-sizing:border-box;" onkeyup="checkCapsLock(event,'capsWarn2')" />
-          <div id="capsWarn2" style="display:none;font-size:.75rem;color:#f0a500;margin-top:.25rem;">⚠ Caps Lock is on</div>
-        </div>
-        <div class="field-error" id="confirmPasswordError"></div>
-
-        <label class="show-pass-row">
-          <input type="checkbox" id="showPasswordToggle" onchange="toggleShowPassword()">
-          Show password
-        </label>
-
-        <div id="signupError" style="font-size:.82rem;color:#e74c3c;display:none;"></div>
-        <button class="signup-submit" onclick="handleSignup()">Create free account</button>
+        <button class="signup-submit" onclick="openClerkSignUp()" id="signupLaunchBtn">Create free account</button>
         <p class="signup-legal">By signing up you agree to our <a href="#" onclick="showPage('privacy')" style="color:var(--accent);">Privacy Policy</a> and <a href="#" onclick="showPage('terms')" style="color:var(--accent);">Terms of Use</a>. We never share your data with third parties.</p>
         <p class="signup-legal" style="margin-top:.25rem;">Already have an account? <a onclick="showPage('login')" style="color:var(--accent);cursor:pointer;text-decoration:underline;">Sign in →</a></p>
-      </div>
-      <!-- Email verification step shown after sign-up submit -->
-      <div id="signupVerify" style="display:none;">
-        <div style="text-align:center;margin-bottom:1.25rem;">
-          <div style="font-size:2rem;margin-bottom:.5rem;">📧</div>
-          <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:.4rem;">Check your email</h2>
-          <p style="font-size:.88rem;color:var(--muted);line-height:1.6;">We sent a 6-digit code to <strong id="verifyEmailDisplay" style="color:var(--text);"></strong>. Enter it below to verify your account.</p>
-        </div>
-        <input class="signup-input" type="text" id="signupVerifyCode" placeholder="6-digit code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" style="letter-spacing:.2em;text-align:center;font-size:1.1rem;" oninput="if(this.value.length===6) handleVerifyCode()" />
-        <div class="field-error" id="verifyError"></div>
-        <button class="signup-submit" id="verifyBtn" onclick="handleVerifyCode()">Verify and continue</button>
-        <p style="font-size:.78rem;color:var(--muted2);text-align:center;margin-top:.75rem;">Didn't receive it? <span onclick="resendVerifyCode()" style="color:var(--accent);cursor:pointer;text-decoration:underline;">Resend code</span></p>
       </div>
 
       <div class="signup-success" id="signupSuccess">
@@ -1608,12 +1572,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <h1>Welcome back to <span>Prixly.</span></h1>
       <p>Sign in to access your wishlist and price alerts.</p>
       <div class="login-form">
-        <span class="login-label">Email</span>
-        <input class="signup-input" type="email" id="loginEmail" placeholder="Your email" autocomplete="email" onkeydown="if(event.key==='Enter')handleLogin()" />
-        <span class="login-label">Password</span>
-        <input class="signup-input" type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')handleLogin()" />
         <div class="login-error" id="loginError"></div>
-        <button class="signup-submit" onclick="handleLogin()">Sign in</button>
+        <button class="signup-submit" onclick="openClerkSignIn()">Sign in</button>
       </div>
       <p class="login-switch">Don't have an account? <a onclick="showPage('signup')">Create one for free →</a></p>
     </div>
@@ -1626,8 +1586,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <h2>Your wishlist &amp; price alerts</h2>
     <p>Create a free account to wishlist items and get notified the moment a price drops below your target.</p>
     <div class="acct-gate-btns">
-      <button class="acct-gate-btn" onclick="showPage('signup')">Create free account</button>
-      <button class="acct-gate-btn ghost" onclick="showPage('login')">Sign in</button>
+      <button class="acct-gate-btn" onclick="openClerkSignUp()">Create free account</button>
+      <button class="acct-gate-btn ghost" onclick="openClerkSignIn()">Sign in</button>
     </div>
   </div>
   <div id="alertsDashboard" style="display:none;">
@@ -1648,8 +1608,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <h2>Sign in to view your account</h2>
     <p>Create a free account to access your profile, wishlist, and search history.</p>
     <div class="acct-gate-btns">
-      <button class="acct-gate-btn" onclick="showPage('signup')">Create free account</button>
-      <button class="acct-gate-btn ghost" onclick="showPage('login')">Sign in</button>
+      <button class="acct-gate-btn" onclick="openClerkSignUp()">Create free account</button>
+      <button class="acct-gate-btn ghost" onclick="openClerkSignIn()">Sign in</button>
     </div>
   </div>
   <div id="accountDashboard" style="display:none;">
@@ -4758,10 +4718,35 @@ window.addEventListener('load', async ()=>{
     }
   }catch(e){}
 
+  // Preload wishlist from last known UID so it's ready before Clerk resolves
+  try{
+    const lastUid=localStorage.getItem('prixly_last_uid');
+    if(lastUid){ prixlyWishlist._clerkId=lastUid; prixlyWishlist._cache=prixlyWishlist._loadLocal(lastUid); }
+  }catch(e){}
+
   updateNavState();
   if(!window.Clerk) return;
   await window.Clerk.load();
   updateNavState();
+
+  // React to Clerk user state changes (covers refresh, token refresh, sign-in/out)
+  window.Clerk.addListener(({user})=>{
+    if(user){
+      prixlyWishlist.loadCache(user.id).then(()=>{
+        updateNavState();
+        document.querySelectorAll('.wishlist-btn[id^="wbtn-"]').forEach(btn=>{
+          const id=btn.id.replace('wbtn-','');
+          const on=prixlyWishlist.has(user.id,id);
+          btn.classList.toggle('wishlisted',on);
+          btn.querySelector('svg')?.setAttribute('fill',on?'currentColor':'none');
+        });
+        if(document.getElementById('page-alerts')?.classList.contains('active')) renderAlerts();
+      });
+    } else {
+      prixlyWishlist._cache=[];
+      updateNavState();
+    }
+  });
 
   if(window.Clerk.user){
     const u=window.Clerk.user;
@@ -4805,6 +4790,7 @@ const prixlyWishlist={
   },
   async loadCache(clerkId){
     this._clerkId=clerkId;
+    try{localStorage.setItem('prixly_last_uid',clerkId);}catch(e){}
     // Load from localStorage immediately so wishlist is available before Convex responds
     this._cache=this._loadLocal(clerkId);
     // Then try to sync from Convex in the background
@@ -5002,6 +4988,17 @@ async function sendWelcomeEmail(name,email){
       body:JSON.stringify({name,email})
     });
   }catch(e){ console.warn('Welcome email failed:',e); }
+}
+
+function openClerkSignUp(){
+  if(window.Clerk){
+    window.Clerk.openSignUp({afterSignUpUrl:window.location.href,afterSignInUrl:window.location.href});
+  }
+}
+function openClerkSignIn(){
+  if(window.Clerk){
+    window.Clerk.openSignIn({afterSignInUrl:window.location.href,afterSignUpUrl:window.location.href});
+  }
 }
 
 async function handleSignup(){
