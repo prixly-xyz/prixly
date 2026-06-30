@@ -4139,7 +4139,7 @@ function retailerSearchURL(retailer,product){
 const CATEGORIES={
   electronics:{label:'Electronics',icon:'💻',keywords:['phone','iphone','samsung','galaxy','pixel','laptop','macbook','chromebook','tablet','ipad','kindle','headphones','earbuds','airpods','speaker','soundbar','tv','television','monitor','camera','dslr','smartwatch','router','wifi','charger','cable','usb','hdmi','processor','cpu','gpu','ram','ssd','dyson','vacuum','hair dryer','sony','lg','panasonic','bose','jbl','apple','dell','hp','lenovo','asus','acer','xiaomi'],priceInsight:'Electronics prices typically drop significantly in November (Black Friday) and January (post-Christmas sales).'},
   gaming:{label:'Gaming',icon:'🎮',keywords:['ps5','ps4','playstation','xbox','nintendo','switch','game','games','controller','console','gaming','gamer','steam','pc game','fifa','call of duty','fortnite','minecraft','gta','zelda','headset','gaming chair','gaming mouse','gaming keyboard','rgb','gpu','graphics card','rtx','geforce','amd','pokemon','mario','sonic','halo','vr','oculus','quest'],priceInsight:'Game prices tend to drop 3–6 months after release and heavily during seasonal sales. Pre-owned games can save 40–60%.'},
-  fashion:{label:'Fashion',icon:'👟',keywords:['nike','adidas','puma','reebok','new balance','vans','converse','shoes','trainers','sneakers','boots','heels','sandals','jacket','coat','hoodie','jumper','sweater','top','t-shirt','tshirt','jeans','trousers','shorts','skirt','dress','leggings','bag','handbag','backpack','wallet','clothes','clothing','fashion','outfit','gucci','zara','asos','suit','shirt','polo','blouse','denim','watch','jewellery','sunglasses','belt','scarf'],priceInsight:'Fashion prices drop most in end-of-season sales (January & July) and Black Friday.'},
+  fashion:{label:'Fashion',icon:'👟',keywords:['nike','adidas','puma','reebok','new balance','vans','converse','shoes','trainers','sneakers','boots','heels','sandals','jacket','coat','hoodie','jumper','sweater','top','t-shirt','tshirt','jeans','trousers','shorts','skirt','dress','leggings','bag','handbag','backpack','wallet','clothes','clothing','fashion','outfit','gucci','zara','asos','suit','shirt','polo','blouse','denim','watch','jewellery','sunglasses','belt','scarf','hat','hats','cap','caps','beanie','beret','snapback','bucket hat','baseball cap','fedora','gloves','mittens','socks','underwear','bra','lingerie','swimwear','swimsuit','bikini','trunks','pyjamas','pajamas','robe','tie','bow tie','cufflinks','necklace','bracelet','earrings','ring','rings','perfume','cologne','fragrance','aftershave','makeup','lipstick','mascara','foundation','concealer','eyeliner','eyeshadow','blush','bronzer','highlighter','nail polish','nail varnish','tote','clutch','satchel','crossbody','loafers','slippers','flip flops','pumps','wedges','ankle boots','chelsea boots','oxford shoes'],priceInsight:'Fashion prices drop most in end-of-season sales (January & July) and Black Friday.'},
   home:{label:'Home & Garden',icon:'🏡',keywords:['sofa','couch','chair','armchair','table','desk','bed','mattress','wardrobe','shelf','bookcase','lamp','light','curtain','blind','kitchen','cookware','pots','pans','knife','cutlery','plates','mugs','coffee maker','kettle','toaster','microwave','blender','air fryer','washing machine','dishwasher','fridge','freezer','garden','plant','pot','lawnmower','paint','flooring','carpet','rug','cushion','bedding','duvet','pillow','candle','vase','mirror','clock','decor'],priceInsight:'Home goods see the biggest discounts in January sales and Bank Holiday weekends.'},
   sports:{label:'Sports',icon:'⚽',keywords:['football','soccer','rugby','cricket','tennis','golf','cycling','running','gym','weights','dumbbell','barbell','kettlebell','resistance band','yoga mat','treadmill','bike','exercise','fitness','protein','supplement','swimming','skiing','snowboard','climbing','hiking','sports','athletic','training','workout','helmet','pads','gloves','racket','bat','ball','net'],priceInsight:'Sports gear drops in price at the end of season and during major sales events.'},
   toys:{label:'Toys',icon:'🧸',keywords:['lego','duplo','playmobil','barbie','hot wheels','nerf','toy','toys','puzzle','board game','card game','monopoly','scrabble','chess','action figure','doll','teddy','plush','stuffed animal','remote control','rc car','kids','children','boys','girls','disney','marvel','star wars','pokemon','harry potter','craft','art','paint set','slime','trampoline','slide','swing'],priceInsight:'Toy prices spike before Christmas and drop sharply in January.'},
@@ -4161,7 +4161,7 @@ function detectCategory(query){
   }
   const best=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
   const total=Object.values(scores).reduce((a,b)=>a+b,0);
-  if(best[1]===0)return{key:'electronics',confidence:50,auto:false};
+  if(best[1]===0)return{key:'home',confidence:40,auto:false};
   const conf=Math.min(99,Math.round((best[1]/Math.max(total,1))*100+30));
   return{key:best[0],confidence:Math.min(99,conf),auto:true};
 }
@@ -4372,41 +4372,91 @@ const RETAILER_DOMAINS={
   'petsathome.com':{name:'Pets at Home',logoClass:'logo-smyths'},
   'waterstones.com':{name:'Waterstones',logoClass:'logo-amazon'},
   'ikea.com':{name:'IKEA',logoClass:'logo-ikea'},
+  'jbhifi.com.au':{name:'JB Hi-Fi',logoClass:'logo-jb'},
+  'harveymorman.com.au':{name:'Harvey Norman',logoClass:'logo-currys'},
+  'harveynorman.com.au':{name:'Harvey Norman',logoClass:'logo-currys'},
+  'thegoodguys.com.au':{name:'The Good Guys',logoClass:'logo-currys'},
+  'kogan.com':{name:'Kogan',logoClass:'logo-scan'},
+  'officeworks.com.au':{name:'Officeworks',logoClass:'logo-scan'},
+  'bigw.com.au':{name:'Big W',logoClass:'logo-walmart'},
+  'target.com.au':{name:'Target AU',logoClass:'logo-target'},
+  'kmart.com.au':{name:'Kmart AU',logoClass:'logo-walmart'},
+  'myer.com.au':{name:'Myer',logoClass:'logo-johnlewis'},
+  'davidjones.com':{name:'David Jones',logoClass:'logo-johnlewis'},
+  'rebelsport.com.au':{name:'Rebel Sport',logoClass:'logo-sports'},
+  'catch.com.au':{name:'Catch',logoClass:'logo-ebay'},
+  'bing.lee.com.au':{name:'Bing Lee',logoClass:'logo-currys'},
+  'centrecom.com.au':{name:'Centre Com',logoClass:'logo-scan'},
+  'pccasegear.com':{name:'PC Case Gear',logoClass:'logo-scan'},
+  'staticice.com.au':{name:'Static Ice',logoClass:'logo-scan'},
+  'amazon.com.mx':{name:'Amazon MX',logoClass:'logo-amazon'},
+  'fnac.com':{name:'Fnac',logoClass:'logo-scan'},
+  'mediamarkt.de':{name:'MediaMarkt',logoClass:'logo-currys'},
+  'otto.de':{name:'Otto',logoClass:'logo-ebay'},
+  'zalando.co.uk':{name:'Zalando',logoClass:'logo-asos'},
+  'zalando.de':{name:'Zalando DE',logoClass:'logo-asos'},
+  'hm.com':{name:'H&M',logoClass:'logo-asos'},
+  'uniqlo.com':{name:'Uniqlo',logoClass:'logo-asos'},
+  'marksandspencer.com':{name:'M&S',logoClass:'logo-johnlewis'},
+  'debenhams.com':{name:'Debenhams',logoClass:'logo-asos'},
+  'boohoo.com':{name:'Boohoo',logoClass:'logo-asos'},
+  'prettylittlething.com':{name:'PrettyLittleThing',logoClass:'logo-asos'},
+  'gymshark.com':{name:'Gymshark',logoClass:'logo-sports'},
+  'lookfantastic.com':{name:'Look Fantastic',logoClass:'logo-boots'},
+  'feelunique.com':{name:'Feel Unique',logoClass:'logo-boots'},
+  'sephora.com':{name:'Sephora',logoClass:'logo-boots'},
+  'superdrug.com':{name:'Superdrug',logoClass:'logo-boots'},
+  'notino.co.uk':{name:'Notino',logoClass:'logo-boots'},
+  'toolstation.com':{name:'Toolstation',logoClass:'logo-screwfix'},
+  'plumbworld.co.uk':{name:'Plumbworld',logoClass:'logo-scan'},
+  'box.co.uk':{name:'Box',logoClass:'logo-scan'},
+  'laptopsdirect.co.uk':{name:'Laptops Direct',logoClass:'logo-scan'},
+  'mobiles.co.uk':{name:'Mobiles.co.uk',logoClass:'logo-scan'},
+  'johnlewis.co.uk':{name:'John Lewis',logoClass:'logo-johnlewis'},
+  'pcworld.co.uk':{name:'PC World',logoClass:'logo-currys'},
 };
 
 function parseBraveResults(data,query){
   const webResults=data.web?.results||[];
   const seen=new Set();
   const results=[];
+  // Skip obviously non-retail domains
+  const skipDomains=new Set(['reddit.com','wikipedia.org','youtube.com','google.com','twitter.com','facebook.com','instagram.com','tiktok.com','pinterest.com','trustpilot.com','yelp.com','tripadvisor.com']);
   for(const r of webResults){
     if(results.length>=10) break;
     try{
       const domain=new URL(r.url).hostname.replace(/^www\./,'');
-      if(seen.has(domain)) continue; // one result per retailer
-      const retailer=RETAILER_DOMAINS[domain];
-      if(!retailer) continue;
+      if(seen.has(domain)||skipDomains.has(domain)) continue;
       seen.add(domain);
+      const knownRetailer=RETAILER_DOMAINS[domain];
+      // Use known retailer info if available, otherwise derive from domain
+      const retailerName=knownRetailer?.name||(domain.split('.')[0].charAt(0).toUpperCase()+domain.split('.')[0].slice(1));
+      const logoClass=knownRetailer?.logoClass||'logo-amazon'; // generic fallback style
       const desc=(r.description||'')+(r.extra_snippets?.join(' ')||'');
-      const priceMatch=desc.match(/[£$€¥₹]\s*\d[\d,]*(?:\.\d{2})?/);
+      const priceMatch=desc.match(/[£$€A$¥₹]\s*\d[\d,]*(?:\.\d{2})?|\d[\d,]*(?:\.\d{2})?\s*(?:GBP|USD|EUR|AUD|CAD)/);
       if(!priceMatch) continue;
       const price=parseFloat(priceMatch[0].replace(/[^0-9.]/g,''));
-      if(!price||price<=0) continue;
-      const wasMatch=desc.match(/(?:was|rrp|from|save from)\s*[£$€¥₹]\s*\d[\d,]*(?:\.\d{2})?/i);
+      if(!price||price<=0||price>50000) continue;
+      const wasMatch=desc.match(/(?:was|rrp|from|save from)\s*[£$€A$¥₹]\s*\d[\d,]*(?:\.\d{2})?/i);
       let was=null;
       if(wasMatch){
         const w=parseFloat(wasMatch[0].replace(/[^0-9.]/g,''));
         if(w>price) was=w;
       }
       results.push({
-        retailer:retailer.name,logoClass:retailer.logoClass,
+        retailer:retailerName,logoClass,
         relevance:Math.max(60,95-results.length*5),
         price,was,rating:4.2,reviews:null,
         shipping:'Check site',score:null,
-        best:results.length===0,name:query,url:r.url
+        best:results.length===0,name:r.title||query,url:r.url
       });
     }catch(e){ continue; }
   }
   return results;
+}
+
+function fetchWithTimeout(url,opts,ms=8000){
+  return Promise.race([fetch(url,opts),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))]);
 }
 
 async function fetchBraveResults(query){
@@ -4603,11 +4653,7 @@ function openProductDetail(idx){
   document.getElementById('detailChartRetailer').textContent=r.retailer;
   document.getElementById('detailReviewsRetailer').textContent=r.retailer;
   showPage('detail');
-  requestAnimationFrame(()=>{
-    drawDetailChart(r);
-    fetchDetailReviews(r);
-    loadPrixlyReviews(productSlugFromName(r.name));
-  });
+  setTimeout(()=>{drawDetailChart(r);fetchDetailReviews(r);loadPrixlyReviews(productSlugFromName(r.name));},120);
 }
 
 function selectDetailThumb(el,emoji){
