@@ -186,6 +186,19 @@ nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;di
 .catpage-chip{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:.28rem .75rem;font-size:.78rem;cursor:pointer;transition:all .2s;color:var(--muted);}
 .catpage-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
 .catpage-chip:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+.catpage-trending-head{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;}
+.catpage-trending-label{font-size:.78rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text);}
+.catpage-trending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;}
+.catpage-trend-card{background:var(--surface);border:1px solid var(--accent);border-radius:var(--radius);padding:.9rem 1rem;cursor:pointer;transition:all .2s;position:relative;display:flex;flex-direction:column;gap:.3rem;}
+.catpage-trend-card:hover{box-shadow:0 6px 20px rgba(0,212,138,0.15);transform:translateY(-2px);}
+.catpage-trend-badge{position:absolute;top:-.5rem;left:.8rem;background:var(--accent);color:#000;font-size:.62rem;font-weight:800;letter-spacing:.06em;padding:.12rem .45rem;border-radius:4px;text-transform:uppercase;}
+.catpage-trend-name{font-size:.88rem;font-weight:700;color:var(--text);line-height:1.3;margin-top:.3rem;}
+.catpage-trend-retailer{font-size:.73rem;color:var(--muted);}
+.catpage-trend-prices{display:flex;align-items:baseline;gap:.45rem;margin-top:.2rem;}
+.catpage-trend-price{font-size:1rem;font-weight:800;color:var(--accent);}
+.catpage-trend-was{font-size:.76rem;color:var(--muted);text-decoration:line-through;}
+.catpage-trend-discount{background:var(--accent-dim);color:var(--accent);font-size:.68rem;font-weight:700;padding:.1rem .4rem;border-radius:3px;}
+@media(max-width:600px){.catpage-trending-grid{grid-template-columns:1fr 1fr;}}
 .catpage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;max-width:900px;margin:0 auto;padding:0 2rem 4rem;}
 .item-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .22s;display:flex;flex-direction:column;}
 .item-card:hover{border-color:var(--accent);box-shadow:var(--shadow);transform:translateY(-3px);}
@@ -1277,6 +1290,12 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <span class="catpage-count" id="catpageCount"></span>
       <span class="catpage-updated" id="catpageUpdated"></span>
     </div>
+  </div>
+  <div class="catpage-trending" id="catpageTrending" style="display:none;max-width:900px;margin:0 auto 1.5rem;padding:0 2rem;">
+    <div class="catpage-trending-head">
+      <span class="catpage-trending-label" id="catpageTrendingLabel">🔥 Trending in this category</span>
+    </div>
+    <div class="catpage-trending-grid" id="catpageTrendingGrid"></div>
   </div>
   <div class="catpage-filters" id="catpageFilters"></div>
   <div class="catpage-grid" id="catpageGrid"></div>
@@ -3309,6 +3328,30 @@ function openCategory(key){
   renderCatItems(items,'All');
   window._currentCatItems=items;
   window._currentCatKey=key;
+  // Trending section: top 3 deals for this category by discount %
+  const trendingWrap=document.getElementById('catpageTrending');
+  const trendingGrid=document.getElementById('catpageTrendingGrid');
+  const catDeals=ALL_DEALS.filter(d=>d.cat===key).sort((a,b)=>parseFloat(b.discount)-parseFloat(a.discount)).slice(0,3);
+  const badges=['Top Deal','Hot Pick','Great Value'];
+  if(catDeals.length&&trendingWrap&&trendingGrid){
+    trendingGrid.innerHTML=catDeals.map((d,i)=>{
+      const witem={id:wishlistItemId(d.name,d.retailer),name:d.name,retailer:d.retailer,price:d.price,category:d.cat};
+      return`<div class="catpage-trend-card" onclick="openMockDetail('${d.name.replace(/'/g,"\\'")}','${key}',${d.price},'${d.retailer.replace(/'/g,"\\'")}','category')">
+        <span class="catpage-trend-badge">${badges[i]}</span>
+        ${inlineStarHTML(witem)}
+        <div class="catpage-trend-name">${d.name}</div>
+        <div class="catpage-trend-retailer">via ${d.retailer} · ${d.shipping}</div>
+        <div class="catpage-trend-prices">
+          <span class="catpage-trend-price">${fmt(d.price)}</span>
+          <span class="catpage-trend-was">${fmt(d.was)}</span>
+          <span class="catpage-trend-discount">-${d.discount}</span>
+        </div>
+      </div>`;
+    }).join('');
+    trendingWrap.style.display='block';
+  } else if(trendingWrap){
+    trendingWrap.style.display='none';
+  }
   showPage('category');
 }
 
@@ -3375,7 +3418,15 @@ function showPage(id, fromPopstate) {
   if(mobNavEl) mobNavEl.classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
   if(!fromPopstate && !['login','signup'].includes(id)){
-    history.pushState({page:id},'','#'+id);
+    if(id==='home'){
+      history.replaceState({page:'home',root:true},'',location.pathname);
+      _atRoot=true;
+    } else if(_atRoot){
+      history.pushState({page:id},'','#'+id);
+      _atRoot=false;
+    } else {
+      history.replaceState({page:id},'','#'+id);
+    }
   }
   if(!['login','signup'].includes(id)) try{ localStorage.setItem('prixly_page',id); }catch(e){}
   if(id==='hiw') initHiwObserver();
@@ -3389,8 +3440,9 @@ function showPage(id, fromPopstate) {
 }
 
 window.addEventListener('popstate',e=>{
-  const page=(e.state&&e.state.page)||'home';
-  showPage(page,true);
+  // Always go home on back — never step through Prixly's nav history
+  _atRoot=true;
+  showPage('home',true);
 });
 
 // Init strip and localisation on load
@@ -4140,7 +4192,7 @@ function generateResults(query,catKey){
 
 // ── SEARCH STATE ──
 let currentResults=[],detectedCat=null,manualCategory=null,chartInstance=null;
-let _dealsRendered=false,_catsRendered=false,_hotRendered=false;
+let _dealsRendered=false,_catsRendered=false,_hotRendered=false,_atRoot=true;
 let recentSearches=(()=>{try{return JSON.parse(localStorage.getItem('prixly_recent')||'[]');}catch(e){return[];}})();
 document.addEventListener('DOMContentLoaded',()=>{const rb=document.getElementById('recentBar');if(rb&&recentSearches.length)rb.innerHTML=recentSearches.map(q=>`<span class="recent-chip" onclick="quickSearch('${sanitizeHTML(q).replace(/'/g,"&#x27;")}')"><span class="recent-icon">&#8635;</span>${sanitizeHTML(q)}</span>`).join('');});
 
@@ -5012,11 +5064,14 @@ async function sendWelcomeEmail(name,email){
 
 function openClerkSignUp(){
   if(window.Clerk){
+    try{ window.Clerk.closeSignIn?.(); window.Clerk.closeSignUp?.(); }catch(e){}
     window.Clerk.openSignUp({afterSignUpUrl:window.location.href,afterSignInUrl:window.location.href});
   }
 }
 function openClerkSignIn(){
   if(window.Clerk){
+    // Close any lingering modal first — fixes screen-darkens-but-nothing-appears bug after sign-out
+    try{ window.Clerk.closeSignIn?.(); window.Clerk.closeSignUp?.(); }catch(e){}
     window.Clerk.openSignIn({afterSignInUrl:window.location.href,afterSignUpUrl:window.location.href});
   }
 }
@@ -5200,7 +5255,10 @@ async function executeDeleteAccount(){
       await window.convex.mutation("users:deleteUserData",{clerkId:user.clerkId});
     }
     prixlyWishlist._cache=null;
-    if(window.Clerk){await window.Clerk.signOut();}
+    if(window.Clerk&&window.Clerk.user){
+      // delete() invalidates all sessions on all devices, not just this one
+      await window.Clerk.user.delete();
+    }
     updateAuthUI();
     showPage('home');
     showToast('Your account has been permanently deleted.');
@@ -5516,25 +5574,21 @@ const ALL_DEALS=[
   {cat:'food_bev',name:"Sharwood's Tikka Masala Sauce 720g",retailer:'Tesco',price:3.49,was:5.99,discount:'42%',shipping:'Free over £40'},
 ];
 
-// ── DEAL BANNER ROTATION ──
-const BANNER_DEALS=[
-  {label:'Deal of the day',text:'<strong>Sony WH-1000XM5 Headphones</strong> · found 34% cheaper than RRP'},
-  {label:'Hot right now 🔥',text:'<strong>Ninja Dual Zone Air Fryer</strong> · 40% off at Argos vs. Amazon'},
-  {label:'Price drop',text:'<strong>Apple AirPods Pro 2</strong> · drops to £199.99 — lowest in 3 months'},
-  {label:'Trending today',text:'<strong>Ariel All-in-1 Pods x60</strong> · bulk buy saves 43% vs. supermarket'},
-  {label:'Deal of the day',text:'<strong>Pedigree Adult Dog Food 12kg</strong> · found 44% cheaper on Amazon'},
-  {label:'Flash deal',text:'<strong>Cadbury Dairy Milk Multipack x12</strong> · 46% off — selling fast'},
-  {label:'Price drop',text:'<strong>Oral-B Smart 4 Electric Toothbrush</strong> · 50% off at Boots today only'},
-  {label:'Hot right now 🔥',text:'<strong>Yorkshire Tea 160 Teabags</strong> · only £4.49 — 44% below high street price'},
-  {label:'Trending today',text:'<strong>Bird\'s Eye Garden Peas 1kg</strong> · cheapest frozen price we\'ve found this week'},
-  {label:'Deal of the day',text:'<strong>Felix As Good As It Looks x100</strong> · 46% saving vs. pet shops'},
-];
-let _bannerIdx=0,_bannerTimer=null;
+// ── DEAL BANNER ROTATION — driven by HOT_ITEMS ──
+let _bannerIdx=0,_bannerTimer=null,_bannerItems=[];
+function buildBannerItems(){
+  const labels=['Hot right now 🔥','Trending today','Selling fast','Popular today','People are buying'];
+  return HOT_ITEMS.slice(0,10).map((item,i)=>({
+    label: labels[i%labels.length],
+    text:`<strong>${item.name}</strong> · ${item.sales}`
+  }));
+}
 function rotateDealBanner(){
   const el=document.getElementById('dealBannerText');
   const lbl=document.getElementById('dealBannerLabel');
   if(!el||!lbl)return;
-  const deal=BANNER_DEALS[_bannerIdx];
+  if(!_bannerItems.length)_bannerItems=buildBannerItems();
+  const deal=_bannerItems[_bannerIdx];
   el.style.opacity='0';
   lbl.style.opacity='0';
   setTimeout(()=>{
@@ -5544,10 +5598,11 @@ function rotateDealBanner(){
     lbl.style.transition='opacity .4s';
     el.style.opacity='1';
     lbl.style.opacity='1';
-    _bannerIdx=(_bannerIdx+1)%BANNER_DEALS.length;
+    _bannerIdx=(_bannerIdx+1)%_bannerItems.length;
   },300);
 }
 function initDealBanner(){
+  _bannerItems=buildBannerItems();
   rotateDealBanner();
   _bannerTimer=setInterval(rotateDealBanner,6000);
 }
@@ -5724,6 +5779,8 @@ function filterDeals(cat,chip){
   document.querySelectorAll('#dealsFilters .filter-chip').forEach(c=>c.classList.remove('active'));
   chip.classList.add('active');
   renderDeals();
+  const content=document.getElementById('dealsContent');
+  if(content) setTimeout(()=>content.scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 function renderDeals(){
   const filtered=currentFilter==='all'?ALL_DEALS:ALL_DEALS.filter(d=>d.cat===currentFilter);
@@ -5745,7 +5802,7 @@ function renderDeals(){
         <div class="deal-card-name">${d.name}</div>
         <div class="deal-card-retailer">${t('pa_via')} ${d.retailer}</div>
         <div class="deal-card-prices"><span class="deal-card-price">${fmt(d.price)}</span><span class="deal-card-was">${fmt(d.was)}</span></div>
-        <div class="deal-card-footer"><span class="deal-card-shipping">${d.shipping}</span><a class="deal-card-btn" href="${retailerSearchURL(d.retailer,d.name)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${t('deal_view')}</a></div>
+        <div class="deal-card-footer"><span class="deal-card-shipping">${d.shipping}</span><button class="deal-card-btn" onclick="event.stopPropagation();window.open('${retailerSearchURL(d.retailer,d.name).replace(/'/g,"\\'")}','_blank','noopener,noreferrer')">${t('deal_view')}</button></div>
       </div>`;}).join('')}</div>`;
   }
   document.getElementById('dealsContent').innerHTML=html2;
