@@ -4459,6 +4459,35 @@ function fetchWithTimeout(url,opts,ms=8000){
   return Promise.race([fetch(url,opts),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))]);
 }
 
+async function fetchEbayResults(query){
+  const res=await fetchWithTimeout(`/api/ebay?q=${encodeURIComponent(query)}&region=${activeRegion}`,{},10000);
+  if(!res.ok) throw new Error('eBay failed');
+  const data=await res.json();
+  const items=data.itemSummaries||[];
+  return items.slice(0,8).map((item,i)=>{
+    const price=parseFloat(item.price?.value||0);
+    if(!price) return null;
+    const shipping=item.shippingOptions?.[0]?.shippingCost?.value;
+    const shippingText=shipping==='0.00'?'Free shipping':shipping?`+${item.price?.currency||''}${shipping} shipping`:'Check shipping';
+    return{
+      retailer:'eBay',
+      logoClass:'logo-ebay',
+      relevance:Math.max(70,95-i*3),
+      price,
+      was:null,
+      rating:item.seller?.feedbackPercentage?parseFloat(item.seller.feedbackPercentage)/20:4.2,
+      reviews:item.seller?.feedbackScore||null,
+      shipping:shippingText,
+      score:null,
+      best:i===0,
+      name:item.title||query,
+      url:item.itemWebUrl||'https://ebay.com',
+      image:item.image?.imageUrl||null,
+      condition:item.condition||'New'
+    };
+  }).filter(Boolean);
+}
+
 async function fetchBraveResults(query){
   const res=await fetch(`/api/search?q=${encodeURIComponent(query)}`);
   if(!res.ok) throw new Error('Search failed');
@@ -4497,7 +4526,19 @@ async function runSearch(query){
 
   const t0=Date.now();
   let liveResults=null;
-  try{ liveResults=await fetchBraveResults(query); }catch(e){ liveResults=null; }
+  try{
+    // Run eBay and Brave in parallel, take whichever gives usable results
+    const [ebayResults,braveResults]=await Promise.allSettled([
+      fetchEbayResults(query),
+      fetchBraveResults(query)
+    ]);
+    const ebay=ebayResults.status==='fulfilled'?ebayResults.value:[];
+    const brave=braveResults.status==='fulfilled'?braveResults.value:[];
+    // Prefer eBay (real prices), supplement with Brave for other retailers
+    const braveOnly=brave.filter(b=>!ebay.some(e=>e.retailer===b.retailer));
+    liveResults=[...ebay,...braveOnly].slice(0,12);
+    if(liveResults.length<2) liveResults=null;
+  }catch(e){ liveResults=null; }
   const elapsed=Date.now()-t0;
   if(elapsed<800) await new Promise(r=>setTimeout(r,800-elapsed));
   showResults(query,detection.key,detection,null,liveResults);
@@ -4543,21 +4584,25 @@ function renderResults(results){
     const witem={id:wishlistItemId(r.name,r.retailer),name:r.name,retailer:r.retailer,price:r.price,logoClass:r.logoClass,category:detectedCat?.key||'general'};
     const savePct=r.was?Math.round((r.was-r.price)/r.was*100):0;
     const discBadge=r.was?`<span style="background:var(--accent);color:#000;font-size:.64rem;font-weight:800;padding:.15rem .45rem;border-radius:3px;">-${savePct}%</span>`:'';
+    const condBadge=r.condition&&r.condition!=='New'?`<span style="font-size:.62rem;background:var(--surface2);color:var(--muted);padding:.1rem .35rem;border-radius:3px;">${sanitizeHTML(r.condition)}</span>`:'';
+    const imgHtml=r.image?`<img src="${sanitizeHTML(r.image)}" alt="" style="width:100%;height:90px;object-fit:contain;border-radius:6px;background:var(--surface2);margin-bottom:.2rem;" loading="lazy" onerror="this.style.display='none'">`:'';
     return`<div class="result-card ${r.best?'best-deal':''}" style="cursor:pointer;flex-direction:column;align-items:stretch;gap:.6rem;padding:.95rem 1rem;" onclick="openProductDetail(${i})">
+      ${imgHtml}
       <div style="display:flex;align-items:center;gap:.5rem;">
         <div class="retailer-logo ${r.logoClass}" style="width:auto;min-width:54px;padding:0 .5rem;font-size:.62rem;">${r.retailer}</div>
         ${r.best?`<span class="best-badge">${t('best_price')}</span>`:''}
+        ${condBadge}
         <span style="font-size:.7rem;color:var(--muted);margin-left:auto;">${r.relevance}% match</span>
         ${inlineStarHTML(witem)}
       </div>
-      <div style="font-size:.82rem;font-weight:600;color:var(--text);line-height:1.3;">${r.name}</div>
+      <div style="font-size:.82rem;font-weight:600;color:var(--text);line-height:1.3;">${sanitizeHTML(r.name)}</div>
       <div style="display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;">
         <span style="font-size:1.2rem;font-weight:800;color:var(--accent);">${fmt(r.price)}</span>
         ${r.was?`<span style="font-size:.8rem;color:var(--muted);text-decoration:line-through;">${fmt(r.was)}</span>`:''}
         ${discBadge}
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:.4rem;">
-        <span style="font-size:.73rem;color:var(--muted);">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5-Math.round(r.rating))} ${r.rating} · ${r.shipping}</span>
+        <span style="font-size:.73rem;color:var(--muted);">${'★'.repeat(Math.round(r.rating||4))}${'☆'.repeat(5-Math.round(r.rating||4))} ${r.rating||''} · ${r.shipping}</span>
         <span style="font-size:.72rem;color:var(--accent);font-weight:600;">See details →</span>
       </div>
     </div>`;
@@ -4629,7 +4674,17 @@ function openProductDetail(idx){
   detailOriginPage='home';
   const catKey=detectedCat?.key||'general';
   const emoji=DETAIL_EMOJIS[catKey]||'📦';
-  document.getElementById('detailImgEmoji').textContent=emoji;
+  const imgEl=document.getElementById('detailImgEmoji');
+  if(r.image){
+    imgEl.innerHTML='';
+    imgEl.style.fontSize='0';
+    const img=document.createElement('img');
+    img.src=r.image;img.alt='';img.style.cssText='width:100%;height:100%;object-fit:contain;border-radius:8px;';
+    img.onerror=()=>{imgEl.style.fontSize='';imgEl.textContent=emoji;};
+    imgEl.appendChild(img);
+  }else{
+    imgEl.style.fontSize='';imgEl.textContent=emoji;
+  }
   const strip=document.getElementById('detailImgStrip');
   strip.innerHTML=[emoji,'🔍','📐','🎁'].map((e,i)=>`<div class="detail-img-thumb${i===0?' active':''}" onclick="selectDetailThumb(this,'${e}')">${e}</div>`).join('');
   const logoEl=document.getElementById('detailLogo');
@@ -4659,7 +4714,17 @@ function openProductDetail(idx){
 function selectDetailThumb(el,emoji){
   document.querySelectorAll('.detail-img-thumb').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('detailImgEmoji').textContent=emoji;
+  const imgEl=document.getElementById('detailImgEmoji');
+  if(r.image){
+    imgEl.innerHTML='';
+    imgEl.style.fontSize='0';
+    const img=document.createElement('img');
+    img.src=r.image;img.alt='';img.style.cssText='width:100%;height:100%;object-fit:contain;border-radius:8px;';
+    img.onerror=()=>{imgEl.style.fontSize='';imgEl.textContent=emoji;};
+    imgEl.appendChild(img);
+  }else{
+    imgEl.style.fontSize='';imgEl.textContent=emoji;
+  }
 }
 
 function openRetailerLink(){
