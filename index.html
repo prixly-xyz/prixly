@@ -1188,23 +1188,15 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       </div>
     </div>
     <!-- UNIFIED SEARCH BAR -->
-    <div class="search-container" id="unifiedSearch" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+    <div class="search-container" id="unifiedSearch">
       <div class="search-row">
-        <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Search by image — drop a photo or click to upload">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-        </button>
         <input class="search-input" type="text" id="searchInput" placeholder="Search by name, e.g. iPhone 15, Nike Air Max..." onkeydown="if(event.key==='Enter') doSearch()"/>
         <button class="search-btn" onclick="doSearch()" data-i18n="search_btn">Search</button>
       </div>
-      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
       <div class="search-how-row">
         <span class="search-how-item">Type a name</span>
         <span class="search-how-sep">·</span>
         <span class="search-how-item">Paste a URL</span>
-        <span class="search-how-sep">·</span>
-        <span class="search-how-item">Upload a photo</span>
-        <span class="search-how-sep">·</span>
-        <span class="search-how-item">Drop a screenshot</span>
       </div>
     </div>
     <div class="trust-strip">
@@ -1789,8 +1781,8 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <h3>2.1 Data You Provide Directly</h3>
   <ul>
     <li><strong>Search queries</strong> — the text you type into the search bar (e.g. "iPhone 15 Pro", "Nike Air Max 90"). This is used solely to retrieve and display price results.</li>
-    <li><strong>Product URLs</strong> — if you paste a product link into the search bar, that URL is processed to identify the product. It is transmitted to Anthropic's API where slug parsing alone is insufficient.</li>
-    <li><strong>Images and screenshots</strong> — if you upload or drop an image to use our visual search feature, that image is sent to Anthropic's Claude Vision API to extract a product description. Images are not stored by Prixly at any point.</li>
+    <li><strong>Product URLs</strong> — if you paste a product link into the search bar, Prixly extracts the product name locally using URL slug parsing. No URL data is sent to any third party.</li>
+    
     <li><strong>Account registration data</strong> — if you create a Prixly account, we collect your name, email address, and a password you choose. Your password is stored in hashed form and never in plain text. This data is used solely to authenticate you and personalise your experience.</li>
     <li><strong>Wishlist items</strong> — products you save to your wishlist are stored against your account. This data is used to display your wishlist and to trigger price-drop notifications when a watched item falls below your target price.</li>
     <li><strong>Email address (optional)</strong> — if you sign up for price alerts, we collect the email address you provide in order to send you alert notifications. This is strictly opt-in. We will not use your email for marketing unless you separately consent to that.</li>
@@ -1840,13 +1832,13 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <p>Prixly uses AI in two ways:</p>
   <ul>
     <li><strong>Product development:</strong> Prixly was designed and built with assistance from generative AI tools, including large language models. This relates to how the product was created, not how your data is used.</li>
-    <li><strong>In-product AI features:</strong> When you use image search or paste a product URL, that content is sent to the Anthropic Claude API to identify the product. When you view search results, Claude may generate a sample review summary. These calls are made solely to improve your search experience. No identifying personal data from your account is sent to AI systems.</li>
+    <li><strong>Web search:</strong> When you search for a product, your query is sent to the Brave Search API to find real prices. Search queries are not stored by Prixly.</li>
   </ul>
 
   <h2>4. Third-Party Data Processors</h2>
   <p>We share data with the following processors only to the extent necessary to operate the service:</p>
   <ul>
-    <li><strong>Anthropic, Inc.</strong> — search queries, product URLs, and uploaded images may be sent to the Anthropic Claude API to power image recognition and product identification. Anthropic processes this data under its own privacy policy and data processing agreement. Data transferred to Anthropic may be processed outside of the European Economic Area; Anthropic maintains Standard Contractual Clauses to cover such transfers.</li>
+    <li><strong>Brave Software, Inc.</strong> — search queries are sent to the Brave Search API to find live product prices. Brave processes this data under its own privacy policy. Data may be processed outside the European Economic Area; Brave maintains Standard Contractual Clauses to cover such transfers.</li>
     <li><strong>Future retailer and pricing APIs</strong> — Prixly may in the future integrate with third-party retailer APIs (for example, to retrieve live pricing data). Where this occurs, search queries may be transmitted to those providers solely to retrieve pricing results. Any new processors of this nature will be listed here before the integration goes live.</li>
   </ul>
   <p>We do not share your data with advertisers, data brokers, or any other parties not listed above.</p>
@@ -1859,7 +1851,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
 
   <h2>7. Data Retention</h2>
   <ul>
-    <li><strong>Search queries and images</strong> — not retained by Prixly. Transmitted to Anthropic's API in real time and discarded immediately after the response is received.</li>
+    <li><strong>Search queries</strong> — transmitted to the Brave Search API in real time to fetch live prices. Not retained by Prixly after results are shown.</li>
     <li><strong>Email and alert preferences</strong> — retained for as long as your price alert is active. Deleted promptly upon unsubscribe or alert cancellation.</li>
     <li><strong>localStorage data</strong> — stored on your device indefinitely until you clear your browser storage. Prixly cannot access or delete this remotely.</li>
   </ul>
@@ -1910,7 +1902,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <p>Certain features — including the wishlist and price alert tracking — require a registered account. Account data (name, email, wishlist items) is stored in accordance with our <span onclick="showPage('privacy')" style="color:var(--accent);cursor:pointer;">Privacy Policy</span>.</p>
 
   <h2>1b. Use of Artificial Intelligence</h2>
-  <p>Prixly uses artificial intelligence in the development and operation of this service. Generative AI tools were used in the creation of Prixly's design and code. Within the product, AI is used to identify products from images or URLs, and to generate sample review content. By using these features, you consent to the transmission of the relevant inputs (images or URLs) to our AI processing partner, Anthropic, Inc., as described in our Privacy Policy.</p>
+  <p>Prixly uses the Brave Search API to find live product prices across retailers. By searching on Prixly, you consent to your search query being transmitted to Brave Software, Inc. as described in our Privacy Policy.</p>
 
   <h2>2. Nature of the Service — Price Comparison Only</h2>
   <p>Prixly provides information about prices and availability as a guide only. When you click a result on Prixly, you are leaving our service and entering the third-party retailer's website. At that point:</p>
@@ -2037,9 +2029,9 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
       <tr>
         <td>Uploaded images / screenshots</td>
         <td>An image file you upload or drop onto the search interface</td>
-        <td>To identify the product shown in the image using AI vision (Anthropic API) and run a price comparison</td>
+        <td>To find live product prices across retailers</td>
         <td>Consent (you initiate the upload)</td>
-        <td>Not retained by Prixly. Transmitted to Anthropic API and immediately discarded after the product description is returned.</td>
+        <td>Not retained by Prixly. Transmitted to Brave Search API to retrieve results, then discarded.</td>
       </tr>
       <tr>
         <td>Email address</td>
@@ -2141,11 +2133,11 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     </thead>
     <tbody>
       <tr>
-        <td>Anthropic, Inc.</td>
+        <td>Brave Software, Inc.</td>
         <td>AI-powered image recognition; product identification from URLs; generating product review summaries</td>
         <td>Search queries, product URLs, uploaded images</td>
         <td>USA (may process outside EEA)</td>
-        <td>Anthropic's Data Processing Agreement; Standard Contractual Clauses for EEA transfers</td>
+        <td>Brave's privacy policy and Standard Contractual Clauses for EEA transfers</td>
       </tr>
       <tr>
         <td>Future retailer / pricing APIs <em>(planned)</em></td>
@@ -2190,7 +2182,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <p>To exercise any right, email <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>. We will respond within 30 days (or sooner where required by law).</p>
 
   <h2>10. Security</h2>
-  <p>We take reasonable and appropriate technical and organisational measures to protect any personal data we process. Given that Prixly stores minimal data and processes most data transiently, the principal security risk relates to API communications with Anthropic. These are conducted over encrypted HTTPS connections. We do not store API responses beyond what is needed to render your search results.</p>
+  <p>We take reasonable and appropriate technical and organisational measures to protect any personal data we process. Given that Prixly stores minimal data and processes most data transiently, API communications with Brave Search are conducted over encrypted HTTPS connections. We do not store API responses beyond what is needed to render your search results.</p>
 
   <h2>11. Children</h2>
   <p>Prixly is not directed at children under 13. We do not knowingly collect personal data from children under 13. If you are a parent or guardian and believe your child has submitted personal data to Prixly, please contact us at <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> and we will delete it promptly.</p>
@@ -2203,7 +2195,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <ul>
     <li><strong>Legal bases:</strong> Our processing of Brazilian users' data relies on <em>legitimate interest</em> (Article 7(IX) LGPD) for search queries and service operation, and <em>consent</em> (Article 7(I) LGPD) for email alert sign-up and image uploads. Consent is freely given, specific, informed, and unambiguous.</li>
     <li><strong>Your rights under LGPD (Article 18):</strong> confirmation of the existence of processing; access to your data; correction of incomplete or inaccurate data; anonymisation, blocking, or deletion of unnecessary data; data portability; deletion of data processed with consent; information about public and private entities with whom we share data; information about the possibility of withholding consent and its consequences; and revocation of consent.</li>
-    <li><strong>Cross-border transfers:</strong> Data sent to Anthropic's API (based in the USA) constitutes an international transfer under LGPD Article 33. This transfer is carried out under contractual clauses that provide a level of protection equivalent to that required by Brazilian law, consistent with Anthropic's Data Processing Agreement.</li>
+    <li><strong>Cross-border transfers:</strong> Data sent to Brave Software (USA) is carried out under standard contractual clauses providing equivalent protection.</li>
     <li><strong>National Data Protection Authority (ANPD):</strong> Brazilian users may lodge a complaint with the Autoridade Nacional de Proteção de Dados at <a href="https://www.gov.br/anpd" target="_blank" rel="noopener">gov.br/anpd</a>.</li>
     <li><strong>Data Protection Officer:</strong> Prixly does not currently have a formal DPO registered with the ANPD. As the service scales to Brazilian users, we will appoint one and update this page. In the interim, all data requests should be directed to <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>.</li>
   </ul>
@@ -2211,10 +2203,10 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
   <h3>12.2 Canada — PIPEDA and Quebec Law 25</h3>
   <p>Canada's federal <em>Personal Information Protection and Electronic Documents Act</em> (PIPEDA) applies to Prixly's collection and use of personal data from Canadian users in the course of commercial activity. Quebec users are additionally protected by <em>Law 25</em> (Act to Modernize Privacy Sector Enterprises, in force September 2023), which is the strictest provincial privacy law in Canada.</p>
   <ul>
-    <li><strong>Accountability:</strong> Prixly is accountable for all personal data in its possession, including data transferred to Anthropic for processing. We have designated <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> as the point of contact for all Canadian privacy matters.</li>
+    <li><strong>Accountability:</strong> Prixly is accountable for all personal data in its possession, including data transferred to Brave Software for processing. We have designated <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a> as the point of contact for all Canadian privacy matters.</li>
     <li><strong>Identifying purpose:</strong> The purpose for which personal data is collected is identified at or before the time of collection (see Section 2 of this page).</li>
     <li><strong>Consent:</strong> We obtain meaningful consent for data collection. For data collected automatically (e.g. browser locale), consent is implied by use of the service; for email sign-up and image uploads, consent is express.</li>
-    <li><strong>Cross-border transfers (Quebec Law 25 — Article 17):</strong> Before transferring personal data outside Quebec, we are required to conduct a Privacy Impact Assessment (PIA). A PIA has been carried out for the transfer of search queries and images to Anthropic (USA). The assessment concluded that the transfer is justified given Anthropic's contractual safeguards. The PIA is available on request to Quebec residents.</li>
+    <li><strong>Cross-border transfers (Quebec Law 25 — Article 17):</strong> Before transferring personal data outside Quebec, we are required to conduct a Privacy Impact Assessment (PIA). A PIA has been carried out for the transfer of search queries to Brave Software (USA). The assessment concluded that the transfer is justified given Brave's contractual safeguards. The PIA is available on request to Quebec residents.</li>
     <li><strong>Your rights:</strong> Canadian users have the right to access their personal data, to challenge the accuracy of that data, and to withdraw consent at any time (subject to legal or contractual restrictions). Under Quebec Law 25, you also have the right to data portability and the right to request that automated decisions affecting you be explained.</li>
     <li><strong>Privacy Commissioner of Canada:</strong> Federal complaints may be directed to the <a href="https://www.priv.gc.ca" target="_blank" rel="noopener">Office of the Privacy Commissioner of Canada</a>. Quebec complaints may be directed to the <a href="https://www.cai.gouv.qc.ca" target="_blank" rel="noopener">Commission d'accès à l'information du Québec (CAI)</a>.</li>
     <li><strong>Breach notification:</strong> In the event of a privacy breach that poses a real risk of significant harm to Canadian users, we will notify both affected individuals and the Privacy Commissioner of Canada as required under PIPEDA's breach reporting obligations.</li>
@@ -2226,7 +2218,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
     <li><strong>Open and transparent management (APP 1):</strong> This page, together with our Privacy Policy, constitutes Prixly's APP Privacy Policy, setting out how we manage personal information.</li>
     <li><strong>Anonymity (APP 2):</strong> Where lawful and practicable, Australian users may interact with Prixly anonymously. Searching for prices does not require you to identify yourself. Only price alert sign-up requires an email address.</li>
     <li><strong>Collection notice (APP 5):</strong> At the time of collecting personal information, we notify you of: our identity and contact details; the purposes of collection; any third parties to whom we disclose information; and your rights of access and correction. This page constitutes that notice.</li>
-    <li><strong>Cross-border disclosures (APP 8):</strong> Before disclosing personal information to an overseas recipient (Anthropic, USA), we have taken reasonable steps to ensure the recipient does not breach the APPs in relation to that information. Anthropic's DPA and Standard Contractual Clauses provide these assurances. Australian users should be aware that overseas recipients may not be subject to Australian privacy law, and Prixly may not be accountable under the Privacy Act for any breach by that overseas recipient — however, we contractually require Anthropic to handle data to a standard consistent with Australian law.</li>
+    <li><strong>Cross-border disclosures (APP 8):</strong> Before disclosing personal information to an overseas recipient (Brave Software, USA), we have taken reasonable steps to ensure the recipient does not breach the APPs in relation to that information. Brave's privacy policy and standard contractual terms provide these assurances. Australian users should be aware that overseas recipients may not be subject to Australian privacy law, and Prixly may not be accountable under the Privacy Act for any breach by that overseas recipient.</li>
     <li><strong>Your rights:</strong> Australian users have the right to access personal information we hold about them (APP 12) and to request correction of inaccurate, out-of-date, or incomplete information (APP 13). Requests should be sent to <a href="mailto:privacy.prixly.xyz@gmail.com">privacy.prixly.xyz@gmail.com</a>. We will respond within 30 days.</li>
     <li><strong>Complaints:</strong> If you are not satisfied with our response to a privacy complaint, you may refer the matter to the <a href="https://www.oaic.gov.au" target="_blank" rel="noopener">Office of the Australian Information Commissioner (OAIC)</a>.</li>
     <li><strong>Sensitive information:</strong> Prixly does not intentionally collect sensitive information as defined under the Privacy Act (including health, racial, political, or religious information). If you include such information in a search query, it is processed transiently and not retained.</li>
@@ -2247,7 +2239,7 @@ input[type="text"],input[type="email"],input[type="number"],textarea,
         <li>Right to nominate another person to exercise your rights in the event of death or incapacity (Section 14).</li>
       </ul>
     </li>
-    <li><strong>Cross-border transfers:</strong> The DPDP Act permits transfer of personal data outside India except to countries specifically restricted by the Indian Government. As of the date of this policy, the Government of India has not issued a negative list of restricted countries. Data transferred to Anthropic (USA) is therefore currently permitted. We will monitor any notifications issued under Section 16 of the DPDP Act and update our practices accordingly.</li>
+    <li><strong>Cross-border transfers:</strong> The DPDP Act permits transfer of personal data outside India except to countries specifically restricted by the Indian Government. As of the date of this policy, the Government of India has not issued a negative list of restricted countries. Data transferred to Brave Software (USA) is therefore currently permitted. We will monitor any notifications issued under Section 16 of the DPDP Act and update our practices accordingly.</li>
     <li><strong>Data localisation:</strong> The DPDP Act does not currently impose blanket data localisation requirements. We will comply with any sector-specific localisation rules that may apply as the law is further notified.</li>
     <li><strong>Breach notification:</strong> In the event of a personal data breach affecting Indian users, we will notify the Data Protection Board of India and affected Data Principals in accordance with Section 8(6) of the DPDP Act.</li>
     <li><strong>Data Protection Board of India:</strong> If your grievance is not resolved to your satisfaction, you may approach the <em>Data Protection Board of India</em> once it is formally constituted and operational under the DPDP Act.</li>
@@ -4241,7 +4233,7 @@ function extractProductFromURL(url){
       if(clean.length>4) return clean.replace(/\b\w/g,c=>c.toUpperCase());
     }
 
-    return null; // Couldn't extract — fall back to Claude API
+    return null; // Couldn't extract from URL slug
   }catch(e){ return null; }
 }
 
@@ -4256,37 +4248,12 @@ function sanitizeHTML(str){
 }
 
 async function resolveURL(url){
-  // Show detection state in search input area
   const input=document.getElementById('searchInput');
   input.value='';
   input.placeholder='Reading URL...';
-
-  // First try fast slug extraction
   const fromSlug=extractProductFromURL(url);
-  if(fromSlug){
-    input.placeholder=t('search_placeholder');
-    return fromSlug;
-  }
-
-  // Fallback — send URL to Claude to identify the product
-  try{
-    const res=await fetch('/api/claude',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens:100,
-        messages:[{role:'user',content:`You are a product identification assistant. A user has provided a URL. Extract the product name only.\n\n<url>${url.replace(/</g,'').replace(/>/g,'')}</url>\n\nRespond with only the product name as a short search query (3-7 words). No punctuation, no explanation.`}]
-      })
-    });
-    const data=await res.json();
-    const result=data.content.map(c=>c.text||'').join('').trim();
-    input.placeholder=t('search_placeholder');
-    return result||null;
-  }catch(e){
-    input.placeholder=t('search_placeholder');
-    return null;
-  }
+  input.placeholder=t('search_placeholder');
+  return fromSlug||null;
 }
 
 async function doSearch(){
@@ -4353,7 +4320,103 @@ function buildSkeletons(){
     </div>`).join('');
 }
 
-function runSearch(query){
+// ── RETAILER DOMAIN MAP — used by parseBraveResults ──
+const RETAILER_DOMAINS={
+  'amazon.co.uk':{name:'Amazon',logoClass:'logo-amazon'},
+  'amazon.com':{name:'Amazon',logoClass:'logo-amazon'},
+  'amazon.de':{name:'Amazon DE',logoClass:'logo-amazon'},
+  'amazon.fr':{name:'Amazon FR',logoClass:'logo-amazon'},
+  'amazon.es':{name:'Amazon ES',logoClass:'logo-amazon'},
+  'amazon.it':{name:'Amazon IT',logoClass:'logo-amazon'},
+  'amazon.ca':{name:'Amazon CA',logoClass:'logo-amazon'},
+  'amazon.com.au':{name:'Amazon AU',logoClass:'logo-amazon'},
+  'ebay.co.uk':{name:'eBay',logoClass:'logo-ebay'},
+  'ebay.com':{name:'eBay',logoClass:'logo-ebay'},
+  'argos.co.uk':{name:'Argos',logoClass:'logo-argos'},
+  'currys.co.uk':{name:'Currys',logoClass:'logo-currys'},
+  'johnlewis.com':{name:'John Lewis',logoClass:'logo-johnlewis'},
+  'boots.com':{name:'Boots',logoClass:'logo-boots'},
+  'asos.com':{name:'ASOS',logoClass:'logo-asos'},
+  'next.co.uk':{name:'Next',logoClass:'logo-next'},
+  'dunelm.com':{name:'Dunelm',logoClass:'logo-dunelm'},
+  'ao.com':{name:'AO',logoClass:'logo-ao'},
+  'smythstoys.com':{name:'Smyths',logoClass:'logo-smyths'},
+  'jdsports.co.uk':{name:'JD Sports',logoClass:'logo-jd'},
+  'jdsports.com':{name:'JD Sports',logoClass:'logo-jd'},
+  'decathlon.co.uk':{name:'Decathlon',logoClass:'logo-decathlon'},
+  'decathlon.com':{name:'Decathlon',logoClass:'logo-decathlon'},
+  'scan.co.uk':{name:'Scan',logoClass:'logo-scan'},
+  'ebuyer.com':{name:'Ebuyer',logoClass:'logo-ebuyer'},
+  'game.co.uk':{name:'Game',logoClass:'logo-game'},
+  'nike.com':{name:'Nike',logoClass:'logo-nike'},
+  'adidas.co.uk':{name:'Adidas',logoClass:'logo-jd'},
+  'adidas.com':{name:'Adidas',logoClass:'logo-jd'},
+  'sportsdirect.com':{name:'Sports Direct',logoClass:'logo-sports'},
+  'steampowered.com':{name:'Steam',logoClass:'logo-steam'},
+  'walmart.com':{name:'Walmart',logoClass:'logo-walmart'},
+  'target.com':{name:'Target',logoClass:'logo-target'},
+  'bestbuy.com':{name:'Best Buy',logoClass:'logo-bestbuy'},
+  'newegg.com':{name:'Newegg',logoClass:'logo-newegg'},
+  'wayfair.com':{name:'Wayfair',logoClass:'logo-wayfair'},
+  'wayfair.co.uk':{name:'Wayfair',logoClass:'logo-wayfair'},
+  'costco.co.uk':{name:'Costco',logoClass:'logo-walmart'},
+  'costco.com':{name:'Costco',logoClass:'logo-walmart'},
+  'mothercare.com':{name:'Mothercare',logoClass:'logo-mothercare'},
+  'very.co.uk':{name:'Very',logoClass:'logo-ebay'},
+  'tesco.com':{name:'Tesco',logoClass:'logo-amazon'},
+  'asda.com':{name:'ASDA',logoClass:'logo-walmart'},
+  'sainsburys.co.uk':{name:"Sainsbury's",logoClass:'logo-amazon'},
+  'ocado.com':{name:'Ocado',logoClass:'logo-amazon'},
+  'bandq.co.uk':{name:'B&Q',logoClass:'logo-amazon'},
+  'screwfix.com':{name:'Screwfix',logoClass:'logo-scan'},
+  'petsathome.com':{name:'Pets at Home',logoClass:'logo-smyths'},
+  'waterstones.com':{name:'Waterstones',logoClass:'logo-amazon'},
+  'ikea.com':{name:'IKEA',logoClass:'logo-ikea'},
+};
+
+function parseBraveResults(data,query){
+  const webResults=data.web?.results||[];
+  const seen=new Set();
+  const results=[];
+  for(const r of webResults){
+    if(results.length>=10) break;
+    try{
+      const domain=new URL(r.url).hostname.replace(/^www\./,'');
+      if(seen.has(domain)) continue; // one result per retailer
+      const retailer=RETAILER_DOMAINS[domain];
+      if(!retailer) continue;
+      seen.add(domain);
+      const desc=(r.description||'')+(r.extra_snippets?.join(' ')||'');
+      const priceMatch=desc.match(/[£$€¥₹]\s*\d[\d,]*(?:\.\d{2})?/);
+      if(!priceMatch) continue;
+      const price=parseFloat(priceMatch[0].replace(/[^0-9.]/g,''));
+      if(!price||price<=0) continue;
+      const wasMatch=desc.match(/(?:was|rrp|from|save from)\s*[£$€¥₹]\s*\d[\d,]*(?:\.\d{2})?/i);
+      let was=null;
+      if(wasMatch){
+        const w=parseFloat(wasMatch[0].replace(/[^0-9.]/g,''));
+        if(w>price) was=w;
+      }
+      results.push({
+        retailer:retailer.name,logoClass:retailer.logoClass,
+        relevance:Math.max(60,95-results.length*5),
+        price,was,rating:4.2,reviews:null,
+        shipping:'Check site',score:null,
+        best:results.length===0,name:query,url:r.url
+      });
+    }catch(e){ continue; }
+  }
+  return results;
+}
+
+async function fetchBraveResults(query){
+  const res=await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+  if(!res.ok) throw new Error('Search failed');
+  const data=await res.json();
+  return parseBraveResults(data,query);
+}
+
+async function runSearch(query){
   addRecent(query);
   const cacheKey=query.trim().toLowerCase();
   const cached=searchCache.get(cacheKey);
@@ -4370,20 +4433,27 @@ function runSearch(query){
   document.getElementById('alertSuccess').style.display='none';
   if(chartInstance){chartInstance.destroy();chartInstance=null;}
   document.getElementById('skeletonList').innerHTML=buildSkeletons();
+  window.scrollTo({top:document.getElementById('loadingState').offsetTop-80,behavior:'smooth'});
+
   if(cached){
-    // Cached — show skeletons briefly then render instantly
     document.getElementById('loadingCategory').innerHTML=`Results loaded from cache`;
     document.getElementById('scanningSites').innerHTML='';
-  } else {
-    document.getElementById('loadingCategory').innerHTML=`Detected category: <span>${cat.label}</span> — searching ${retailers.length} retailers...`;
-    document.getElementById('scanningSites').innerHTML=retailers.slice(0,9).map((r,i)=>`<span class="scan-chip ${i<3?'top-priority':''}">${r.name}</span>`).join('');
+    setTimeout(()=>showResults(query,detection.key,detection,cached,null),320);
+    return;
   }
-  window.scrollTo({top:document.getElementById('loadingState').offsetTop-80,behavior:'smooth'});
-  const delay=cached?320:2200;
-  setTimeout(()=>showResults(query,detection.key,detection,cached||null),delay);
+
+  document.getElementById('loadingCategory').innerHTML=`Searching the web for <span>${sanitizeHTML(query)}</span>...`;
+  document.getElementById('scanningSites').innerHTML=retailers.slice(0,9).map((r,i)=>`<span class="scan-chip ${i<3?'top-priority':''}">${r.name}</span>`).join('');
+
+  const t0=Date.now();
+  let liveResults=null;
+  try{ liveResults=await fetchBraveResults(query); }catch(e){ liveResults=null; }
+  const elapsed=Date.now()-t0;
+  if(elapsed<800) await new Promise(r=>setTimeout(r,800-elapsed));
+  showResults(query,detection.key,detection,null,liveResults);
 }
 
-function showResults(query,catKey,detection,cached){
+function showResults(query,catKey,detection,cached,liveResults){
   document.getElementById('loadingState').classList.remove('visible');
   document.getElementById('skeletonList').innerHTML='';
   const cat=CATEGORIES[catKey];
@@ -4391,9 +4461,12 @@ function showResults(query,catKey,detection,cached){
   const cacheKey=query.trim().toLowerCase();
   if(cached){
     currentResults=cached.results;
+  } else if(liveResults&&liveResults.length>=2){
+    currentResults=liveResults;
+    searchCache.set(cacheKey,{results:currentResults,catKey,detection});
   } else {
+    // Fall back to mock if Brave returned nothing usable
     currentResults=generateResults(query,catKey);
-    // Store in cache for instant re-searches
     searchCache.set(cacheKey,{results:currentResults,catKey,detection});
   }
   document.getElementById('catIcon').textContent='';
@@ -4442,98 +4515,60 @@ function renderResults(results){
 }
 async function fetchReviews(query){
   const sec=document.getElementById('reviewsSection');
-  if(!sec)return; // reviews now live on the detail page only
+  if(!sec)return;
   const body=document.getElementById('reviewsBody');
   const summary=document.getElementById('reviewsSummary');
   sec.style.display='block';
   summary.innerHTML='';
-  body.innerHTML=`<div class="reviews-loading"><div class="reviews-mini-spin"></div>Fetching real reviews for <strong style="color:var(--text);margin-left:3px;">${sanitizeHTML(query)}</strong>...</div>`;
-
+  body.innerHTML=`<div class="reviews-loading"><div class="reviews-mini-spin"></div>Loading community opinions for <strong style="color:var(--text);margin-left:3px;">${sanitizeHTML(query)}</strong>...</div>`;
   try{
-    const prompt=`You are a product review aggregator.\n\n<product_name>${query.replace(/</g,'').replace(/>/g,'')}</product_name>\n\nFor the product named above, provide 5 realistic customer reviews that reflect what actual buyers say on sites like Amazon, Trustpilot, and retail review pages.
-
-Return ONLY a JSON object in this exact format, no markdown, no extra text:
-{
-  "product": "[product name]",
-  "avg_rating": 4.3,
-  "total_reviews": 12840,
-  "reviews": [
-    {
-      "author": "First name + last initial only e.g. Sarah M.",
-      "rating": 5,
-      "date": "recent date like March 2025",
-      "source": "Amazon" or "Trustpilot" or "John Lewis" etc,
-      "title": "short review title",
-      "text": "2-3 sentence review that sounds like a real verified buyer. Be specific about the product. Include both positives and at least one minor criticism where appropriate.",
-      "verified": true
-    }
-  ]
-}
-
-Make reviews feel authentic — vary the rating (mix of 5★, 4★, 3★), writing style, and perspective. Some mention packaging, delivery, value, build quality etc. At least one review should mention a small downside.`;
-
-    const res=await fetch('/api/claude',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens:1000,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-
+    const res=await fetch(`/api/reviews?q=${encodeURIComponent(query)}`);
+    if(!res.ok) throw new Error('unavailable');
     const data=await res.json();
-    const raw=data.content.map(c=>c.text||'').join('');
-    const clean=raw.replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(clean);
-
-    // Render summary
-    const avgR=parsed.avg_rating||4.3;
-    const totalR=(parsed.total_reviews||0).toLocaleString();
-    const fullStars=Math.round(avgR);
-    summary.innerHTML=`
-      <div class="reviews-avg">${avgR.toFixed(1)}</div>
-      <div>
-        <div class="reviews-avg-stars">${'★'.repeat(fullStars)}${'☆'.repeat(5-fullStars)}</div>
-        <div class="reviews-avg-count">Based on ${totalR} reviews</div>
-      </div>`;
-
-    // Render review cards
-    body.innerHTML=`<div class="review-list">${parsed.reviews.map(r=>{
-      const stars=Math.min(5,Math.max(1,r.rating));
-      return `<div class="review-card">
+    const posts=(data.data?.children||[]).map(c=>c.data).filter(p=>p.title);
+    if(!posts.length) throw new Error('empty');
+    summary.innerHTML=`<div style="font-size:.82rem;color:var(--muted);">Community opinions from Reddit · ${posts.length} discussions found</div>`;
+    body.innerHTML=`<div class="review-list">${posts.slice(0,5).map(p=>{
+      const sub=sanitizeHTML(p.subreddit_name_prefixed||'r/'+p.subreddit);
+      const score=(p.score||0).toLocaleString();
+      const permalink=p.permalink?`https://reddit.com${p.permalink}`:'';
+      return`<div class="review-card">
         <div class="review-top">
-          <span class="review-author">${sanitizeHTML(r.author)}</span>
-          <span class="review-stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
-          <span class="review-source">${sanitizeHTML(r.source)}</span>
-          <span class="review-date">${sanitizeHTML(r.date)}</span>
+          <span class="review-source">${sub}</span>
+          <span class="review-date">${score} upvotes</span>
         </div>
-        <div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.3rem;">${sanitizeHTML(r.title)}</div>
-        <div class="review-text">${sanitizeHTML(r.text)}</div>
-        ${r.verified?'<div class="review-verified">Verified purchase</div>':''}
+        <div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.3rem;">${sanitizeHTML(p.title||'')}</div>
+        ${p.selftext?`<div class="review-text">${sanitizeHTML(p.selftext.slice(0,280))}${p.selftext.length>280?'…':''}</div>`:''}
+        ${permalink?`<a href="${sanitizeHTML(permalink)}" target="_blank" rel="noopener noreferrer" style="font-size:.72rem;color:var(--accent);">View discussion →</a>`:''}
       </div>`;
     }).join('')}</div>`;
-
   }catch(err){
-    body.innerHTML=`<div class="reviews-error">Couldn't load reviews right now — try again in a moment.</div>`;
-    console.error('Reviews error:',err);
+    body.innerHTML=`<div class="reviews-error">Couldn't load community opinions right now.</div>`;
   }
 }
-
-function handleSort(val){
-  const sorted=[...currentResults].sort((a,b)=>val==='price'?a.price-b.price:val==='rating'?b.rating-a.rating:val==='relevance'?b.relevance-a.relevance:b.score-a.score);
-  renderResults(sorted);
+async function fetchDetailReviews(r){
+  const body=document.getElementById('detailReviewsBody');
+  const avgEl=document.getElementById('detailReviewsAvg');
+  body.innerHTML=`<div class="detail-reviews-loading"><div class="detail-reviews-mini-spin"></div>Loading community opinions...</div>`;
+  avgEl.innerHTML='';
+  try{
+    const res=await fetch(`/api/reviews?q=${encodeURIComponent(r.name)}`);
+    if(!res.ok) throw new Error('unavailable');
+    const data=await res.json();
+    const posts=(data.data?.children||[]).map(c=>c.data).filter(p=>p.title);
+    if(!posts.length) throw new Error('empty');
+    avgEl.innerHTML=`<div class="detail-reviews-avg"><div><div class="detail-reviews-avg-stars">Community opinions</div><div class="detail-reviews-avg-count">${posts.length} Reddit discussions found</div></div></div>`;
+    body.innerHTML=posts.slice(0,4).map(p=>{
+      const sub=sanitizeHTML(p.subreddit_name_prefixed||'r/'+p.subreddit);
+      const score=(p.score||0).toLocaleString();
+      const permalink=p.permalink?`https://reddit.com${p.permalink}`:'';
+      return`<div class="detail-review-card"><div class="detail-review-top"><span class="detail-review-author">${sub}</span><span class="detail-review-date">${score} upvotes</span></div><div class="detail-review-title">${sanitizeHTML(p.title||'')}</div>${p.selftext?`<div class="detail-review-text">${sanitizeHTML(p.selftext.slice(0,240))}${p.selftext.length>240?'…':''}</div>`:''}<div>${permalink?`<a href="${sanitizeHTML(permalink)}" target="_blank" rel="noopener noreferrer" style="font-size:.72rem;color:var(--accent);">View on Reddit →</a>`:''}</div></div>`;
+    }).join('');
+  }catch(err){
+    body.innerHTML=`<div style="padding:1rem;color:var(--muted);font-size:.85rem;">Couldn't load community opinions right now.</div>`;
+  }
 }
-function drawChart(){
-  const ctx=document.getElementById('priceChart');
-  if(!ctx||!currentResults.length)return;
-  const isDark=html.getAttribute('data-theme')==='dark';
-  const gc=isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.06)',lc=isDark?'#666':'#999',ac=isDark?'#00d48a':'#00a86b';
-  const base=currentResults[0].price;
-  const data=[base*1.35,base*1.28,base*1.18,base*1.22,base*1.08,base].map(v=>parseFloat(v.toFixed(2)));
-  chartInstance=new Chart(ctx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{data,borderColor:ac,borderWidth:2,pointBackgroundColor:ac,pointRadius:4,pointHoverRadius:6,fill:true,backgroundColor:isDark?'rgba(46,204,113,0.06)':'rgba(26,158,80,0.06)',tension:.35}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y/CURRENCIES[activeCurrency].rate)}}},scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:11}}},y:{grid:{color:gc},ticks:{color:lc,font:{size:11},callback:v=>fmt(v/CURRENCIES[activeCurrency].rate)},min:Math.floor(Math.min(...data)*.92),max:Math.ceil(Math.max(...data)*1.05)}}}});
-}
-// ── PRODUCT DETAIL PAGE ──
+// ── PRODUCT DETAIL STATE ──
 let activeDetailResult=null,detailChartInstance=null,detailOriginPage='home';
 const DETAIL_EMOJIS={electronics:'💻',gaming:'🎮',fashion:'👗',home:'🛋️',sports:'🏃',toys:'🧸',baby:'🍼',books:'📚',general:'📦'};
 
@@ -4542,42 +4577,32 @@ function openProductDetail(idx){
   if(!r)return;
   activeDetailResult=r;
   detailOriginPage='home';
-
   const catKey=detectedCat?.key||'general';
   const emoji=DETAIL_EMOJIS[catKey]||'📦';
-
-  // Populate gallery — use emoji placeholders styled as product angles
   document.getElementById('detailImgEmoji').textContent=emoji;
   const strip=document.getElementById('detailImgStrip');
-  const angles=[emoji,'🔍','📐','🎁'];
-  strip.innerHTML=angles.map((e,i)=>`<div class="detail-img-thumb${i===0?' active':''}" onclick="selectDetailThumb(this,'${e}')">${e}</div>`).join('');
-
-  // Retailer logo + name
+  strip.innerHTML=[emoji,'🔍','📐','🎁'].map((e,i)=>`<div class="detail-img-thumb${i===0?' active':''}" onclick="selectDetailThumb(this,'${e}')">${e}</div>`).join('');
   const logoEl=document.getElementById('detailLogo');
   logoEl.className=`detail-logo retailer-logo ${r.logoClass}`;
   logoEl.textContent=r.retailer;
   document.getElementById('detailRetailerName').textContent=r.retailer;
-
-  // Product info
   document.getElementById('detailProductName').textContent=r.name;
-  const fullStars=Math.round(r.rating);
+  const fullStars=Math.round(r.rating||4);
   document.getElementById('detailStars').textContent='★'.repeat(fullStars)+'☆'.repeat(5-fullStars);
-  document.getElementById('detailRating').textContent=r.rating;
-  document.getElementById('detailReviewCount').textContent=`(${r.reviews.toLocaleString()} reviews)`;
+  document.getElementById('detailRating').textContent=r.rating||'';
+  document.getElementById('detailReviewCount').textContent=r.reviews?`(${r.reviews.toLocaleString()} reviews)`:'';
   document.getElementById('detailPrice').textContent=fmt(r.price);
   const wasEl=document.getElementById('detailPriceWas');
   const discEl=document.getElementById('detailDiscount');
   if(r.was){wasEl.textContent=fmt(r.was);wasEl.style.display='';const pct=Math.round((r.was-r.price)/r.was*100);discEl.textContent=`-${pct}%`;discEl.style.display='';}
   else{wasEl.style.display='none';discEl.style.display='none';}
-  document.getElementById('detailShippingText').textContent=r.shipping;
-  document.getElementById('detailScore').textContent=r.score.toFixed(1)+' / 10';
+  document.getElementById('detailShippingText').textContent=r.shipping||'';
+  document.getElementById('detailScore').textContent=r.score?r.score.toFixed(1)+' / 10':'';
   document.getElementById('detailRelevance').textContent=r.relevance+'%';
-  document.getElementById('detailReviewBadge').textContent=r.reviews.toLocaleString();
+  document.getElementById('detailReviewBadge').textContent=r.reviews?r.reviews.toLocaleString():'';
   document.getElementById('detailChartRetailer').textContent=r.retailer;
   document.getElementById('detailReviewsRetailer').textContent=r.retailer;
-
   showPage('detail');
-  // Defer chart and reviews until the page is painted and canvas has dimensions
   requestAnimationFrame(()=>{
     drawDetailChart(r);
     fetchDetailReviews(r);
@@ -4616,34 +4641,9 @@ function drawDetailChart(r){
   const isDark=html.getAttribute('data-theme')==='dark';
   const gc=isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.06)',lc=isDark?'#666':'#999',ac=isDark?'#00d48a':'#00a86b';
   const base=r.price;
-  // Generate retailer-specific price history with some variance
   const seed=r.retailer.charCodeAt(0);
   const data=[base*(1.3+seed%5*.012),base*(1.22+seed%3*.01),base*(1.15+seed%7*.008),base*(1.18+seed%4*.01),base*(1.06+seed%2*.008),base].map(v=>parseFloat(v.toFixed(2)));
   detailChartInstance=new Chart(ctx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Now'],datasets:[{data,borderColor:ac,borderWidth:2.5,pointBackgroundColor:ac,pointRadius:4,pointHoverRadius:6,fill:true,backgroundColor:isDark?'rgba(0,212,138,0.07)':'rgba(0,168,107,0.07)',tension:.35}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y)}}},scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:11}}},y:{grid:{color:gc},ticks:{color:lc,font:{size:11},callback:v=>fmt(v)},min:Math.floor(Math.min(...data)*.92),max:Math.ceil(Math.max(...data)*1.05)}}}});
-}
-
-async function fetchDetailReviews(r){
-  const body=document.getElementById('detailReviewsBody');
-  const avgEl=document.getElementById('detailReviewsAvg');
-  body.innerHTML=`<div class="detail-reviews-loading"><div class="detail-reviews-mini-spin"></div>Loading reviews from ${sanitizeHTML(r.retailer)}...</div>`;
-  avgEl.innerHTML='';
-  try{
-    const prompt=`You are a product review aggregator.\n\n<product_name>${r.name.replace(/</g,'').replace(/>/g,'')}</product_name>\n<retailer>${r.retailer.replace(/</g,'').replace(/>/g,'')}</retailer>\n\nProvide 4 realistic customer reviews specifically from ${r.retailer} buyers.\n\nReturn ONLY a JSON object:\n{\n  "avg_rating": 4.3,\n  "total_reviews": ${r.reviews},\n  "reviews": [\n    {\n      "author": "First name + last initial",\n      "rating": 5,\n      "date": "recent month and year",\n      "title": "short title",\n      "text": "2-3 sentence review mentioning ${r.retailer} specifically, delivery, or purchase experience.",\n      "verified": true\n    }\n  ]\n}\n\nMix ratings (5★, 4★, 3★). At least one mentions delivery or the ${r.retailer} buying experience.`;
-    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:900,messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    const raw=data.content.map(c=>c.text||'').join('');
-    const parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
-    const avgR=parsed.avg_rating||r.rating;
-    const total=(parsed.total_reviews||r.reviews).toLocaleString();
-    const fs=Math.round(avgR);
-    avgEl.innerHTML=`<div class="detail-reviews-avg"><div class="detail-reviews-avg-num">${avgR.toFixed(1)}</div><div><div class="detail-reviews-avg-stars">${'★'.repeat(fs)}${'☆'.repeat(5-fs)}</div><div class="detail-reviews-avg-count">Based on ${total} verified reviews at ${sanitizeHTML(r.retailer)}</div></div></div>`;
-    body.innerHTML=parsed.reviews.map(rv=>{
-      const stars=Math.min(5,Math.max(1,rv.rating));
-      return`<div class="detail-review-card"><div class="detail-review-top"><span class="detail-review-author">${sanitizeHTML(rv.author)}</span><span class="detail-review-stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>${rv.verified?'<span style="font-size:.68rem;background:var(--accent-dim);color:var(--accent);padding:.1rem .4rem;border-radius:3px;">Verified</span>':''}<span class="detail-review-date">${sanitizeHTML(rv.date)}</span></div><div class="detail-review-title">${sanitizeHTML(rv.title||'')}</div><div class="detail-review-text">${sanitizeHTML(rv.text)}</div></div>`;
-    }).join('');
-  }catch(err){
-    body.innerHTML=`<div style="padding:1rem;color:var(--muted);font-size:.85rem;">Couldn't load reviews right now — try again shortly.</div>`;
-  }
 }
 
 // ── PRIXLY COMMUNITY REVIEWS ──
@@ -5311,65 +5311,6 @@ function submitAlert(){
   document.getElementById('alertForm').style.display='none';
   document.getElementById('alertSuccess').style.display='flex';
 }
-function handleDragOver(e){e.preventDefault();document.getElementById('unifiedSearch').classList.add('dragover');}
-function handleDragLeave(e){if(!e.currentTarget.contains(e.relatedTarget))document.getElementById('unifiedSearch').classList.remove('dragover');}
-function handleDrop(e){e.preventDefault();document.getElementById('unifiedSearch').classList.remove('dragover');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))processImageFile(f);}
-function handleFileSelect(e){if(e.target.files[0])processImageFile(e.target.files[0]);}
-
-async function processImageFile(f){
-  const input=document.getElementById('searchInput');
-  input.value='';
-  input.placeholder='Analysing image — identifying product...';
-
-  try{
-    const base64=await new Promise((res,rej)=>{
-      const reader=new FileReader();
-      reader.onload=()=>res(reader.result.split(',')[1]);
-      reader.onerror=()=>rej(new Error('Failed to read file'));
-      reader.readAsDataURL(f);
-    });
-
-    const mediaType=f.type||'image/jpeg';
-
-    const response=await fetch('/api/claude',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens:200,
-        messages:[{
-          role:'user',
-          content:[
-            {type:'image',source:{type:'base64',media_type:mediaType,data:base64}},
-            {type:'text',text:`Look at this image and identify the specific product shown. Return ONLY a short product search query (3-6 words max) that would find this exact item on a shopping site. Examples: "Sony WH-1000XM5 headphones", "Nike Air Max 90 trainers", "LEGO Technic set", "iPhone 15 Pro case". If it is not a product, return the closest shoppable item it resembles. Return ONLY the search query, nothing else, no punctuation at the end.`}
-          ]
-        }]
-      })
-    });
-
-    const data=await response.json();
-    const productQuery=data.content.map(c=>c.text||'').join('').trim();
-
-    if(!productQuery){
-      input.placeholder='Could not identify a product — try a clearer photo or type the name.';
-      setTimeout(()=>{input.placeholder='Search by name, e.g. iPhone 15, Nike Air Max...';},3500);
-      return;
-    }
-
-    // Switch to home page and fire search
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById('page-home').classList.add('active');
-    input.value=productQuery;
-    input.placeholder='Search by name, e.g. iPhone 15, Nike Air Max...';
-
-    setTimeout(()=>runSearch(productQuery),400);
-
-  }catch(err){
-    input.placeholder='Image analysis failed — please try again or type the name.';
-    setTimeout(()=>{input.placeholder='Search by name, e.g. iPhone 15, Nike Air Max...';},3500);
-    console.error('Image analysis error:',err);
-  }
-}
 
 // ── HOW IT WORKS — SCROLL ANIMATIONS ──
 function initHiwObserver(){
@@ -5838,7 +5779,7 @@ function renderDeals(){
     <ul class="consent-list">
       <li><strong>Google Analytics</strong> — page views, session duration, and navigation patterns. No personal identity is collected. Data is anonymised and aggregated.</li>
       <li><strong>PostHog</strong> — product analytics including feature interactions, search queries (anonymised), and funnel behaviour. Used to understand which features are working and which aren't.</li>
-      <li><strong>Search queries &amp; uploaded images</strong> — sent to Anthropic's Claude API solely to identify products and generate results. Not stored by Prixly after the response is received.</li>
+      <li><strong>Search queries</strong> — sent to Brave Search API to find live prices. Not stored by Prixly after results are shown.</li>
       <li><strong>localStorage only</strong> — your language, region, currency preference, and recent searches are stored on your device and never sent to our servers.</li>
       <li><strong>Trending and "What's Hot" data</strong> — anonymised, aggregated purchase and click activity is used to power our daily trending rankings. No individual user is identifiable from this data. Rankings refresh every 24 hours and are sourced from real shopper activity across Prixly and our retail partners.</li>
     </ul>
